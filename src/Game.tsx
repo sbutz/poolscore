@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
     Button,
     Grid,
@@ -11,24 +12,36 @@ import {
 } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 
+import { Context } from './Store';
+
 const scoreSx = {
     fontSize: "40rem",
     fontWeight: 400,
     lineHeight: 1,
+    userSelect: "none",
 };
 
-const AddButton = () => (
-    <Button variant="contained" color="success" sx={{mx: 3}}>
+interface ButtonProps {
+    onClick: () => void;
+}
+const AddButton = (props: ButtonProps) => (
+    <Button variant="contained" color="success" sx={{mx: 3}} {...props}>
         <Add sx={{fontSize: "5rem"}}/>
     </Button>
 );
-const RemoveButton = () => (
-    <Button variant="contained" color="error" sx={{mx: 3}}>
+const RemoveButton = (props: ButtonProps) => (
+    <Button variant="contained" color="error" sx={{mx: 3}} {...props}>
         <Remove sx={{fontSize: "5rem"}}/>
     </Button>
 );
 
 function Game() {
+    const [state, dispatch] = useContext(Context);
+
+    const home_plus_one = () => { dispatch?.({type: "home_plus_one"}); };
+    const home_minus_one = () => { dispatch?.({type: "home_minus_one"}); };
+    const guest_plus_one = () => { dispatch?.({type: "guest_plus_one"}); };
+    const guest_minus_one = () => { dispatch?.({type: "guest_minus_one"}); };
     return (
         <Stack height="100vh" alignItems="center">
             <Grid container justifyContent="space-evenly" mt="1em">
@@ -43,20 +56,20 @@ function Game() {
                 </Grid>
             </Grid>
             <Grid container justifyContent="center">
-                <Grid item xs={5} textAlign="center">
-                    <Typography variant="h1" sx={scoreSx}>0</Typography>
+                <Grid item xs={5} textAlign="center" onClick={home_plus_one}>
+                    <Typography variant="h1" sx={scoreSx}>{state.score_home}</Typography>
                 </Grid>
                 <Grid item xs={2} textAlign="center">
                     <Typography variant="h1" sx={scoreSx}>:</Typography>
                 </Grid>
-                <Grid item xs={5} textAlign="center">
-                    <Typography variant="h1" sx={scoreSx}>0</Typography>
+                <Grid item xs={5} textAlign="center" onClick={guest_plus_one}>
+                    <Typography variant="h1" sx={scoreSx}>{state.score_guest}</Typography>
                 </Grid>
             </Grid>
             <Grid container justifyContent="center">
                 <Grid item xs={5} textAlign="center">
-                    <AddButton />
-                    <RemoveButton />
+                    <AddButton onClick={home_plus_one}/>
+                    <RemoveButton onClick={home_minus_one}/>
                 </Grid>
                 <Grid item xs={2} textAlign="center">
                     {/*TODO: better color*/}
@@ -66,8 +79,8 @@ function Game() {
                     </Button>
                 </Grid>
                 <Grid item xs={5} textAlign="center">
-                    <AddButton />
-                    <RemoveButton />
+                    <AddButton onClick={guest_plus_one}/>
+                    <RemoveButton onClick={guest_minus_one}/>
                 </Grid>
             </Grid>
         </Stack>
