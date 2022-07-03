@@ -1,7 +1,4 @@
-import {
-  Button,
-  Grid,
-} from '@mui/material';
+import { Button, Grid, } from '@mui/material';
 import { Link } from "react-router-dom";
 
 function DisciplineSelect() {

@@ -23,6 +23,8 @@ const reducer = (state: State, action: Action) : State => {
       return { ...state,  score_guest: state.score_guest+1};
     case 'guest_minus_one':
       return { ...state,  score_guest: Math.max(0, state.score_guest-1)};
+    case 'reset_score':
+      return {...state, score_guest: 0, score_home: 0};
     default:
         throw Error(`Unknown action type: ${action.type}`);
   }
