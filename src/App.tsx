@@ -16,14 +16,14 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <BrowserRouter>
-        <Layout>
-          <Store>
+        <Store>
+          <Layout>
             <Routes>
               <Route path="/" element={<DisciplineSelect/>} />
               <Route path="/game" element={<Game/>} />
             </Routes>
-          </Store>
-        </Layout>
+          </Layout>
+        </Store>
       </BrowserRouter>
       <CssBaseline />
     </ThemeProvider>

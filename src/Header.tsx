@@ -1,9 +1,10 @@
 import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router';
-import {AppBar, Box, Drawer, List, ListItem, ListItemButton, ListItemIcon,
-    ListItemText, Toolbar, IconButton, Typography } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router';
+import {AppBar, Box, Button, Drawer, List, ListItem, ListItemButton,
+    ListItemIcon, ListItemText, Toolbar, IconButton, Typography,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Home } from '@mui/icons-material';
+import { Home, Undo } from '@mui/icons-material';
 
 import AlertDialog from './AlertDialog';
 import { Context } from './Store';
@@ -11,6 +12,7 @@ import { Context } from './Store';
 function Header() {
     const [state, dispatch] = useContext(Context);
     const navigate = useNavigate();
+    const location = useLocation();
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
 
@@ -42,19 +44,28 @@ function Header() {
             sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
          >
             <Toolbar>
-            <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-                onClick={() => { setOpenDrawer(!openDrawer); }}
-            >
-            <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                BC 73 Pfeffenhausen
-            </Typography>
+                <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    sx={{ mr: 2 }}
+                    onClick={() => { setOpenDrawer(!openDrawer); }}
+                >
+                <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    BC 73 Pfeffenhausen
+                </Typography>
+                { location.pathname == "/" ? null :
+                <Button
+                    color="inherit"
+                    startIcon={<Undo/>}
+                    onClick={() => { dispatch?.({type: 'rollback_score'}); }}
+                >
+                    Rückgängig
+                </Button>
+                }
             </Toolbar>
         </AppBar>
         <Drawer
