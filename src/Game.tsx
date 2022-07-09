@@ -7,9 +7,9 @@ import { Context } from './Store';
 import AlertDialog from './AlertDialog';
 
 const scoreSx = {
-    fontSize: "70vh",
+    fontSize: "60vh",
     fontWeight: 400,
-    lineHeight: 0.9,
+    lineHeight: 0.6,
     userSelect: "none",
 };
 
@@ -36,8 +36,9 @@ function Game() {
     const home_minus_one = () => { dispatch?.({type: "home_minus_one"}); };
     const guest_plus_one = () => { dispatch?.({type: "guest_plus_one"}); };
     const guest_minus_one = () => { dispatch?.({type: "guest_minus_one"}); };
+
     return (
-    <Stack height="100vh" alignItems="center" justifyContent="space-around">
+    <Stack height="100%" alignItems="center" justifyContent="space-around">
         <Grid container justifyContent="space-evenly" mt="1em">
             <Grid item xs={5} textAlign="center">
                 <Typography variant="h1">Heim</Typography>
