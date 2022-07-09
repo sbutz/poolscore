@@ -1,24 +1,88 @@
-import {AppBar, Toolbar, IconButton, Typography } from '@mui/material';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router';
+import {AppBar, Box, Drawer, List, ListItem, ListItemButton, ListItemIcon,
+    ListItemText, Toolbar, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Home } from '@mui/icons-material';
+
+import AlertDialog from './AlertDialog';
+import { Context } from './Store';
 
 function Header() {
-    return (
-    <AppBar position="sticky">
-        <Toolbar>
-        <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+    const [state, dispatch] = useContext(Context);
+    const navigate = useNavigate();
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const drawerList = (
+        <Box
+            role="presentation"
+            sx={{
+                width: 250,
+                flexShrink: 0,
+            }}
+            onClick={() => { setOpenDrawer(false); }}
         >
-        <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            BC 73 Pfeffenhausen
-        </Typography>
-        </Toolbar>
-    </AppBar>
+        <List>
+            <ListItem key={'home'} disablePadding>
+            <ListItemButton onClick={() => { setOpenDialog(true); }}>
+                <ListItemIcon>
+                    <Home />
+                </ListItemIcon>
+                <ListItemText primary={'Startseite'} />
+            </ListItemButton>
+            </ListItem>
+        </List>
+        </Box>
+    );
+
+    return (
+    <div>
+        <AppBar position="sticky"
+            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+         >
+            <Toolbar>
+            <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={() => { setOpenDrawer(!openDrawer); }}
+            >
+            <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                BC 73 Pfeffenhausen
+            </Typography>
+            </Toolbar>
+        </AppBar>
+        <Drawer
+            anchor={'left'}
+            open={openDrawer}
+            onClose={() => { setOpenDrawer(false); }}
+            PaperProps={{
+                sx: {
+                    top: (theme) => theme.spacing(8),
+                }
+            }}
+        >
+            {drawerList}
+        </Drawer>
+        <AlertDialog
+            open={openDialog}
+            title={"Zurück zur Startseite?"}
+            text={"Der aktuelle Spielstand geht dabei verloren."}
+            cancelText={"Abbrechen"}
+            onCancel={()=> { setOpenDialog(false); }}
+            acceptText={"Ok"}
+            onAccept={() => {
+                setOpenDialog(false);
+                dispatch?.({type: 'reset_score'});
+                navigate(-1);
+            }}
+        />
+    </div>
     );
 }
 

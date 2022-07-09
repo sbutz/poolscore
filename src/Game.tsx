@@ -1,10 +1,8 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { Button, Grid, Stack, Typography, } from '@mui/material'
-import { Add, Home, Remove, } from '@mui/icons-material';
-import { useNavigate } from "react-router-dom";
+import { Add, Remove, } from '@mui/icons-material';
 
 import { Context } from './Store';
-import AlertDialog from './AlertDialog';
 
 const scoreSx = {
     fontSize: "60vh",
@@ -29,8 +27,6 @@ const RemoveButton = (props: ButtonProps) => (
 
 function Game() {
     const [state, dispatch] = useContext(Context);
-    const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
 
     const home_plus_one = () => { dispatch?.({type: "home_plus_one"}); };
     const home_minus_one = () => { dispatch?.({type: "home_minus_one"}); };
@@ -67,24 +63,6 @@ function Game() {
                 <RemoveButton onClick={home_minus_one}/>
             </Grid>
             <Grid item xs={2} textAlign="center">
-                {/*TODO: better color*/}
-                {/*TODO: alert before before routing*/}
-                <Button variant="contained" color="secondary" onClick={() => { setOpen(true); }}>
-                    <Home sx={{fontSize: "5rem"}}/>
-                </Button>
-                <AlertDialog
-                    open={open}
-                    title={"Zurück zur Startseite?"}
-                    text={"Der aktuelle Spielstand geht dabei verloren."}
-                    cancelText={"Abbrechen"}
-                    onCancel={()=> { setOpen(false); }}
-                    acceptText={"Ok"}
-                    onAccept={() => {
-                        setOpen(false);
-                        dispatch?.({type: 'reset_score'});
-                        navigate(-1);
-                    }}
-                    />
             </Grid>
             <Grid item xs={5} textAlign="center">
                 <AddButton onClick={guest_plus_one}/>

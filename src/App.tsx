@@ -15,16 +15,16 @@ const darkTheme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
-      <Layout>
-        <Store>
-          <BrowserRouter>
+      <BrowserRouter>
+        <Layout>
+          <Store>
             <Routes>
               <Route path="/" element={<DisciplineSelect/>} />
               <Route path="/game" element={<Game/>} />
             </Routes>
-          </BrowserRouter>
-        </Store>
-      </Layout>
+          </Store>
+        </Layout>
+      </BrowserRouter>
       <CssBaseline />
     </ThemeProvider>
   );
