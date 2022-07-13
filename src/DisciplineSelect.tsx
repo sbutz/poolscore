@@ -10,7 +10,7 @@ function DisciplineSelect() {
             </Button>
         </Grid>
         <Grid item>
-            <Button variant="contained" style={{fontSize: "5rem"}}>
+            <Button variant="contained" style={{fontSize: "5rem"}} disabled>
                 14/1 endlos
             </Button>
         </Grid>
