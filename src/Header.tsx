@@ -27,7 +27,9 @@ function Header() {
         >
         <List>
             <ListItem key={'home'} disablePadding>
-            <ListItemButton onClick={() => { setOpenDialog(true); }}>
+            <ListItemButton onClick={() => {
+                if (location.pathname !== "/") setOpenDialog(true);
+            }}>
                 <ListItemIcon>
                     <Home />
                 </ListItemIcon>
@@ -57,7 +59,7 @@ function Header() {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     BC 73 Pfeffenhausen
                 </Typography>
-                { location.pathname == "/" ? null :
+                { location.pathname === "/" ? null :
                 <Button
                     color="inherit"
                     startIcon={<Undo/>}
