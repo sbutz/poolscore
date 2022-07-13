@@ -1,9 +1,11 @@
 import { useContext } from 'react';
 import { Button, Grid, Stack, Typography, } from '@mui/material'
-import { Add, Remove, } from '@mui/icons-material';
+import { Add, Remove, Undo, } from '@mui/icons-material';
 
 import { Context } from './Store';
 import Layout from './Layout';
+import { useCallbackPrompt } from './useCallbackPrompt';
+import AlertDialog from './AlertDialog';
 
 const scoreSx = {
     fontSize: "60vh",
@@ -28,14 +30,27 @@ const RemoveButton = (props: ButtonProps) => (
 
 function Game() {
     const [state, dispatch] = useContext(Context);
+    const [showPrompt, confirmNavigation, cancelNavigation] =
+      useCallbackPrompt(true)
 
     const home_plus_one = () => { dispatch?.({type: "home_plus_one"}); };
     const home_minus_one = () => { dispatch?.({type: "home_minus_one"}); };
     const guest_plus_one = () => { dispatch?.({type: "guest_plus_one"}); };
     const guest_minus_one = () => { dispatch?.({type: "guest_minus_one"}); };
 
+    const toolbar = [
+        <Button
+            key="undo"
+            color="inherit"
+            startIcon={<Undo/>}
+            onClick={() => { dispatch?.({type: 'rollback_score'}); }}
+        >
+            Rückgängig
+        </Button>
+    ];
+
     return (
-    <Layout>
+    <Layout toolbar={toolbar}>
         <Stack height="100%" alignItems="center" justifyContent="space-around">
             <Grid container justifyContent="space-evenly" mt="1em">
                 <Grid item xs={5} textAlign="center">
@@ -76,6 +91,18 @@ function Game() {
                 </Grid>
             </Grid>
         </Stack>
+        <AlertDialog
+            open={showPrompt as boolean}
+            title={"Zurück zur Startseite?"}
+            text={"Der aktuelle Spielstand geht dabei verloren."}
+            cancelText={"Abbrechen"}
+            onCancel={()=> { (cancelNavigation as (() => void))(); }}
+            acceptText={"Ok"}
+            onAccept={() => {
+                dispatch?.({type: 'reset_score'});
+                (confirmNavigation as (() => void))();
+            }}
+        />
     </Layout>
     );
 }

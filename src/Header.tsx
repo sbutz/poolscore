@@ -1,45 +1,12 @@
-import { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import {AppBar, Box, Button, Drawer, List, ListItem, ListItemButton,
-    ListItemIcon, ListItemText, Toolbar, IconButton, Typography,
-} from '@mui/material';
+import {AppBar, Button, Toolbar, IconButton, Typography, } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Home, Undo } from '@mui/icons-material';
 
-import AlertDialog from './AlertDialog';
-import { Context } from './Store';
+interface HeaderProps {
+    children?: React.ReactNode[];
+    onIconClick?: () => void;
+}
 
-function Header() {
-    const [state, dispatch] = useContext(Context);
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [openDrawer, setOpenDrawer] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
-
-    const drawerList = (
-        <Box
-            role="presentation"
-            sx={{
-                width: 250,
-                flexShrink: 0,
-            }}
-            onClick={() => { setOpenDrawer(false); }}
-        >
-        <List>
-            <ListItem key={'home'} disablePadding>
-            <ListItemButton onClick={() => {
-                if (location.pathname !== "/") setOpenDialog(true);
-            }}>
-                <ListItemIcon>
-                    <Home />
-                </ListItemIcon>
-                <ListItemText primary={'Startseite'} />
-            </ListItemButton>
-            </ListItem>
-        </List>
-        </Box>
-    );
-
+function Header(props: HeaderProps) {
     return (
     <div>
         <AppBar position="sticky"
@@ -52,49 +19,16 @@ function Header() {
                     color="inherit"
                     aria-label="menu"
                     sx={{ mr: 2 }}
-                    onClick={() => { setOpenDrawer(!openDrawer); }}
+                    onClick={props.onIconClick}
                 >
                 <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     BC 73 Pfeffenhausen
                 </Typography>
-                { location.pathname === "/" ? null :
-                <Button
-                    color="inherit"
-                    startIcon={<Undo/>}
-                    onClick={() => { dispatch?.({type: 'rollback_score'}); }}
-                >
-                    Rückgängig
-                </Button>
-                }
+                {props.children}
             </Toolbar>
         </AppBar>
-        <Drawer
-            anchor={'left'}
-            open={openDrawer}
-            onClose={() => { setOpenDrawer(false); }}
-            PaperProps={{
-                sx: {
-                    top: (theme) => theme.spacing(8),
-                }
-            }}
-        >
-            {drawerList}
-        </Drawer>
-        <AlertDialog
-            open={openDialog}
-            title={"Zurück zur Startseite?"}
-            text={"Der aktuelle Spielstand geht dabei verloren."}
-            cancelText={"Abbrechen"}
-            onCancel={()=> { setOpenDialog(false); }}
-            acceptText={"Ok"}
-            onAccept={() => {
-                setOpenDialog(false);
-                dispatch?.({type: 'reset_score'});
-                navigate(-1);
-            }}
-        />
     </div>
     );
 }
