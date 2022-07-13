@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DisciplineSelect from './DisciplineSelect';
 import Game from './Game';
 import { Store } from './Store';
-import Layout from './Layout';
 
 const darkTheme = createTheme({
   palette: {
@@ -15,16 +14,14 @@ const darkTheme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Store>
-          <Layout>
+      <Store>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
             <Routes>
               <Route path="/" element={<DisciplineSelect/>} />
               <Route path="/game" element={<Game/>} />
             </Routes>
-          </Layout>
-        </Store>
-      </BrowserRouter>
+        </BrowserRouter>
+      </Store>
       <CssBaseline />
     </ThemeProvider>
   );
