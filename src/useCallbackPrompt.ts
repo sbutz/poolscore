@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* 
  * Stolen from https://github.com/Bilal-Bangash/detecting-route-change-react-route-dom-v6
  */
@@ -40,7 +41,11 @@ export function useCallbackPrompt(when: boolean): (boolean | (() => void))[] {
 
   useEffect(() => {
     if (confirmedNavigation && lastLocation) {
-      navigate(lastLocation.location.pathname);
+      let target = lastLocation.location.pathname;
+      if (target.startsWith(process.env.PUBLIC_URL))
+        target = target.slice(process.env.PUBLIC_URL.length);
+      console.log(target);
+      navigate(target);
     }
   }, [confirmedNavigation, lastLocation]);
 
