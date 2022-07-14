@@ -31,7 +31,7 @@ const RemoveButton = (props: ButtonProps) => (
 function Game() {
     const [state, dispatch] = useContext(Context);
     const [showPrompt, confirmNavigation, cancelNavigation] =
-      useCallbackPrompt(true)
+      useCallbackPrompt(true);
 
     const home_plus_one = () => { dispatch?.({type: "home_plus_one"}); };
     const home_minus_one = () => { dispatch?.({type: "home_minus_one"}); };

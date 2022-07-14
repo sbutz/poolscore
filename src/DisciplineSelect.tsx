@@ -17,7 +17,7 @@ function DisciplineSelect() {
                 </Button>
             </Grid>
             <Grid item>
-                <Button variant="contained" style={styles} disabled>
+                <Button variant="contained" component={Link} to={"/game14"} style={styles}>
                     14/1 endlos
                 </Button>
             </Grid>
