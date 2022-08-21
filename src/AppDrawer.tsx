@@ -1,5 +1,5 @@
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemButton,
-    ListItemText, } from '@mui/material'
+    ListItemText, Divider} from '@mui/material'
 import { SportsEsports, TableRestaurant } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 
@@ -9,16 +9,27 @@ interface AppDrawerProps {
 }
 
 function AppDrawer(props: AppDrawerProps) {
+    const isAdmin = true;
     const drawerList = (
-        <Box
-            role="presentation"
-            sx={{
-                width: 250,
-                flexShrink: 0,
-            }}
-            onClick={props.onClose}
-        >
+    <Box
+        role="presentation"
+        sx={{
+            width: 250,
+            flexShrink: 0,
+        }}
+        onClick={props.onClose}
+    >
         <List>
+            {isAdmin ?[
+                <ListItem key={'tables'} disablePadding>
+                    <ListItemButton component={Link} to={"/tables"}>
+                        <ListItemIcon>
+                            <TableRestaurant />
+                        </ListItemIcon>
+                        <ListItemText primary={'Tische'} />
+                    </ListItemButton>
+                </ListItem>,
+                <Divider key='admin-divider'/>] : null}
             <ListItem key={'game'} disablePadding>
                 <ListItemButton component={Link} to={"/"}>
                     <ListItemIcon>
@@ -27,16 +38,8 @@ function AppDrawer(props: AppDrawerProps) {
                     <ListItemText primary={'Freies Spiel'} />
                 </ListItemButton>
             </ListItem>
-            <ListItem key={'tables'} disablePadding>
-                <ListItemButton component={Link} to={"/tables"}>
-                    <ListItemIcon>
-                        <TableRestaurant />
-                    </ListItemIcon>
-                    <ListItemText primary={'Tische'} />
-                </ListItemButton>
-            </ListItem>
         </List>
-        </Box>
+    </Box>
     );
 
     return(
