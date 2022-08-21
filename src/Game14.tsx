@@ -1,8 +1,8 @@
-import { useContext } from 'react';
+import { useReducer } from 'react';
 import { Button, Grid, Stack, Typography, } from '@mui/material'
 import { Undo, } from '@mui/icons-material';
 
-import { Context14 } from './Store14';
+import { reducer, initialState } from './GameState14';
 import Layout from './Layout';
 import { useCallbackPrompt } from './useCallbackPrompt';
 import AlertDialog from './AlertDialog';
@@ -22,12 +22,11 @@ const scoreSx = {
 };
 
 const activeSx = {
-    //TODO: better color
     color: 'warning.main',
 }
 
 function Game() {
-    const [state, dispatch] = useContext(Context14);
+    const [state, dispatch] = useReducer(reducer, initialState);
     const [showPrompt, confirmNavigation, cancelNavigation] =
       useCallbackPrompt(true);
 

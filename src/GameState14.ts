@@ -1,5 +1,3 @@
-import React, { createContext, Dispatch, useReducer } from 'react';
-
 interface Run {
   balls: number;
   foul: boolean;
@@ -168,18 +166,4 @@ const reducer = (state: State14, action: Action14) : State14 => {
   }
 };
 
-const Context14 = createContext<[State14,Dispatch<Action14>?]>([initialState]);
-
-interface StoreProps {
-    children: React.ReactNode;
-}
-function Store14({children} : StoreProps) {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  return (
-      <Context14.Provider value={[state, dispatch]}>
-        {children}
-      </Context14.Provider>
-  );
-}
-
-export { Store14, Context14 };
+export { reducer, initialState };

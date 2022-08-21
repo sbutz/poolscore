@@ -1,8 +1,8 @@
-import { useContext } from 'react';
+import { useReducer } from 'react';
 import { Button, Grid, Stack, Typography, } from '@mui/material'
 import { Add, Remove, Undo, } from '@mui/icons-material';
 
-import { Context } from './Store';
+import { reducer, initialState } from './GameState';
 import Layout from './Layout';
 import { useCallbackPrompt } from './useCallbackPrompt';
 import AlertDialog from './AlertDialog';
@@ -29,7 +29,7 @@ const RemoveButton = (props: ButtonProps) => (
 );
 
 function Game() {
-    const [state, dispatch] = useContext(Context);
+    const [state, dispatch] = useReducer(reducer, initialState);
     const [showPrompt, confirmNavigation, cancelNavigation] =
       useCallbackPrompt(true);
 

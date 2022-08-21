@@ -1,5 +1,3 @@
-import React, { createContext, Dispatch, useReducer } from 'react';
-
 interface State {
     score_home: number;
     score_guest: number;
@@ -12,8 +10,8 @@ const initialState : State = {
 };
 
 interface Action {
-    //TODO: fixed strings
-    type: string;
+    type: 'home_plus_one' | 'home_minus_one' | 'guest_plus_one' |
+      'guest_minus_one' | 'rollback_score' | 'reset_score';
 }
 const reducer = (state: State, action: Action) : State => {
   let {history, ...rest} = state;
@@ -37,18 +35,4 @@ const reducer = (state: State, action: Action) : State => {
   }
 };
 
-const Context = createContext<[State,Dispatch<Action>?]>([initialState]);
-
-interface StoreProps {
-    children: React.ReactNode;
-}
-function Store({children} : StoreProps) {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  return (
-      <Context.Provider value={[state, dispatch]}>
-        {children}
-      </Context.Provider>
-  );
-}
-
-export { Store, Context };
+export { reducer, initialState }
