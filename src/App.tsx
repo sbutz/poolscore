@@ -6,6 +6,7 @@ import Game from './Game';
 import Game14 from './Game14';
 import { Store } from './Store';
 import { Store14 } from './Store14';
+import ErrorPage from './ErrorPage';
 
 const darkTheme = createTheme({
   palette: {
@@ -23,6 +24,7 @@ function App() {
               <Route path="/" element={<DisciplineSelect/>} />
               <Route path="/game" element={<Game/>} />
               <Route path="/game14" element={<Game14/>} />
+              <Route path="*" element={<ErrorPage/>} />
             </Routes>
         </BrowserRouter>
       </Store14>

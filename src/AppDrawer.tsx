@@ -1,6 +1,6 @@
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemButton,
     ListItemText, } from '@mui/material'
-import { Home } from '@mui/icons-material';
+import { SportsEsports, TableRestaurant } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 
 interface AppDrawerProps {
@@ -19,13 +19,21 @@ function AppDrawer(props: AppDrawerProps) {
             onClick={props.onClose}
         >
         <List>
-            <ListItem key={'home'} disablePadding>
-            <ListItemButton component={Link} to={"/"}>
-                <ListItemIcon>
-                    <Home />
-                </ListItemIcon>
-                <ListItemText primary={'Startseite'} />
-            </ListItemButton>
+            <ListItem key={'game'} disablePadding>
+                <ListItemButton component={Link} to={"/"}>
+                    <ListItemIcon>
+                        <SportsEsports />
+                    </ListItemIcon>
+                    <ListItemText primary={'Freies Spiel'} />
+                </ListItemButton>
+            </ListItem>
+            <ListItem key={'tables'} disablePadding>
+                <ListItemButton component={Link} to={"/tables"}>
+                    <ListItemIcon>
+                        <TableRestaurant />
+                    </ListItemIcon>
+                    <ListItemText primary={'Tische'} />
+                </ListItemButton>
             </ListItem>
         </List>
         </Box>
