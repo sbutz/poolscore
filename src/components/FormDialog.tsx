@@ -1,12 +1,12 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 
-import { Validator } from '../util/Validators';
+import { Validator, firstErrorMessage } from '../util/Validators';
 
 interface FormField {
     label: string;
     value: string;
     onChange: (val: string) => void;
-    validator?: Validator;
+    validators: Validator[];
 }
 
 interface FormDialogProps {
@@ -18,28 +18,35 @@ interface FormDialogProps {
 }
 
 function FormDialog(props: FormDialogProps) {
-    const invalid = props.fields.some(f => f.validator?.(f.value) !== null);
+    const invalid = props.fields.some(f => {
+        return firstErrorMessage(f.value, f.validators) !== null;
+    });
+
     return (
     <Dialog open={props.open}>
         <DialogTitle>
             {props.title}
         </DialogTitle>
         <DialogContent>
-            {props.fields.map(f => (
+            {props.fields.map(f => {
+                const errorMsg = firstErrorMessage(f.value, f.validators);
+
+                return (
                 <TextField
                     key={f.label}
                     type={'text'}
                     label={f.label}
                     value={f.value}
                     onChange={(event) => { f.onChange(event.target.value); }}
-                    helperText={f.validator?.(f.value)}
-                    error={f.validator?.(f.value) !== null}
+                    helperText={errorMsg}
+                    error={errorMsg !== null}
                     required
                     autoFocus
                     margin="dense"
-              />
+                />
+                )
 
-            ))}
+            })}
         </DialogContent>
         <DialogActions>
             <Button onClick={props.onCancel}>Abbrechen</Button>

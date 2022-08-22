@@ -1,5 +1,5 @@
 import React, { useEffect, createContext, Dispatch, useReducer } from 'react';
-import { doc, collection, onSnapshot, addDoc } from 'firebase/firestore';
+import { doc, collection, onSnapshot, addDoc, deleteDoc } from 'firebase/firestore';
 
 import { db } from './Firebase';
 
@@ -39,15 +39,25 @@ const reducer = (state: State, action: Action) : State => {
 
 //TODO: interface per async action type
 interface AsyncAction {
-    type: 'add_table';
+    type: 'add_table' | 'delete_table';
     tableName?: string;
+    tableId?: string;
 }
 //TODO: support normal Actions to and proxy them to the normal reducer
 const asyncReducer = async (dispatch: Dispatch<Action>, state: State, action: AsyncAction) => {
     switch (action.type) {
-    case 'add_table':
+    case 'add_table': {
         const tableRef = collection(db, "club", state.id, "tables");
         await addDoc(tableRef, { name: action.tableName!  });
+        break;
+    }
+    case 'delete_table': {
+        const tableRef = doc(db, "club", state.id, "tables", action.tableId!);
+        await deleteDoc(tableRef);
+        break;
+    }
+    default:
+        throw Error(`Unknown action type: ${action.type}`);
     }
 };
 
