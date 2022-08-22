@@ -1,13 +1,14 @@
 import { CssBaseline, ThemeProvider, createTheme, } from '@mui/material';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import { Store } from './store/Store';
+import ErrorPage from './views/ErrorPage';
 import DisciplineSelect from './views/DisciplineSelect';
 import Game from './views/Game';
 import Game14 from './views/Game14';
 import Tables from './views/Tables';
 import Club from './views/Club';
-import ErrorPage from './views/ErrorPage';
-import { Store } from './store/Store';
+import MatchDays from './views/MatchDays';
 
 const darkTheme = createTheme({
   palette: {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/game14" element={<Game14/>} />
             {isAdmin ? <Route path="/club" element={<Club/>} /> : null}
             {isAdmin ? <Route path="/tables" element={<Tables/>} /> : null}
+            {isAdmin ? <Route path="/matchdays" element={<MatchDays/>} /> : null}
             <Route path="*" element={<ErrorPage/>} />
           </Routes>
         </Store>

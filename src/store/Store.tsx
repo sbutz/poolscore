@@ -8,16 +8,98 @@ interface Pooltable {
     name: string;
 }
 
+interface Match {
+    id: string;
+    players: string[];
+    guests: string[];
+    team: boolean;
+    discipline: '8-Ball' | '9-Ball' | '10-Ball' | '14/1 endlos';
+    firstTo: number;
+    maxRuns?: number;
+    winner: 'home' | 'guest';
+    points: {
+        home: number;
+        guest: number;
+    }
+    pocketPoints: {
+        home: number;
+        guest: number;
+    }
+    runs?: {
+        home: number;
+        guest: number;
+    }
+    highest_run?: {
+        home: number;
+        guest: number;
+    }
+}
+
+interface MatchDay {
+    id: string;
+    startTime: Date;
+    endTime: Date;
+    home: string;
+    guest: string;
+    winner: 'home' | 'guest';
+    points: {
+        home: number;
+        guest: number;
+    }
+    pocketPoints: {
+        home: number;
+        guest: number;
+    }
+    matches: Match[];
+}
+
 interface State {
     id: string;
     name: string;
     tables: Pooltable[];
+    matchdays: MatchDay[];
 }
 const initialState = {
     //TODO: derive club id from login
     id: 'bc73',
     name: '',
     tables: [],
+    matchdays: [
+        {
+            id: "1",
+            startTime: new Date("2022-08-01 13:00"),
+            endTime: new Date("2022-08-01 17:00"),
+            home: "BC73 Pfeffenhausen 2",
+            guest: "BC Ingoldstadt 1",
+            winner: 'guest',
+            points: {
+                home: 4,
+                guest: 6,
+            },
+            pocketPoints: {
+                home: 26,
+                guest: 29,
+            },
+            matches: [],
+        },
+        {
+            id: "2",
+            startTime: new Date("2022-07-22 13:00"),
+            endTime: new Date("2022-08-01 17:00"),
+            home: "BC73 Pfeffenhausen 2",
+            guest: "BSV Paffenhofen 2",
+            winner: 'home',
+            points: {
+                home: 7,
+                guest: 3,
+            },
+            pocketPoints: {
+                home: 35,
+                guest: 19,
+            },
+            matches: [],
+        },
+    ],
 } as State;
 
 //TODO: different interface per action type

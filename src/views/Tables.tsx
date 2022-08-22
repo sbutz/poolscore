@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
-import { Button, Paper, Stack, Box, List, ListItem, Typography } from '@mui/material';
-import { Add, Delete } from '@mui/icons-material';
+import { Button, Stack, Box, Typography, CardActions, Card, CardContent } from '@mui/material';
+import { Add } from '@mui/icons-material';
 
 import Layout from '../components/Layout';
 import { Context } from '../store/Store';
@@ -35,32 +35,27 @@ function Tables() {
                     Neuer Tisch
                 </Button>
             </Box>
-            <List>
-                {state.tables.length === 0 ?
-                    <Typography>
-                        Du hast noch keine Tische angelegt.
-                    </Typography> : null }
-                {state.tables.map((row) => (
-                    <ListItem
-                        key={row.id}
-                        component={Paper}
-                        sx={{py: 2, my: 2}}
-                        secondaryAction={
-                            <Button
-                                variant="contained"
-                                startIcon={<Delete />}
-                                color="error"
-                                onClick={() => {
-                                    dispatch?.({type: 'delete_table', tableId: row.id});
-                                }}
-                            >
-                                Löschen
-                            </Button>
-                        }>
-                        {row.name}
-                    </ListItem>
-                ))}
-            </List>
+            {state.tables.length === 0 ?
+                <Typography>
+                    Du hast noch keine Tische angelegt.
+                </Typography> : null }
+            {state.tables.map(t => (
+                <Card key={t.id} sx={{my: 2}}>
+                    <CardContent>
+                        <Typography variant="h6">{t.name}</Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button
+                            color="primary"
+                            onClick={() => {
+                                dispatch?.({type: 'delete_table', tableId: t.id});
+                            }}
+                        >
+                            Löschen
+                        </Button>
+                    </CardActions>
+                </Card>
+            ))}
         </Stack>
         <FormDialog
             open={open}

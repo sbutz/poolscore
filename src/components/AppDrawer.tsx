@@ -1,6 +1,6 @@
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemButton,
     ListItemText, Divider} from '@mui/material'
-import { Groups, SportsEsports, TableRestaurant } from '@mui/icons-material';
+import { CalendarMonth, Groups, SportsEsports, TableRestaurant } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 
 interface AppDrawerProps {
@@ -35,6 +35,14 @@ function AppDrawer(props: AppDrawerProps) {
                             <TableRestaurant />
                         </ListItemIcon>
                         <ListItemText primary={'Tische'} />
+                    </ListItemButton>
+                </ListItem>,
+                <ListItem key={'matchdays'} disablePadding>
+                    <ListItemButton component={Link} to={"/matchdays"}>
+                        <ListItemIcon>
+                            <CalendarMonth />
+                        </ListItemIcon>
+                        <ListItemText primary={'Spieltage'} />
                     </ListItemButton>
                 </ListItem>,
                 <Divider key='admin-divider'/>] : null}
