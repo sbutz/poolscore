@@ -1,40 +1,19 @@
-import { useState, useEffect } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { useContext } from 'react';
 import { TableContainer, Table, TableBody, TableRow, TableCell,
     } from '@mui/material';
 
 import Layout from './Layout';
-import { db } from './Firebase';
-
-interface Pooltable {
-    id: string,
-    name: string,
-}
+import { Context } from './Store';
 
 function Tables() {
-    const [tables, setTables] = useState<Pooltable[]>([]);
-
-    useEffect(() => {
-        const tableRef = collection(db, "table");
-        return onSnapshot(tableRef, (snapshot) => {
-            const tmp : Pooltable[] = []
-            snapshot.forEach((doc) => {
-                tmp.push({
-                    id: doc.id,
-                    name: doc.data().name,
-                })
-                console.log(doc.data());
-            });
-            setTables(tmp);
-        });
-    }, []);
+    const state = useContext(Context)[0];
 
     return (
     <Layout>
         <TableContainer>
             <Table>
                 <TableBody>
-                    {tables.map((row) => (
+                    {state.tables.map((row) => (
                         <TableRow key={row.id}>
                             <TableCell>{row.name}</TableCell>
                         </TableRow>
