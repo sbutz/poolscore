@@ -16,7 +16,6 @@ const initialState : State = {
 };
 
 interface Action {
-    //TODO: fixed strings
     type: 'set_tables';
     tables: Pooltable[],
 }
