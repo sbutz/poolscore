@@ -1,6 +1,6 @@
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemButton,
     ListItemText, Divider} from '@mui/material'
-import { SportsEsports, TableRestaurant } from '@mui/icons-material';
+import { Groups, SportsEsports, TableRestaurant } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 
 interface AppDrawerProps {
@@ -21,6 +21,14 @@ function AppDrawer(props: AppDrawerProps) {
     >
         <List>
             {isAdmin ?[
+                <ListItem key={'club'} disablePadding>
+                    <ListItemButton component={Link} to={"/club"}>
+                        <ListItemIcon>
+                            <Groups />
+                        </ListItemIcon>
+                        <ListItemText primary={'Verein'} />
+                    </ListItemButton>
+                </ListItem>,
                 <ListItem key={'tables'} disablePadding>
                     <ListItemButton component={Link} to={"/tables"}>
                         <ListItemIcon>
