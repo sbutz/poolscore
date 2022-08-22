@@ -1,5 +1,5 @@
 import React, { useEffect, createContext, Dispatch, useReducer } from 'react';
-import { doc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, collection, onSnapshot, addDoc } from 'firebase/firestore';
 
 import { db } from './Firebase';
 
@@ -9,17 +9,20 @@ interface Pooltable {
 }
 
 interface State {
+    id: string;
     name: string;
     tables: Pooltable[];
 }
 const initialState = {
+    //TODO: derive club id from login
+    id: 'bc73',
     name: '',
     tables: [],
 } as State;
 
 //TODO: different interface per action type
 interface Action {
-    type: 'set_name' | 'set_tables' | 'add_table';
+    type: 'set_name' | 'set_tables';
     name?: string;
     tables?: Pooltable[],
 }
@@ -29,14 +32,28 @@ const reducer = (state: State, action: Action) : State => {
         return {...state, name: action.name!};
     case 'set_tables':
         return {...state, tables: action.tables!};
-    case 'add_table':
-        return state;
     default:
         throw Error(`Unknown action type: ${action.type}`);
   }
 };
 
-const Context = createContext<[State,Dispatch<Action>?]>([initialState]);
+//TODO: interface per async action type
+interface AsyncAction {
+    type: 'add_table';
+    tableName?: string;
+}
+//TODO: support normal Actions to and proxy them to the normal reducer
+const asyncReducer = async (dispatch: Dispatch<Action>, state: State, action: AsyncAction) => {
+    switch (action.type) {
+    case 'add_table':
+        const tableRef = collection(db, "club", state.id, "tables");
+        await addDoc(tableRef, { name: action.tableName!  });
+    }
+};
+
+
+type AsyncDispatch<A> = (value: A) => Promise<void>
+const Context = createContext<[State,AsyncDispatch<AsyncAction>?]>([initialState]);
 
 interface StoreProps {
     children: React.ReactNode;
@@ -44,11 +61,12 @@ interface StoreProps {
 function Store({children} : StoreProps) {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const clubId = "mcRKaUvRToWEsJXs7O6k";
+    const asyncDispatch = async (a: AsyncAction) => {
+        asyncReducer(dispatch, state, a);
+    };
 
     useEffect(() => {
-        //TODO: derive club id from login
-        const clubRef = doc(db, "club", clubId);
+        const clubRef = doc(db, "club", state.id);
         return onSnapshot(clubRef, (snapshot) => {
             if (snapshot.exists())
                 dispatch({
@@ -56,11 +74,10 @@ function Store({children} : StoreProps) {
                     name: snapshot.data().name,
                 });
         });
-    }, []);
+    }, [state.id]);
 
     useEffect(() => {
-        //TODO: derive club id from login
-        const tableRef = collection(db, "club", clubId, "tables");
+        const tableRef = collection(db, "club", state.id, "tables");
         return onSnapshot(tableRef, (snapshot) => {
             const tmp = [] as Pooltable[];
             snapshot.forEach((doc) => {
@@ -71,10 +88,10 @@ function Store({children} : StoreProps) {
                 tables: tmp.sort((a, b) => a.name.localeCompare(b.name)),
             });
         });
-    }, []);
+    }, [state.id]);
 
     return (
-        <Context.Provider value={[state, dispatch]}>
+        <Context.Provider value={[state, asyncDispatch]}>
             {children}
         </Context.Provider>
     );

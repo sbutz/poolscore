@@ -5,13 +5,14 @@ import { TableContainer, Table, TableBody, TableRow, TableCell, Button, TableHea
 import Layout from '../components/Layout';
 import { Context } from '../store/Store';
 import FormDialog from '../components/FormDialog';
+import { NotEmptyValidator } from '../util/Validators';
 
 function Tables() {
-    const state = useContext(Context)[0];
+    const [state, dispatch] = useContext(Context);
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const fields = [
-        { label: 'Name', value: name, onChange: setName }
+        { label: 'Name', value: name, onChange: setName, validator: NotEmptyValidator },
     ];
 
     return (
@@ -51,8 +52,13 @@ function Tables() {
             fields={fields}
             onCancel={() => { setOpen(false); }}
             onSave={() => {
-                setOpen(false);
-                setName("");
+                dispatch?.({
+                    type: 'add_table',
+                    tableName: name,
+                }).finally(() => {
+                    setOpen(false);
+                    setName("");
+                });
             }}
         />
     </Layout>
