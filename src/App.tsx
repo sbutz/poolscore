@@ -1,12 +1,12 @@
 import { CssBaseline, ThemeProvider, createTheme, } from '@mui/material';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import DisciplineSelect from './DisciplineSelect';
-import Game from './Game';
-import Game14 from './Game14';
-import Tables from './Tables';
-import ErrorPage from './ErrorPage';
-import { Store } from './Store';
+import DisciplineSelect from './views/DisciplineSelect';
+import Game from './views/Game';
+import Game14 from './views/Game14';
+import Tables from './views/Tables';
+import ErrorPage from './views/ErrorPage';
+import { Store } from './store/Store';
 
 const darkTheme = createTheme({
   palette: {

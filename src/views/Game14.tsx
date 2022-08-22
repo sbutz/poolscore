@@ -2,10 +2,10 @@ import { useReducer } from 'react';
 import { Button, Grid, Stack, Typography, } from '@mui/material'
 import { Undo, } from '@mui/icons-material';
 
-import { reducer, initialState } from './GameState14';
-import Layout from './Layout';
-import { useCallbackPrompt } from './useCallbackPrompt';
-import AlertDialog from './AlertDialog';
+import { reducer, initialState } from '../store/GameState14';
+import Layout from '../components/Layout';
+import { useCallbackPrompt } from '../util/useCallbackPrompt';
+import AlertDialog from '../components/AlertDialog';
 
 function range(start : number, end : number) {
     const a = []
@@ -188,7 +188,7 @@ function Game() {
     ];
 
     return (
-    <Layout fullwidth toolbar={toolbar}>
+    <Layout title="14/1 endlos" fullwidth toolbar={toolbar}>
         <Stack height="100%" alignItems="center" justifyContent="space-around">
             <Grid container justifyContent="space-evenly" mt="1em">
                 <Grid item xs={5} textAlign="center">

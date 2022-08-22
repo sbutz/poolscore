@@ -2,10 +2,10 @@ import { useReducer } from 'react';
 import { Button, Grid, Stack, Typography, } from '@mui/material'
 import { Add, Remove, Undo, } from '@mui/icons-material';
 
-import { reducer, initialState } from './GameState';
-import Layout from './Layout';
-import { useCallbackPrompt } from './useCallbackPrompt';
-import AlertDialog from './AlertDialog';
+import { reducer, initialState } from '../store/GameState';
+import Layout from '../components/Layout';
+import { useCallbackPrompt } from '../util/useCallbackPrompt';
+import AlertDialog from '../components/AlertDialog';
 
 const scoreSx = {
     fontSize: "60vh",
@@ -50,7 +50,7 @@ function Game() {
     ];
 
     return (
-    <Layout fullwidth toolbar={toolbar}>
+    <Layout title="8/9/10-Ball" fullwidth toolbar={toolbar}>
         <Stack height="100%" alignItems="center" justifyContent="space-around">
             <Grid container justifyContent="space-evenly" mt="1em">
                 <Grid item xs={5} textAlign="center">

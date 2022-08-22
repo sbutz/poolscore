@@ -1,7 +1,7 @@
 import { Button, Grid, } from '@mui/material';
 import { Link } from "react-router-dom";
 
-import Layout from './Layout';
+import Layout from '../components/Layout';
 
 const styles = {
     fontSize: "5rem",
@@ -9,7 +9,7 @@ const styles = {
 
 function DisciplineSelect() {
     return (
-    <Layout fullwidth>
+    <Layout title="Freies Spiel" fullwidth>
         <Grid container alignItems="center" spacing={2} justifyContent="space-evenly" height="100vh">
             <Grid item>
                 <Button variant="contained" component={Link} to={"/game"} style={styles}>

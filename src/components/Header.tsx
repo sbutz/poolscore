@@ -2,6 +2,7 @@ import {AppBar, Toolbar, IconButton, Typography, } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 interface HeaderProps {
+    title: string;
     children?: React.ReactNode[];
     onIconClick?: () => void;
 }
@@ -24,7 +25,7 @@ function Header(props: HeaderProps) {
                 <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    BC 73 Pfeffenhausen
+                    {props.title}
                 </Typography>
                 {props.children}
             </Toolbar>

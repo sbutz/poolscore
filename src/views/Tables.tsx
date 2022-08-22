@@ -2,9 +2,9 @@ import { useContext, useState } from 'react';
 import { TableContainer, Table, TableBody, TableRow, TableCell, Button, TableHead, Paper, Stack, Box,
     } from '@mui/material';
 
-import Layout from './Layout';
-import { Context } from './Store';
-import FormDialog from './FormDialog';
+import Layout from '../components/Layout';
+import { Context } from '../store/Store';
+import FormDialog from '../components/FormDialog';
 
 function Tables() {
     const state = useContext(Context)[0];
@@ -15,7 +15,7 @@ function Tables() {
     ];
 
     return (
-    <Layout>
+    <Layout title="Tische">
         <Stack spacing={3}>
             <Box>
                 <Button variant="contained" onClick={() => {setOpen(true); }}>

@@ -5,6 +5,7 @@ import Header from './Header';
 import AppDrawer from './AppDrawer';
 
 interface LayoutProps {
+    title: string;
     children: React.ReactNode;
     fullwidth?: boolean;
     toolbar?: React.ReactNode[];
@@ -15,6 +16,7 @@ function Layout(props : LayoutProps) {
     <Stack height="100vh">
         <Box sx={{flexGrow: 0, flexShrink: 1, flexBasis: "auto"}}>
             <Header
+                title={props.title}
                 onIconClick={() => { setOpen(!open); }}
             >
                 {props.toolbar}

@@ -1,5 +1,5 @@
 import React, { useEffect, createContext, Dispatch, useReducer } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { doc, collection, onSnapshot } from 'firebase/firestore';
 
 import { db } from './Firebase';
 
@@ -9,20 +9,28 @@ interface Pooltable {
 }
 
 interface State {
+    name: string;
     tables: Pooltable[];
 }
-const initialState : State = {
+const initialState = {
+    name: '',
     tables: [],
-};
+} as State;
 
+//TODO: different interface per action type
 interface Action {
-    type: 'set_tables';
-    tables: Pooltable[],
+    type: 'set_name' | 'set_tables' | 'add_table';
+    name?: string;
+    tables?: Pooltable[],
 }
 const reducer = (state: State, action: Action) : State => {
   switch (action.type) {
+    case 'set_name':
+        return {...state, name: action.name!};
     case 'set_tables':
-        return {...state, tables: action.tables};
+        return {...state, tables: action.tables!};
+    case 'add_table':
+        return state;
     default:
         throw Error(`Unknown action type: ${action.type}`);
   }
@@ -36,8 +44,23 @@ interface StoreProps {
 function Store({children} : StoreProps) {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const clubId = "mcRKaUvRToWEsJXs7O6k";
+
     useEffect(() => {
-        const tableRef = collection(db, "table");
+        //TODO: derive club id from login
+        const clubRef = doc(db, "club", clubId);
+        return onSnapshot(clubRef, (snapshot) => {
+            if (snapshot.exists())
+                dispatch({
+                    type: 'set_name',
+                    name: snapshot.data().name,
+                });
+        });
+    }, []);
+
+    useEffect(() => {
+        //TODO: derive club id from login
+        const tableRef = collection(db, "club", clubId, "tables");
         return onSnapshot(tableRef, (snapshot) => {
             const tmp = [] as Pooltable[];
             snapshot.forEach((doc) => {
