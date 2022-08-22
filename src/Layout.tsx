@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Stack, Box } from '@mui/material'
+import { Stack, Box, Container } from '@mui/material'
 
 import Header from './Header';
 import AppDrawer from './AppDrawer';
 
 interface LayoutProps {
     children: React.ReactNode;
+    fullwidth?: boolean;
     toolbar?: React.ReactNode[];
 }
 function Layout(props : LayoutProps) {
@@ -24,7 +25,11 @@ function Layout(props : LayoutProps) {
             />
         </Box>
         <Box sx={{flexGrow: 1, flexShrink: 1, flexBasis: "auto"}}>
-            {props.children}
+            {props.fullwidth ?  props.children :
+                <Container maxWidth="md" sx={{pt: 5}}>
+                    {props.children}
+                </Container>
+            }
         </Box>
     </Stack>
     );

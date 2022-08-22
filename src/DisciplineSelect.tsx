@@ -9,7 +9,7 @@ const styles = {
 
 function DisciplineSelect() {
     return (
-    <Layout>
+    <Layout fullwidth>
         <Grid container alignItems="center" spacing={2} justifyContent="space-evenly" height="100vh">
             <Grid item>
                 <Button variant="contained" component={Link} to={"/game"} style={styles}>

@@ -188,7 +188,7 @@ function Game() {
     ];
 
     return (
-    <Layout toolbar={toolbar}>
+    <Layout fullwidth toolbar={toolbar}>
         <Stack height="100%" alignItems="center" justifyContent="space-around">
             <Grid container justifyContent="space-evenly" mt="1em">
                 <Grid item xs={5} textAlign="center">
