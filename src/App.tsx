@@ -1,5 +1,7 @@
 import { CssBaseline, ThemeProvider, createTheme, } from '@mui/material';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { Store } from './store/Store';
 import ErrorPage from './views/ErrorPage';
@@ -16,26 +18,33 @@ const darkTheme = createTheme({
   },
 });
 
-function App() {
+function Router() {
   const isAdmin = true;
+
+  return (
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Routes>
+          <Route path="/" element={<DisciplineSelect/>} />
+          <Route path="/game" element={<Game/>} />
+          <Route path="/game14" element={<Game14/>} />
+          {isAdmin ? <Route path="/club" element={<Club/>} /> : null}
+          {isAdmin ? <Route path="/tables" element={<Tables/>} /> : null}
+          {isAdmin ? <Route path="/matchdays" element={<MatchDays/>} /> : null}
+          <Route path="*" element={<ErrorPage/>} />
+        </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default function App() {
   return (
     <ThemeProvider theme={darkTheme}>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Store>
-          <Routes>
-            <Route path="/" element={<DisciplineSelect/>} />
-            <Route path="/game" element={<Game/>} />
-            <Route path="/game14" element={<Game14/>} />
-            {isAdmin ? <Route path="/club" element={<Club/>} /> : null}
-            {isAdmin ? <Route path="/tables" element={<Tables/>} /> : null}
-            {isAdmin ? <Route path="/matchdays" element={<MatchDays/>} /> : null}
-            <Route path="*" element={<ErrorPage/>} />
-          </Routes>
+          <Router />
         </Store>
-      </BrowserRouter>
-      <CssBaseline />
+        <CssBaseline />
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }
-
-export default App;
