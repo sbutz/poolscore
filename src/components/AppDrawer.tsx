@@ -65,7 +65,7 @@ function AppDrawer(props: AppDrawerProps) {
         onClose={props.onClose}
         PaperProps={{
             sx: {
-                top: (theme) => theme.spacing(8),
+                pt: (theme) => theme.spacing(8),
             }
         }}
     >
