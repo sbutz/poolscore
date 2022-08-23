@@ -1,4 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, useTheme } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { Validator, firstErrorMessage } from '../util/Validators';
 
@@ -37,13 +38,16 @@ interface FormDialogProps {
     onSave: () => void;
 }
 
-function FormDialog(props: FormDialogProps) {
+export default function FormDialog(props: FormDialogProps) {
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
     const invalid = props.fields?.some(f => {
         return firstErrorMessage(f.value, f.validators) !== null;
     });
 
     return (
-    <Dialog open={props.open}>
+    <Dialog open={props.open} fullScreen={fullScreen}>
         <DialogTitle>
             {props.title}
         </DialogTitle>
@@ -60,5 +64,3 @@ function FormDialog(props: FormDialogProps) {
     </Dialog>
     );
 }
-
-export default FormDialog;
