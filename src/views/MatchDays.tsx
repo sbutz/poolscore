@@ -27,11 +27,7 @@ export default function MatchDays() {
                 <Card sx={{my: 2}} key={m.id}>
                     <CardContent>
                         <Typography variant="subtitle1" color="text.secondary">
-                            {m.startTime.toLocaleDateString("de-DE", {
-                                year: "numeric",
-                                month: "2-digit",
-                                day: "2-digit",
-                            })}
+                            {dayjs(m.startTime).format("DD.MM.YYYY")}
                         </Typography>
                         <Stack direction="row" spacing={5} alignItems="center">
                             <Typography variant="h6">
