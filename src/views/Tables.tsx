@@ -5,7 +5,8 @@ import { Add } from '@mui/icons-material';
 import Layout from '../components/Layout';
 import { Context } from '../store/Store';
 import FormDialog from '../components/FormDialog';
-import { NotEmptyValidator, NotInValidator } from '../util/Validators';
+import FormField from '../components/FormField';
+import { firstErrorMessage, NotEmptyValidator, NotInValidator } from '../util/Validators';
 
 function Tables() {
     const [state, dispatch] = useContext(Context);
@@ -22,6 +23,7 @@ function Tables() {
             ],
         },
     ];
+    const invalid = fields.some(f => firstErrorMessage(f.value, f.validators) !== null);
 
     return (
     <Layout title="Tische">
@@ -60,8 +62,8 @@ function Tables() {
         <FormDialog
             open={open}
             title="Neuer Tisch"
-            fields={fields}
             onCancel={() => { setOpen(false); }}
+            disableSave={invalid}
             onSave={() => {
                 dispatch?.({
                     type: 'add_table',
@@ -71,7 +73,9 @@ function Tables() {
                     setName("");
                 });
             }}
-        />
+        >
+            {fields.map(f => <FormField key={f.label} {...f}/>)}
+        </FormDialog>
     </Layout>
     )
 }
