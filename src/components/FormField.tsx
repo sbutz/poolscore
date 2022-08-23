@@ -14,15 +14,16 @@ export default function FormField(f : FormFieldProps) {
     const errorMsg = firstErrorMessage(f.value, f.validators);
     return (
         <TextField
+            sx={{mx: 1}}
             type={f.type || 'text'}
             label={f.label}
             value={f.value}
             onChange={(event) => { f.onChange(event.target.value); }}
-            helperText={errorMsg}
+            helperText={errorMsg || " "}
             error={errorMsg !== null}
             required
+            margin="normal"
             autoFocus
-            margin="dense"
         />
     );
 }
