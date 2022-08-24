@@ -15,7 +15,7 @@ export default function FormDialog(props: FormDialogProps) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
-    <Dialog open={props.open} fullScreen={fullScreen}>
+    <Dialog open={props.open} fullScreen={fullScreen} maxWidth="md">
         <DialogTitle>
             {props.title}
         </DialogTitle>
