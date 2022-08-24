@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Box, Button, Divider, MobileStepper, Stack, Step, StepContent, StepLabel, Stepper, TextField, Typography, useTheme } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
@@ -78,14 +79,7 @@ function MatchRow(m: Match) {
 
 export default function MatchDay() {
     const theme = useTheme();
-
-    const [activeStep, setActiveStep] = useState(0);
-    const handleNext = () => {
-        setActiveStep((prevActiveStep: number) => prevActiveStep + 1);
-    };
-    const handleBack = () => {
-        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
-    };
+    const navigate = useNavigate();
 
     const matches = [
         ['14/1 endlos', false, 70],
@@ -189,16 +183,21 @@ export default function MatchDay() {
         },
     ];
 
+    const [activeStep, setActiveStep] = useState(0);
+    const handleNext = () => {
+        if (activeStep < steps.length-1)
+            setActiveStep((prevActiveStep: number) => prevActiveStep + 1);
+        else
+            navigate(-1);
+    };
+    const handleBack = () => {
+        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+    };
+
     return (
     <Box>
         {/* Mobile */}
-        <Box
-            sx={{
-                [theme.breakpoints.up('md')]: {
-                    display: 'none',
-                },
-            }}
-        >
+        <Box sx={{ [theme.breakpoints.up('md')]: { display: 'none', }}} >
             <Layout nested title={steps[activeStep].label}>
                 {steps[activeStep].content}
             </Layout>
@@ -209,10 +208,9 @@ export default function MatchDay() {
                     <Button
                         size="small"
                         onClick={handleNext}
-                        disabled={activeStep === steps.length-1}
                     >
-                        Next
-                        <KeyboardArrowRight />
+                        {activeStep < steps.length-1 ? 'Weiter' : 'Speichern'}
+                        {activeStep < steps.length-1 ? <KeyboardArrowRight/>: null}
                     </Button>
                 }
                 backButton={
@@ -222,7 +220,7 @@ export default function MatchDay() {
                         disabled={activeStep === 0}
                     >
                         <KeyboardArrowLeft />
-                        Back
+                        Zurück
                     </Button>
                 }
             />
@@ -244,6 +242,14 @@ export default function MatchDay() {
                         </Step>
                     ))}
                 </Stepper>
+                <Stack direction="row" justifyContent="end">
+                    <Button
+                        variant="contained"
+                        onClick={() => { navigate(-1); }}
+                    >
+                        Speichern
+                    </Button>
+                </Stack>
             </Layout>
         </Box>
     </Box>
