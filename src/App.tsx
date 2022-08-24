@@ -30,8 +30,8 @@ function Router() {
           <Route path="/game14" element={<Game14/>} />
           {isAdmin ? <Route path="/club" element={<Club/>} /> : null}
           {isAdmin ? <Route path="/tables" element={<Tables/>} /> : null}
-          {isAdmin ? <Route path="/matchdays" element={<MatchDays/>} /> : null}
-          {isAdmin ? <Route path="/matchday" element={<MatchDay/>} /> : null}
+          {isAdmin ? <Route path="/matchday" element={<MatchDays/>} /> : null}
+          {isAdmin ? <Route path="/matchday/:id" element={<MatchDay/>} /> : null}
           <Route path="*" element={<ErrorPage/>} />
         </Routes>
     </BrowserRouter>

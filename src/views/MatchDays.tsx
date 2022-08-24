@@ -48,7 +48,7 @@ export default function MatchDays() {
                     variant="contained"
                     startIcon={<Add />}
                     component={Link}
-                    to={"/matchday"}
+                    to={"/matchday/1"}
                 >
                     Neuer Spieltag
                 </Button>

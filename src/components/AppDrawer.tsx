@@ -37,8 +37,8 @@ function AppDrawer(props: AppDrawerProps) {
                         <ListItemText primary={'Tische'} />
                     </ListItemButton>
                 </ListItem>,
-                <ListItem key={'matchdays'} disablePadding>
-                    <ListItemButton component={Link} to={"/matchdays"}>
+                <ListItem key={'matchday'} disablePadding>
+                    <ListItemButton component={Link} to={"/matchday"}>
                         <ListItemIcon>
                             <CalendarMonth />
                         </ListItemIcon>
