@@ -3,20 +3,19 @@ import { doc, collection, onSnapshot, addDoc, deleteDoc } from 'firebase/firesto
 
 import { db } from './Firebase';
 
-interface Pooltable {
+export interface Pooltable {
     id: string;
     name: string;
 }
 
-interface Match {
+export interface Match {
     id: string;
     players: string[];
     guests: string[];
     team: boolean;
     discipline: '8-Ball' | '9-Ball' | '10-Ball' | '14/1 endlos';
     firstTo: number;
-    maxRuns?: number;
-    winner: 'home' | 'guest';
+    winner: 'home' | 'guest' | undefined;
     points: {
         home: number;
         guest: number;
@@ -35,13 +34,13 @@ interface Match {
     }
 }
 
-interface MatchDay {
+export interface MatchDay {
     id: string;
     startTime: Date;
     endTime: Date;
     home: string;
     guest: string;
-    winner: 'home' | 'guest';
+    winner: 'home' | 'guest' | undefined;
     points: {
         home: number;
         guest: number;
