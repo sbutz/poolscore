@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/poolscore/static/css/main.e6c13ad2.css",
-    "main.js": "/poolscore/static/js/main.96b01d19.js",
+    "main.js": "/poolscore/static/js/main.48d9a2ce.js",
     "static/js/787.0238cbad.chunk.js": "/poolscore/static/js/787.0238cbad.chunk.js",
     "index.html": "/poolscore/index.html",
     "main.e6c13ad2.css.map": "/poolscore/static/css/main.e6c13ad2.css.map",
-    "main.96b01d19.js.map": "/poolscore/static/js/main.96b01d19.js.map",
+    "main.48d9a2ce.js.map": "/poolscore/static/js/main.48d9a2ce.js.map",
     "787.0238cbad.chunk.js.map": "/poolscore/static/js/787.0238cbad.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.96b01d19.js"
+    "static/js/main.48d9a2ce.js"
   ]
 }
