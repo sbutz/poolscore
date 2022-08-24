@@ -47,6 +47,7 @@ function render(props: FormFieldProps) {
                     helperText={errorMsg || " "}
                     error={errorMsg !== null}
                     disabled={props.disabled}
+                    fullWidth
                 />
             );
     }

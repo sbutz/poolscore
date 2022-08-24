@@ -1,78 +1,82 @@
-import { Stack, Step, StepContent, StepLabel, Stepper, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
+import dayjs from 'dayjs';
+import { Box, Button, Divider, MobileStepper, Stack, Step, StepContent, StepLabel, Stepper, TextField, Typography, useTheme } from '@mui/material';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import { TimePicker } from '@mui/x-date-pickers';
 
 import { Match } from '../store/Store';
 import FormField from '../components/FormField';
 import Layout from '../components/Layout';
-import { TimePicker } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
 
 function MatchRow(m: Match) {
     return (
-        <Stack direction='row' alignItems="start">
-            <FormField
-                label="Disziplin"
-                value={`${m.discipline} ${m.team ? '(Doppel)' : ''}`}
-                disabled
-                sx={{maxWidth: '10rem'}}
-            />
-            {/*
-            <FormField
-                label="First To"
-                type="numeric"
-                value={m.firstTo.toString()}
-                disabled
-                sx={{width: '5.5rem'}}
-            />
-            */}
-            {/*TODO: team */}
-            <Stack direction="column">
-                <Stack direction="row" alignItems="center">
+    <Box>
+        <Divider textAlign="left">
+            <Typography variant="overline">
+                {`${m.discipline} ${m.team ? '(Doppel)' : ''}`}
+            </Typography>
+        </Divider>
+        <Stack direction={{ xs: 'column', md: 'row' }}>
+            <Stack direction="column" sx={{width: '100%'}}>
+                <Stack direction="row" alignItems="center" sx={{width: '100%'}}>
                     <FormField
                         label="Spieler (Heim)"
                         value={m.players[0]}
-                        sx={{ml: 2}}
+                        sx={{width: '100%'}}
                     />
                     <Typography>vs.</Typography>
                     <FormField
                         label="Spieler (Gast)"
                         value={m.guests[0]}
+                        sx={{mr: 2, width: '100%'}}
                     />
                 </Stack>
                 {m.team ?
-                    <Stack direction="row" alignItems="center">
-                        <FormField
-                            label="Spieler (Heim)"
-                            value={m.players[0]}
-                            sx={{ml: 2}}
-                        />
-                        <Typography>vs.</Typography>
-                        <FormField
-                            label="Spieler (Gast)"
-                            value={m.guests[0]}
-                        />
-                    </Stack> : null}
+                <Stack direction="row" alignItems="center">
+                    <FormField
+                        label="Spieler (Heim)"
+                        value={m.players[0]}
+                        sx={{width: '100%'}}
+                    />
+                    <Typography>vs.</Typography>
+                    <FormField
+                        label="Spieler (Gast)"
+                        value={m.guests[0]}
+                        sx={{mr: 2, width: '100%'}}
+                    />
+                </Stack> : null}
             </Stack>
-
             <Stack direction="row" alignItems="center">
-            <FormField
-                label="Heim"
-                type="number"
-                value={String(0)}
-                sx={{ml: 2, width: '6rem'}}
-            />
-            <Typography>:</Typography>
-            <FormField
-                label="Gast"
-                type="number"
-                value={String(0)}
-                sx={{width: '6rem'}}
-            />
+                <FormField
+                    label="Heim"
+                    type="number"
+                    value={String(0)}
+                    sx={{width: '6rem'}}
+                />
+                <Typography>:</Typography>
+                <FormField
+                    label="Gast"
+                    type="number"
+                    value={String(0)}
+                    sx={{width: '6rem'}}
+                />
             </Stack>
         </Stack>
+    </Box>
     );
 }
 
 export default function MatchDay() {
+    const theme = useTheme();
+
+    const [activeStep, setActiveStep] = useState(0);
+    const handleNext = () => {
+        setActiveStep((prevActiveStep: number) => prevActiveStep + 1);
+    };
+    const handleBack = () => {
+        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+    };
+
     const matches = [
         ['14/1 endlos', false, 70],
         ['8-Ball', false, 5],
@@ -98,75 +102,138 @@ export default function MatchDay() {
         };
     }) as Match[];
 
+    const steps=[
+        {
+            label: 'Allgemein',
+            /*TODO: add liga select -> set remaining template*/
+            content: [
+                <Stack key={'date'} direction="row" alignItems="center">
+                    <FormField
+                        label="Datum"
+                        type="date"
+                        value={"2022-08-01"}
+                    />
+                </Stack>,
+                <Stack key={'names'} direction="row" alignItems="center">
+                    <FormField
+                        label="Heimmannschaft"
+                        value={"BC73 Pfeffenhausen 2"}
+                    />
+                    <Typography>vs.</Typography>
+                    <FormField
+                        label="Gastmannschaft"
+                        value={"BC Ingolstadt 1"}
+                    />
+                </Stack>
+            ],
+        },
+        {
+            label: 'Durchgang #1',
+            content: [
+                <MatchRow key={0} {...matches[0]} />,
+                <MatchRow key={1} {...matches[1]} />,
+                <MatchRow key={2} {...matches[2]} />,
+                <MatchRow key={3} {...matches[3]} />,
+            ],
+        },
+        {
+            label: 'Durchgang #2',
+            content: [
+                <MatchRow key={4} {...matches[4]} />,
+                <MatchRow key={5} {...matches[5]} />,
+            ],
+        },
+        {
+            label: 'Durchgang #3',
+            content: [
+                <MatchRow key={6} {...matches[6]} />,
+                <MatchRow key={7} {...matches[7]} />,
+                <MatchRow key={8} {...matches[8]} />,
+                <MatchRow key={9} {...matches[9]} />,
+            ],
+        },
+        {
+            label: 'Ergebnis',
+            content: [
+                <Stack
+                    key={'result'}
+                    direction={{ xs: 'column', md: 'row' }}
+                    alignItems="center"
+                    justifyContent="space-between"
+                    spacing={3}
+                >
+                    <TimePicker
+                        label="Spielende"
+                        value={null}
+                        onChange={(newValue) => {
+                            if (dayjs(newValue).isValid())
+                                console.log(dayjs(newValue).format("HH:mm"));
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                        />
+                    <Typography variant='h6'>Endergebnis: 6 - 4</Typography>
+                </Stack>
+            ],
+        },
+    ];
+
     return (
-    <Layout nested title="Neuer Spieltag">
-        <Stepper orientation="vertical">
-            <Step active={true} completed={true}>
-                <StepLabel>Allgemein</StepLabel>
-                <StepContent>
-                    <Stack direction="row" alignItems="center">
-                        <FormField
-                            label="Datum"
-                            type="date"
-                            value={"2022-08-01"}
-                        />
-                    </Stack>
-                    <Stack direction="row" alignItems="center">
-                        <FormField
-                            label="Heimmannschaft"
-                            value={"BC73 Pfeffenhausen 2"}
-                        />
-                        <Typography>vs.</Typography>
-                        <FormField
-                            label="Gastmannschaft"
-                            value={"BC Ingolstadt 1"}
-                        />
-                    </Stack>
-                </StepContent>
-            </Step>
-            <Step active={true}>
-                <StepLabel>Durchgang #1</StepLabel>
-                <StepContent>
-                    <MatchRow {...matches[0]} />
-                    <MatchRow {...matches[1]} />
-                    <MatchRow {...matches[2]} />
-                    <MatchRow {...matches[3]} />
-                </StepContent>
-            </Step>
-            <Step active={true}>
-                <StepLabel>Durchgang #2</StepLabel>
-                <StepContent>
-                    <MatchRow {...matches[4]} />
-                    <MatchRow {...matches[5]} />
-                </StepContent>
-            </Step>
-            <Step active={true}>
-                <StepLabel>Durchgang #3</StepLabel>
-                <StepContent>
-                    <MatchRow {...matches[6]} />
-                    <MatchRow {...matches[7]} />
-                    <MatchRow {...matches[8]} />
-                    <MatchRow {...matches[9]} />
-                </StepContent>
-            </Step>
-            <Step active={true}>
-                <StepLabel>Ergebnis</StepLabel>
-                <StepContent>
-                    <Stack direction="row" alignItems="center" justifyContent="space-between">
-                        <TimePicker
-                            label="Spielende"
-                            value={null}
-                            onChange={(newValue) => {
-                                if (dayjs(newValue).isValid())
-                                    console.log(dayjs(newValue).format("HH:mm"));
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                            />
-                        <Typography variant='h6'>Endergebnis: 6 - 4</Typography>
-                    </Stack>
-                </StepContent>
-            </Step>
-        </Stepper>
-    </Layout>
+    <Box>
+        {/* Mobile */}
+        <Box
+            sx={{
+                [theme.breakpoints.up('md')]: {
+                    display: 'none',
+                },
+            }}
+        >
+            <Layout nested title={steps[activeStep].label}>
+                {steps[activeStep].content}
+            </Layout>
+            <MobileStepper
+                steps={steps.length}
+                activeStep={activeStep}
+                nextButton={
+                    <Button
+                        size="small"
+                        onClick={handleNext}
+                        disabled={activeStep === steps.length-1}
+                    >
+                        Next
+                        <KeyboardArrowRight />
+                    </Button>
+                }
+                backButton={
+                    <Button
+                        size="small"
+                        onClick={handleBack}
+                        disabled={activeStep === 0}
+                    >
+                        <KeyboardArrowLeft />
+                        Back
+                    </Button>
+                }
+            />
+        </Box>
+        {/* Desktop */}
+        <Box
+            sx={{
+                [theme.breakpoints.down('md')]: {
+                    display: 'none',
+                },
+            }}
+        >
+            <Layout nested title="Neuer Spieltag">
+                <Stepper orientation="vertical">
+                    {steps.map((s,i) => (
+                        <Step key={i} active={true}>
+                            <StepLabel>{s.label}</StepLabel>
+                            <StepContent>{s.content}</StepContent>
+                        </Step>
+                    ))}
+                </Stepper>
+            </Layout>
+        </Box>
+    </Box>
     )
 }
