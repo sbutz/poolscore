@@ -191,7 +191,10 @@ export default function MatchDay() {
             navigate(-1);
     };
     const handleBack = () => {
-        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+        if (activeStep > 0)
+            setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+        else
+            navigate(-1);
     };
 
     return (
@@ -217,10 +220,9 @@ export default function MatchDay() {
                     <Button
                         size="small"
                         onClick={handleBack}
-                        disabled={activeStep === 0}
                     >
-                        <KeyboardArrowLeft />
-                        Zurück
+                        {activeStep > 0 ? 'Zurück' : 'Abbrechen'}
+                        {activeStep > 0 ? <KeyboardArrowLeft/>: null}
                     </Button>
                 }
             />
@@ -253,5 +255,5 @@ export default function MatchDay() {
             </Layout>
         </Box>
     </Box>
-    )
+    );
 }
