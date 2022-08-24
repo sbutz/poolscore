@@ -4,9 +4,9 @@ import { Add, Delete, Edit, Tv } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
 import Layout from '../components/Layout';
-import { Context } from '../store/Store';
+import { Context, generateId } from '../store/Store';
 import { Matchday } from '../store/MatchdayState';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function MatchdayCard(m: Matchday) {
     return (
@@ -40,6 +40,7 @@ function MatchdayCard(m: Matchday) {
 
 export default function Matchdays() {
     const state = useContext(Context)[0];
+    const navigate = useNavigate();
 
     return (
     <Layout title="Spieltage">
@@ -48,8 +49,9 @@ export default function Matchdays() {
                 <Button
                     variant="contained"
                     startIcon={<Add />}
-                    component={Link}
-                    to={"/matchday/1"}
+                    onClick={() => {
+                        navigate(`/matchday/${generateId()}`)
+                    }}
                 >
                     Neuer Spieltag
                 </Button>

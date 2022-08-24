@@ -98,14 +98,13 @@ const asyncReducer = async (dispatch: Dispatch<Action>, state: State, action: As
     }
 };
 
-
 type AsyncDispatch<A> = (value: A) => Promise<void>
-const Context = createContext<[State,AsyncDispatch<AsyncAction>?]>([initialState]);
+export const Context = createContext<[State,AsyncDispatch<AsyncAction>?]>([initialState]);
 
 interface StoreProps {
     children: React.ReactNode;
 }
-function Store({children} : StoreProps) {
+export function Store({children} : StoreProps) {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const asyncDispatch = async (a: AsyncAction) => {
@@ -144,4 +143,6 @@ function Store({children} : StoreProps) {
     );
 }
 
-export { Store, Context };
+export function generateId() {
+    return doc(collection(db, "club")).id;
+}
