@@ -77,7 +77,7 @@ function MatchRow(m: Match) {
     );
 }
 
-export default function MatchDay() {
+export default function Matchday() {
     const theme = useTheme();
     const navigate = useNavigate();
 

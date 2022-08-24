@@ -10,8 +10,8 @@ import Game from './views/Game';
 import Game14 from './views/Game14';
 import Tables from './views/Tables';
 import Club from './views/Club';
-import MatchDays from './views/MatchDays';
-import MatchDay from './views/MatchDay';
+import Matchdays from './views/Matchdays';
+import Matchday from './views/Matchday';
 
 const darkTheme = createTheme({
   palette: {
@@ -30,8 +30,8 @@ function Router() {
           <Route path="/game14" element={<Game14/>} />
           {isAdmin ? <Route path="/club" element={<Club/>} /> : null}
           {isAdmin ? <Route path="/tables" element={<Tables/>} /> : null}
-          {isAdmin ? <Route path="/matchday" element={<MatchDays/>} /> : null}
-          {isAdmin ? <Route path="/matchday/:id" element={<MatchDay/>} /> : null}
+          {isAdmin ? <Route path="/matchday" element={<Matchdays/>} /> : null}
+          {isAdmin ? <Route path="/matchday/:id" element={<Matchday/>} /> : null}
           <Route path="*" element={<ErrorPage/>} />
         </Routes>
     </BrowserRouter>

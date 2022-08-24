@@ -4,10 +4,10 @@ import { Add, Delete, Edit, Tv } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
 import Layout from '../components/Layout';
-import { Context, MatchDay } from '../store/Store';
+import { Context, Matchday } from '../store/Store';
 import { Link } from 'react-router-dom';
 
-function MatchDayCard(m: MatchDay) {
+function MatchdayCard(m: Matchday) {
     return (
         <Card sx={{my: 2}}>
             <CardContent>
@@ -37,7 +37,7 @@ function MatchDayCard(m: MatchDay) {
     );
 }
 
-export default function MatchDays() {
+export default function Matchdays() {
     const state = useContext(Context)[0];
 
     return (
@@ -57,7 +57,7 @@ export default function MatchDays() {
                 <Typography>
                     Du hast noch keine Spieltage angelegt.
                 </Typography> : null }
-            {state.matchdays.map(m => <MatchDayCard key={m.id} {...m} />)}
+            {state.matchdays.map(m => <MatchdayCard key={m.id} {...m} />)}
         </Stack>
     </Layout>
     )

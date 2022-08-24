@@ -36,7 +36,7 @@ export interface Match {
     };
 }
 
-export interface MatchDay {
+export interface Matchday {
     id: string;
     startTime: Date;
     endTime: Date;
@@ -58,7 +58,7 @@ interface State {
     id: string;
     name: string;
     tables: Pooltable[];
-    matchdays: MatchDay[];
+    matchdays: Matchday[];
 }
 const initialState = {
     //TODO: derive club id from login
