@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 
 function MatchRow(m: Match) {
     return (
-        <Stack direction={{xs: 'column', md: 'row'}} alignItems="start">
+        <Stack direction='row' alignItems="start">
             <FormField
                 label="Disziplin"
                 value={`${m.discipline} ${m.team ? '(Doppel)' : ''}`}
@@ -99,7 +99,7 @@ export default function MatchDay() {
     }) as Match[];
 
     return (
-    <Layout title="Neuer Spieltag">
+    <Layout nested title="Neuer Spieltag">
         <Stepper orientation="vertical">
             <Step active={true} completed={true}>
                 <StepLabel>Allgemein</StepLabel>
