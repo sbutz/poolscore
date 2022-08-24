@@ -1,12 +1,12 @@
 import { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 import { Box, Button, Card, CardActions, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { Add, Delete, Edit, Tv } from '@mui/icons-material';
-import dayjs from 'dayjs';
 
 import Layout from '../components/Layout';
 import { Context, generateId } from '../store/Store';
 import { Matchday } from '../store/MatchdayState';
-import { useNavigate } from 'react-router-dom';
 
 function MatchdayCard(m: Matchday) {
     return (
@@ -31,7 +31,14 @@ function MatchdayCard(m: Matchday) {
             </CardContent>
             <CardActions>
                 <Button color="primary" startIcon={<Tv/>}>Live-Score</Button>
-                <Button color="primary" startIcon={<Edit/>}>Bearbeiten</Button>
+                <Button
+                    component={Link}
+                    to={`/matchday/${m.id}`}
+                    color="primary"
+                    startIcon={<Edit/>}
+                >
+                    Bearbeiten
+                </Button>
                 <Button color="primary" startIcon={<Delete/>}>Löschen</Button>
             </CardActions>
         </Card>
