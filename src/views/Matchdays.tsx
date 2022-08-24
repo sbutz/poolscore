@@ -4,7 +4,8 @@ import { Add, Delete, Edit, Tv } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
 import Layout from '../components/Layout';
-import { Context, Matchday } from '../store/Store';
+import { Context } from '../store/Store';
+import { Matchday } from '../store/MatchdayState';
 import { Link } from 'react-router-dom';
 
 function MatchdayCard(m: Matchday) {

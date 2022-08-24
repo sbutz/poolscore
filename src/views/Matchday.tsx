@@ -5,7 +5,7 @@ import { Box, Button, Divider, MobileStepper, Stack, Step, StepContent, StepLabe
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { TimePicker } from '@mui/x-date-pickers';
 
-import { Match } from '../store/Store';
+import { Match } from '../store/MatchdayState';
 import FormField from '../components/FormField';
 import Layout from '../components/Layout';
 
