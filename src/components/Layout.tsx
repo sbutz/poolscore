@@ -28,7 +28,7 @@ function Layout(props : LayoutProps) {
         </Box>
         <Box sx={{flexGrow: 1, flexShrink: 1, flexBasis: "auto"}}>
             {props.fullwidth ?  props.children :
-                <Container maxWidth="md" sx={{pt: 5}}>
+                <Container maxWidth="md" sx={{py: 5}}>
                     {props.children}
                 </Container>
             }
