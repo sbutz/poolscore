@@ -13,11 +13,11 @@ function MatchdayCard(m: Matchday) {
         <Card sx={{my: 2}}>
             <CardContent>
                 <Typography variant="subtitle1" color="text.secondary">
-                    {dayjs(m.startTime).format("DD.MM.YYYY")}
+                    {`${dayjs(m.startTime).format("DD.MM.YYYY")} (${m.league})`}
                 </Typography>
                 <Stack direction="row" spacing={5} alignItems="center">
                     <Typography variant="h6">
-                        {`${m.home} - ${m.guest}`}
+                        {`${m.teams.home} - ${m.teams.guest}`}
                     </Typography>
                     <Chip
                         label={m.winner === "home" ? "Sieg" : "Niederlage"}

@@ -118,17 +118,28 @@ export default function Matchday() {
                         label="Datum"
                         type="date"
                         value={"2022-08-01"}
+                        sx={{width: '100%'}}
+                    />
+                </Stack>,
+                <Stack key={'league'} direction="row" alignItems="center">
+                    <FormField
+                        label="Liga"
+                        type="select"
+                        value={""}
+                        options={['Oberliga', 'Verbandsliga', 'Landesliga', 'Bezirksliga', 'Kreisliga', 'Kreisklasse']}
+                        sx={{width: '100%'}}
                     />
                 </Stack>,
                 <Stack key={'names'} direction="row" alignItems="center">
                     <FormField
                         label="Heimmannschaft"
                         value={"BC73 Pfeffenhausen 2"}
+                        sx={{width: '100%'}}
                     />
-                    <Typography>vs.</Typography>
                     <FormField
                         label="Gastmannschaft"
                         value={"BC Ingolstadt 1"}
+                        sx={{width: '100%'}}
                     />
                 </Stack>
             ],

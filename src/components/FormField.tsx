@@ -1,4 +1,4 @@
-import { Box, BoxProps, TextField } from "@mui/material";
+import { Box, BoxProps, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
@@ -7,8 +7,9 @@ import { Validator, firstErrorMessage } from "../util/Validators";
 interface FormFieldProps {
     label: string;
     //TODO: support time
-    type?: 'text' | 'number' | 'date';
+    type?: 'text' | 'number' | 'select' | 'date';
     value: string;
+    options?: string[];
     onChange?: (val: string) => void;
     validators?: Validator[];
     disabled?: boolean;
@@ -18,6 +19,29 @@ interface FormFieldProps {
 function render(props: FormFieldProps) {
     const errorMsg = firstErrorMessage(props.value, props.validators || []);
     switch (props.type) {
+        case 'select':
+            return (
+                <FormControl fullWidth sx={{mb: 3}}>
+                    <InputLabel id={props.label}>{props.label}</InputLabel>
+                    <Select
+                        labelId={props.label}
+                        value={props.value}
+                        label={props.label}
+                        onChange={(e) => { props.onChange?.(e.target.value); }}
+                        fullWidth
+                    >
+                        {props.options?.map((o) => (
+                            <MenuItem
+                                key={o}
+                                value={o}
+                                selected={o === props.value}
+                            >
+                                {o}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            )
         case 'date':
             return (
                 <DesktopDatePicker
@@ -33,10 +57,12 @@ function render(props: FormFieldProps) {
                     renderInput={(params) => <TextField {...params}
                     disabled={props.disabled}
                     sx={{mb: 3}}
+                    fullWidth
                 />}
               />
             );
         case 'text':
+        case 'number':
         default:
             return (
                 <TextField

@@ -28,21 +28,45 @@ export interface Match {
 
 export interface Matchday {
     id: string;
+    league: 'Oberliga' | 'Verbandsliga' | 'Landesliga' | 'Bezirksliga' | 'Kreisliga' | 'Kreisklasse' | undefined;
     startTime: Date;
     endTime?: Date;
-    home: string;
-    guest: string;
+    teams: {
+        home: string;
+        guest: string;
+    };
     winner: 'home' | 'guest' | undefined;
     points: {
         home: number;
         guest: number;
-    }
+    };
     pocketPoints: {
         home: number;
         guest: number;
-    }
+    };
     matches: Match[];
 }
+
+export const initialState = {
+    id: "",
+    league: undefined,
+    startTime: new Date(),
+    endTime: undefined,
+    teams: {
+        home: "",
+        guest: "",
+    },
+    winner: undefined,
+    points: {
+        home: 0,
+        guest: 0,
+    },
+    pocketPoints: {
+        home: 0,
+        guest: 0,
+    },
+    matches: [],
+} as Matchday;
 
 //TODO: interface per action type
 interface Action {

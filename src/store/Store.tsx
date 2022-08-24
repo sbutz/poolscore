@@ -23,10 +23,13 @@ const initialState = {
     matchdays: [
         {
             id: "1",
+            league: 'Landesliga',
             startTime: new Date("2022-08-01 13:00"),
             endTime: new Date("2022-08-01 17:00"),
-            home: "BC73 Pfeffenhausen 2",
-            guest: "BC Ingoldstadt 1",
+            teams: {
+                home: "BC73 Pfeffenhausen 2",
+                guest: "BC Ingoldstadt 1",
+            },
             winner: 'guest',
             points: {
                 home: 4,
@@ -40,10 +43,13 @@ const initialState = {
         },
         {
             id: "2",
+            league: 'Landesliga',
             startTime: new Date("2022-07-22 13:00"),
             endTime: new Date("2022-08-01 17:00"),
-            home: "BC73 Pfeffenhausen 2",
-            guest: "BSV Paffenhofen 2",
+            teams: {
+                home: "BC73 Pfeffenhausen 2",
+                guest: "BSV Paffenhofen 2",
+            },
             winner: 'home',
             points: {
                 home: 7,
