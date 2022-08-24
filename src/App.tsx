@@ -11,6 +11,7 @@ import Game14 from './views/Game14';
 import Tables from './views/Tables';
 import Club from './views/Club';
 import MatchDays from './views/MatchDays';
+import MatchDay from './views/MatchDay';
 
 const darkTheme = createTheme({
   palette: {
@@ -30,6 +31,7 @@ function Router() {
           {isAdmin ? <Route path="/club" element={<Club/>} /> : null}
           {isAdmin ? <Route path="/tables" element={<Tables/>} /> : null}
           {isAdmin ? <Route path="/matchdays" element={<MatchDays/>} /> : null}
+          {isAdmin ? <Route path="/matchday" element={<MatchDay/>} /> : null}
           <Route path="*" element={<ErrorPage/>} />
         </Routes>
     </BrowserRouter>

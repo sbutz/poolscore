@@ -6,6 +6,7 @@ import { Validator, firstErrorMessage } from "../util/Validators";
 
 interface FormFieldProps {
     label: string;
+    //TODO: support time
     type?: 'text' | 'number' | 'date';
     value: string;
     onChange?: (val: string) => void;

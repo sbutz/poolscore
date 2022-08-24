@@ -124,7 +124,6 @@ interface AsyncAction {
     tableName?: string;
     tableId?: string;
 }
-//TODO: support normal Actions to and proxy them to the normal reducer
 const asyncReducer = async (dispatch: Dispatch<Action>, state: State, action: AsyncAction) => {
     switch (action.type) {
     case 'add_table': {
