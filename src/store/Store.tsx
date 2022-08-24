@@ -10,8 +10,10 @@ export interface Pooltable {
 
 export interface Match {
     id: string;
-    players: string[];
-    guests: string[];
+    players: {
+        home: string[];
+        guest: string[];
+    };
     team: boolean;
     discipline: '8-Ball' | '9-Ball' | '10-Ball' | '14/1 endlos';
     firstTo: number;
@@ -19,19 +21,19 @@ export interface Match {
     points: {
         home: number;
         guest: number;
-    }
+    };
     pocketPoints: {
         home: number;
         guest: number;
-    }
+    };
     runs?: {
         home: number;
         guest: number;
-    }
+    };
     highest_run?: {
         home: number;
         guest: number;
-    }
+    };
 }
 
 export interface MatchDay {

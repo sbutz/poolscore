@@ -17,49 +17,59 @@ function MatchRow(m: Match) {
             </Typography>
         </Divider>
         <Stack direction={{ xs: 'column', md: 'row' }}>
-            <Stack direction="column" sx={{width: '100%'}}>
-                <Stack direction="row" alignItems="center" sx={{width: '100%'}}>
+            {['home', 'guest'].map(t => (
+                <Stack key={t} direction="column" sx={{width: '100%'}}>
                     <FormField
-                        label="Spieler (Heim)"
-                        value={m.players[0]}
+                        label={`Spieler (${t === 'home' ? 'Heim' : 'Gast'})`}
+                        value={m.players[t as keyof typeof m.players][0]}
                         sx={{width: '100%'}}
                     />
-                    <Typography>vs.</Typography>
+                    {m.team ?
                     <FormField
-                        label="Spieler (Gast)"
-                        value={m.guests[0]}
-                        sx={{mr: 2, width: '100%'}}
-                    />
+                        label={`Spieler (${t === 'home' ? 'Heim' : 'Gast'})`}
+                        value={m.players[t as keyof typeof m.players][1]}
+                        sx={{width: '100%'}}
+                    /> : null
+                    }
+                    {m.discipline === "14/1 endlos" ?
+                    <Stack direction="row">
+                        <FormField
+                            label="Bälle"
+                            type="number"
+                            value={String(55)}
+                            sx={{width: '100%'}}
+                        />
+                        <FormField
+                            label="Aufn."
+                            type="number"
+                            value={String(10)}
+                            sx={{width: '100%'}}
+                        />
+                        <FormField
+                            label="HS"
+                            type="number"
+                            value={String(11)}
+                            sx={{width: '100%'}}
+                        />
+                    </Stack> : null}
                 </Stack>
-                {m.team ?
+            ))}
+            <Stack direction="column">
                 <Stack direction="row" alignItems="center">
                     <FormField
-                        label="Spieler (Heim)"
-                        value={m.players[0]}
-                        sx={{width: '100%'}}
+                        label="Heim"
+                        type="number"
+                        value={String(0)}
+                        sx={{width: '6rem'}}
                     />
-                    <Typography>vs.</Typography>
+                    <Typography>:</Typography>
                     <FormField
-                        label="Spieler (Gast)"
-                        value={m.guests[0]}
-                        sx={{mr: 2, width: '100%'}}
+                        label="Gast"
+                        type="number"
+                        value={String(0)}
+                        sx={{width: '6rem'}}
                     />
-                </Stack> : null}
-            </Stack>
-            <Stack direction="row" alignItems="center">
-                <FormField
-                    label="Heim"
-                    type="number"
-                    value={String(0)}
-                    sx={{width: '6rem'}}
-                />
-                <Typography>:</Typography>
-                <FormField
-                    label="Gast"
-                    type="number"
-                    value={String(0)}
-                    sx={{width: '6rem'}}
-                />
+                </Stack>
             </Stack>
         </Stack>
     </Box>
@@ -91,8 +101,10 @@ export default function MatchDay() {
     ].map(([mode, team, firstTo], i) => {
         return {
             id: i.toString(),
-            players: [],
-            guests: [],
+            players: {
+                home: [],
+                guest: [],
+            },
             team: team,
             discipline: mode,
             firstTo: firstTo,
