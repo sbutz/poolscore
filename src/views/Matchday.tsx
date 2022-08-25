@@ -1,15 +1,14 @@
-import { useContext, useState, useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Box, Button, MobileStepper, Stack, Step, StepContent, StepLabel, Stepper, TextField, Typography, useTheme } from '@mui/material';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import { Stack, TextField, Typography, useTheme } from '@mui/material';
 import { TimePicker } from '@mui/x-date-pickers';
 
 import { initialState, reducer, Match, Matchday } from '../store/MatchdayState';
 import MatchForm from '../components/MatchForm';
 import FormField from '../components/FormField';
-import Layout from '../components/Layout';
 import { Context } from '../store/Store';
+import ResponsiveStepper from '../components/ResponsiveStepper';
 
 const matches = [
     ['14/1 endlos', false, 70],
@@ -40,7 +39,6 @@ const matches = [
 
 export default function MatchdayView() {
     const globalState = useContext(Context)[0];
-    const theme = useTheme();
     const navigate = useNavigate();
     const {id} = useParams();
 
@@ -143,77 +141,9 @@ export default function MatchdayView() {
         },
     ];
 
-    const [activeStep, setActiveStep] = useState(0);
-    const handleNext = () => {
-        if (activeStep < steps.length-1)
-            setActiveStep((prevActiveStep: number) => prevActiveStep + 1);
-        else
-            navigate(-1);
-    };
-    const handleBack = () => {
-        if (activeStep > 0)
-            setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
-        else
-            navigate(-1);
-    };
-
-    return (
-    <Box>
-        {/* Mobile */}
-        <Box sx={{ [theme.breakpoints.up('md')]: { display: 'none', }}} >
-            <Layout nested title={steps[activeStep].label}>
-                {steps[activeStep].content}
-            </Layout>
-            <MobileStepper
-                steps={steps.length}
-                activeStep={activeStep}
-                nextButton={
-                    <Button
-                        size="small"
-                        onClick={handleNext}
-                    >
-                        {activeStep < steps.length-1 ? 'Weiter' : 'Speichern'}
-                        {activeStep < steps.length-1 ? <KeyboardArrowRight/>: null}
-                    </Button>
-                }
-                backButton={
-                    <Button
-                        size="small"
-                        onClick={handleBack}
-                    >
-                        {activeStep > 0 ? <KeyboardArrowLeft/>: null}
-                        {activeStep > 0 ? 'Zurück' : 'Abbrechen'}
-                    </Button>
-                }
-            />
-        </Box>
-        {/* Desktop */}
-        <Box
-            sx={{
-                [theme.breakpoints.down('md')]: {
-                    display: 'none',
-                },
-            }}
-        >
-            <Layout nested title="Neuer Spieltag">
-                <Stepper orientation="vertical">
-                    {steps.map((s,i) => (
-                        <Step key={i} active={true}>
-                            <StepLabel>{s.label}</StepLabel>
-                            <StepContent>{s.content}</StepContent>
-                        </Step>
-                    ))}
-                </Stepper>
-                <Stack direction="row" justifyContent="end">
-                    <Button
-                        variant="contained"
-                        onClick={() => { navigate(-1); }}
-                    >
-                        Speichern
-                    </Button>
-                </Stack>
-            </Layout>
-        </Box>
-    </Box>
-    );
+    return <ResponsiveStepper
+        steps={steps}
+        onCancel={() => { navigate(-1); }}
+        onSave={() => { navigate(-1); }}
+    />;
 }
