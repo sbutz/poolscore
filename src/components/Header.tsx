@@ -3,7 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 interface HeaderProps {
     title: string;
-    children?: React.ReactNode[];
+    children?: React.ReactNode;
     icon?: React.ReactNode;
     onIconClick?: () => void;
 }

@@ -20,33 +20,34 @@ function AppDrawer(props: AppDrawerProps) {
         onClick={props.onClose}
     >
         <List>
-            {isAdmin ?[
-                <ListItem key={'club'} disablePadding>
+            {isAdmin ? <>
+                <ListItem disablePadding>
                     <ListItemButton component={Link} to={"/club"}>
                         <ListItemIcon>
                             <Groups />
                         </ListItemIcon>
                         <ListItemText primary={'Verein'} />
                     </ListItemButton>
-                </ListItem>,
-                <ListItem key={'tables'} disablePadding>
+                </ListItem>
+                <ListItem disablePadding>
                     <ListItemButton component={Link} to={"/tables"}>
                         <ListItemIcon>
                             <TableRestaurant />
                         </ListItemIcon>
                         <ListItemText primary={'Tische'} />
                     </ListItemButton>
-                </ListItem>,
-                <ListItem key={'matchday'} disablePadding>
+                </ListItem>
+                <ListItem disablePadding>
                     <ListItemButton component={Link} to={"/matchday"}>
                         <ListItemIcon>
                             <CalendarMonth />
                         </ListItemIcon>
                         <ListItemText primary={'Spieltage'} />
                     </ListItemButton>
-                </ListItem>,
-                <Divider key='admin-divider'/>] : null}
-            <ListItem key={'game'} disablePadding>
+                </ListItem>
+                <Divider/>
+            </> : null}
+            <ListItem disablePadding>
                 <ListItemButton component={Link} to={"/"}>
                     <ListItemIcon>
                         <SportsEsports />

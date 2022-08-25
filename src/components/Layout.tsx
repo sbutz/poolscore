@@ -11,7 +11,7 @@ interface LayoutProps {
     children: React.ReactNode;
     fullwidth?: boolean;
     nested?: boolean;
-    toolbar?: React.ReactNode[];
+    toolbar?: React.ReactNode;
 }
 function Layout(props : LayoutProps) {
     const [open, setOpen] = useState(false);

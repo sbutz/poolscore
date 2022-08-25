@@ -30,16 +30,15 @@ function Game() {
     const [showPrompt, confirmNavigation, cancelNavigation] =
       useCallbackPrompt(true);
 
-    const toolbar = [
+    const toolbar = (
         <Button
-            key="undo"
             color="inherit"
             startIcon={<Undo/>}
             onClick={() => { dispatch?.({type: 'rollback'}); }}
         >
             Rückgängig
         </Button>
-    ];
+    );
 
     const startingPlayerSelect = (
         <Grid container justifyContent="center">
@@ -77,7 +76,7 @@ function Game() {
     );
 
     const score = (
-        <Grid container justifyContent="center" key="score">
+        <Grid container justifyContent="center">
             <Grid item xs={5} textAlign="center">
                 <Typography
                     variant="h1"
@@ -101,8 +100,8 @@ function Game() {
             </Grid>
         </Grid>
     );
-    const buttons = [
-        <Grid container justifyContent="center" key="foul_buttons">
+    const buttons = <>
+        <Grid container justifyContent="center">
             <Grid item xs={5} textAlign="center">
                 <Stack direction="row" spacing={2} justifyContent="center" pb={2}>
                     <Typography variant="h5">
@@ -155,8 +154,8 @@ function Game() {
                     Foul
                 </Button>
             </Grid>
-        </Grid>,
-        <Grid container justifyContent="center" key="remaining_balls">
+        </Grid>
+        <Grid container justifyContent="center">
             <Grid item textAlign="center" width="100%">
                 <Typography variant="h3" sx={{ mb: 4 }}>
                     Verbleibende Kugeln:
@@ -185,7 +184,7 @@ function Game() {
                 })}
             </Grid>
         </Grid>
-    ];
+    </>;
 
     return (
     <Layout title="14/1 endlos" fullwidth toolbar={toolbar}>
@@ -212,7 +211,7 @@ function Game() {
                 </Grid>
             </Grid>
             {state.playing === undefined ?
-                startingPlayerSelect : [score, ...buttons]}
+                startingPlayerSelect : <>{score}{buttons}</>}
             {/*
             - foul anzeige
             - aufnhame anzeige

@@ -38,16 +38,15 @@ function Game() {
     const guest_plus_one = () => { dispatch?.({type: "guest_plus_one"}); };
     const guest_minus_one = () => { dispatch?.({type: "guest_minus_one"}); };
 
-    const toolbar = [
+    const toolbar = (
         <Button
-            key="undo"
             color="inherit"
             startIcon={<Undo/>}
             onClick={() => { dispatch?.({type: 'rollback_score'}); }}
         >
             Rückgängig
         </Button>
-    ];
+    );
 
     return (
     <Layout title="8/9/10-Ball" fullwidth toolbar={toolbar}>
