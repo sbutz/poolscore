@@ -1,8 +1,7 @@
 import { useContext, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Stack, TextField, Typography } from '@mui/material';
-import { TimePicker } from '@mui/x-date-pickers';
+import { Stack } from '@mui/material';
 
 import { initialState, reducer, Match, Matchday } from '../store/MatchdayState';
 import MatchForm from '../components/MatchForm';
@@ -37,6 +36,87 @@ const matches = [
     };
 }) as Match[];
 
+interface MatchdayFormStartProps {
+    date: string;
+    onDateChange: (v: string) => void;
+    league: string | undefined;
+    onLeagueChange: (v: string) => void;
+    teamHome: string;
+    onTeamHomeChange: (v: string) => void;
+    teamGuest: string;
+    onTeamGuestChange: (v: string) => void;
+}
+function MatchdayFormStart(props: MatchdayFormStartProps) {
+    return <>
+        <Stack key={'date'} direction="row" alignItems="center">
+            <FormField
+                label="Datum"
+                type="date"
+                value={props.date}
+                onChange={props.onDateChange}
+            />
+            {/*TODO: startTime*/}
+        </Stack>
+        <Stack direction="row" alignItems="center">
+            <FormField
+                label="Liga"
+                type="select"
+                options={['Oberliga', 'Verbandsliga', 'Landesliga', 'Bezirksliga', 'Kreisliga', 'Kreisklasse']}
+                value={props.league || ''}
+                onChange={props.onLeagueChange}
+            />
+        </Stack>
+        <Stack direction="row" alignItems="center">
+            <FormField
+                label="Heimmannschaft"
+                value={props.teamHome}
+                onChange={props.onTeamHomeChange}
+            />
+            <FormField
+                label="Gastmannschaft"
+                value={props.teamGuest}
+                onChange={props.onTeamGuestChange}
+            />
+        </Stack>
+    </>;
+}
+
+interface MatchdayFormEndProps {
+    endTime: string;
+    onEndTimeChange: (v: string) => void;
+    pointsHome: number;
+    pointsGuest: number;
+}
+function MatchdayFormEnd(props: MatchdayFormEndProps) {
+    return (
+        <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            alignItems="center"
+            justifyContent="space-between"
+            spacing={3}
+        >
+            <FormField
+                label="Spielende"
+                type="time"
+                value={props.endTime}
+                onChange={props.onEndTimeChange}
+            />
+            <Stack direction="row">
+                <FormField
+                    label="Heim"
+                    type="number"
+                    value={props.pointsHome.toString()}
+                />
+                <FormField
+                    label="Gast"
+                    type="number"
+                    value={props.pointsGuest.toString()}
+                />
+            </Stack>
+        </Stack>
+    );
+}
+
 export default function MatchdayView() {
     const globalState = useContext(Context)[0];
     const navigate = useNavigate();
@@ -47,50 +127,24 @@ export default function MatchdayView() {
     const [state, dispatch] = useReducer(reducer, matchday);
 
     const date = dayjs(state.startTime).format("YYYY-MM-DD");
-    const setDate = (v: string) => {
-        dispatch({type: 'set_start_time', value: v});
-    };
+    const setDate = (v: string) => { dispatch({type: 'set_start_time', value: v}); };
+    const setLeague = (v: string) => { dispatch({type: 'set_league', value: v}); };
+    const setTeamHome = (v: string) => { dispatch({type: 'set_team_home', value: v}); };
+    const setTeamGuest = (v: string) => { dispatch({type: 'set_team_guest', value: v}); };
 
     const steps=[
         {
             label: 'Allgemein',
-            content: <>
-                <Stack key={'date'} direction="row" alignItems="center">
-                    <FormField
-                        label="Datum"
-                        type="date"
-                        value={date}
-                        onChange={setDate}
-                    />
-                </Stack>
-                <Stack direction="row" alignItems="center">
-                    <FormField
-                        label="Liga"
-                        type="select"
-                        options={['Oberliga', 'Verbandsliga', 'Landesliga', 'Bezirksliga', 'Kreisliga', 'Kreisklasse']}
-                        value={state.league || ''}
-                        onChange={(v) => {
-                            dispatch({type: 'set_league', value: v});
-                        }}
-                    />
-                </Stack>
-                <Stack direction="row" alignItems="center">
-                    <FormField
-                        label="Heimmannschaft"
-                        value={state.teams.home}
-                        onChange={(v) => {
-                            dispatch({type: 'set_team_home', value: v});
-                        }}
-                    />
-                    <FormField
-                        label="Gastmannschaft"
-                        value={state.teams.guest}
-                        onChange={(v) => {
-                            dispatch({type: 'set_team_guest', value: v});
-                        }}
-                    />
-                </Stack>
-            </>,
+            content: <MatchdayFormStart
+                date={date}
+                onDateChange={setDate}
+                league={state.league}
+                onLeagueChange={setLeague}
+                teamHome={state.teams.home}
+                onTeamHomeChange={setTeamHome}
+                teamGuest={state.teams.guest}
+                onTeamGuestChange={setTeamGuest}
+            />,
         },
         {
             label: 'Durchgang #1',
@@ -119,25 +173,12 @@ export default function MatchdayView() {
         },
         {
             label: 'Ergebnis',
-            content: (
-                <Stack
-                    direction={{ xs: 'column', md: 'row' }}
-                    alignItems="center"
-                    justifyContent="space-between"
-                    spacing={3}
-                >
-                    <TimePicker
-                        label="Spielende"
-                        value={state.endTime}
-                        onChange={(newValue) => {
-                            if (dayjs(newValue).isValid())
-                                console.log(dayjs(newValue).format("HH:mm"));
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                        />
-                    <Typography variant='h6'>Endergebnis: 6 - 4</Typography>
-                </Stack>
-            ),
+            content: <MatchdayFormEnd
+                endTime={dayjs(state.endTime).format("YYYY-MM-DD HH:MM")}
+                onEndTimeChange={console.log}
+                pointsHome={6}
+                pointsGuest={4}
+            />,
         },
     ];
 

@@ -1,5 +1,5 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers";
+import { DesktopDatePicker, TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 import { Validator, firstErrorMessage } from "../util/Validators";
@@ -7,7 +7,7 @@ import { Validator, firstErrorMessage } from "../util/Validators";
 interface FormFieldProps {
     label: string;
     //TODO: support time
-    type?: 'text' | 'number' | 'select' | 'date';
+    type?: 'text' | 'number' | 'select' | 'date' | 'time';
     value: string;
     options?: string[];
     onChange?: (val: string) => void;
@@ -54,11 +54,29 @@ function render(props: FormFieldProps) {
                             props.onChange?.("");
                     }}
                     renderInput={(params) => <TextField {...params}
-                    disabled={props.disabled}
-                    sx={{mb: 3}}
-                    fullWidth
-                />}
+                        disabled={props.disabled}
+                        sx={{mb: 3}}
+                        fullWidth
+                    />}
               />
+            );
+        case 'time':
+            return (
+                <Box sx={{mb: 3, width: '100%'}}>
+                    <TimePicker
+                        label={props.label}
+                        value={props.value}
+                        onChange={(newValue) => {
+                            if (dayjs(newValue).isValid())
+                                props.onChange?.(dayjs(newValue).format("HH:mm"));
+                        }}
+                        renderInput={(params) => <TextField
+                            {...params}
+                            fullWidth
+                        />}
+                        disabled={props.disabled}
+                    />
+                </Box>
             );
         case 'text':
         case 'number':
