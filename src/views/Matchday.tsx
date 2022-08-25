@@ -1,7 +1,7 @@
 import { useContext, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Stack, TextField, Typography, useTheme } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import { TimePicker } from '@mui/x-date-pickers';
 
 import { initialState, reducer, Match, Matchday } from '../store/MatchdayState';

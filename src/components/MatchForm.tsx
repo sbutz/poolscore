@@ -1,26 +1,14 @@
-import { memo, ReactNode } from "react";
+import { memo } from "react";
 import { Box, Divider, Typography, Stack } from "@mui/material";
 
 import { Match } from "../store/MatchdayState";
 import FormField from "./FormField";
 
-const Row = (children: ReactNode, responsive? : boolean) => {
-    if (responsive)
-        return <Stack direction={{xs: 'column', md: 'row'}}>{children}</Stack>;
-    else
-        return <Stack direction='row'>{children}</Stack>;
-}
-
-const Column = (children: ReactNode) => (
-    <Stack direction="row" alignItems="center">${children}</Stack>
-)
-
 interface MatchFormProps {
     match: Match;
 }
 
-export default memo(MatchForm);
-function MatchForm(props: MatchFormProps) {
+export default memo(function MatchForm(props: MatchFormProps) {
     const m = props.match;
     return <>
         <Divider textAlign="left">
@@ -82,4 +70,4 @@ function MatchForm(props: MatchFormProps) {
             </Stack>
         </Stack>
     </>
-}
+});

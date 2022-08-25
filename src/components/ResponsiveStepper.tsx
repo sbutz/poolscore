@@ -65,8 +65,8 @@ export default function ResponsiveStepper(props: ResponsiveStepperProps) {
         >
             <Layout nested title="Neuer Spieltag">
                 <Stepper orientation="vertical">
-                    {props.steps.map((s,i) => (
-                        <Step key={i} active={true}>
+                    {props.steps.map((s) => (
+                        <Step key={s.label} active={true}>
                             <StepLabel>{s.label}</StepLabel>
                             <StepContent>{s.content}</StepContent>
                         </Step>
