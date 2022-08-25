@@ -1,12 +1,12 @@
+import { memo } from "react";
+import dayjs from "dayjs";
 import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DesktopDatePicker, TimePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
 
 import { Validator, firstErrorMessage } from "../util/Validators";
 
 interface FormFieldProps {
     label: string;
-    //TODO: support time
     type?: 'text' | 'number' | 'select' | 'date' | 'time';
     value: string;
     options?: string[];
@@ -15,7 +15,7 @@ interface FormFieldProps {
     disabled?: boolean;
 }
 
-function render(props: FormFieldProps) {
+function FormField(props: FormFieldProps) {
     const errorMsg = firstErrorMessage(props.value, props.validators || []);
     switch (props.type) {
         case 'select':
@@ -96,10 +96,10 @@ function render(props: FormFieldProps) {
     }
 }
 
-export default function FormField(props : FormFieldProps) {
+export default memo((props : FormFieldProps) => {
     return (
         <Box sx={{pt: 1, px: 1, width: '100%'}}>
-            {render(props)}
+            <FormField {...props} />
         </Box>
     );
-}
+});

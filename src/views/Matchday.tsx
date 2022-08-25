@@ -1,4 +1,4 @@
-import { useContext, useReducer } from 'react';
+import { useCallback, useContext, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Stack } from '@mui/material';
@@ -127,10 +127,18 @@ export default function MatchdayView() {
     const [state, dispatch] = useReducer(reducer, matchday);
 
     const date = dayjs(state.startTime).format("YYYY-MM-DD");
-    const setDate = (v: string) => { dispatch({type: 'set_start_time', value: v}); };
-    const setLeague = (v: string) => { dispatch({type: 'set_league', value: v}); };
-    const setTeamHome = (v: string) => { dispatch({type: 'set_team_home', value: v}); };
-    const setTeamGuest = (v: string) => { dispatch({type: 'set_team_guest', value: v}); };
+    const setDate = useCallback((v: string) => {
+        dispatch({type: 'set_start_time', value: v});
+    }, []);
+    const setLeague = useCallback((v: string) => {
+        dispatch({type: 'set_league', value: v});
+    }, []);
+    const setTeamHome = useCallback((v: string) => {
+        dispatch({type: 'set_team_home', value: v});
+    }, []);
+    const setTeamGuest = useCallback((v: string) => {
+        dispatch({type: 'set_team_guest', value: v});
+    }, []);
 
     const steps=[
         {
