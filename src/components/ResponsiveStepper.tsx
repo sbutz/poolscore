@@ -65,7 +65,7 @@ function MyDesktopStepper(props: ResponsiveStepperProps) {
                     </Step>
                 ))}
             </Stepper>
-            <Stack direction="row" justifyContent="end" spacing={2}>
+            <Stack direction="row" justifyContent="center" spacing={3} sx={{pt: 3}}>
                 <Button variant="contained" onClick={props.onCancel}>
                     Abbrechen
                 </Button>
