@@ -142,6 +142,7 @@ export default function MatchdayView() {
     ];
 
     return <ResponsiveStepper
+        title="Neuer Spieltag"
         steps={steps}
         onCancel={() => { navigate(-1); }}
         onSave={() => { navigate(-1); }}
