@@ -1,22 +1,27 @@
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemButton,
-    ListItemText, Divider} from '@mui/material'
-import { CalendarMonth, Groups, SportsEsports, TableRestaurant } from '@mui/icons-material';
+import { memo } from 'react';
 import { Link } from "react-router-dom";
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemButton,
+    ListItemText, Divider, useTheme} from '@mui/material'
+import { CalendarMonth, Groups, SportsEsports, TableRestaurant } from '@mui/icons-material';
 
 interface AppDrawerProps {
     open: boolean;
     onClose: () => void;
 }
 
-function AppDrawer(props: AppDrawerProps) {
-    const isAdmin = true;
+//TODO: replace after implementing user management
+const isAdmin = true;
+
+const drawerBoxSx = {
+    width: 250,
+    flexShrink: 0,
+};
+
+export default memo(function AppDrawer(props: AppDrawerProps) {
     const drawerList = (
     <Box
         role="presentation"
-        sx={{
-            width: 250,
-            flexShrink: 0,
-        }}
+        sx={drawerBoxSx}
         onClick={props.onClose}
     >
         <List>
@@ -59,20 +64,20 @@ function AppDrawer(props: AppDrawerProps) {
     </Box>
     );
 
-    return(
-    <Drawer
-        anchor={'left'}
-        open={props.open}
-        onClose={props.onClose}
-        PaperProps={{
-            sx: {
-                pt: (theme) => theme.spacing(8),
-            }
-        }}
-    >
-        {drawerList}
-    </Drawer>
-    );
-}
+    const theme = useTheme();
 
-export default AppDrawer;
+    return(
+        <Drawer
+            anchor={'left'}
+            open={props.open}
+            onClose={props.onClose}
+            PaperProps={{
+                sx: {
+                    pt: theme.spacing(8),
+                }
+            }}
+        >
+            {drawerList}
+        </Drawer>
+    );
+});

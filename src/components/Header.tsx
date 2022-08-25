@@ -1,19 +1,18 @@
-import {AppBar, Toolbar, IconButton, Typography, } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import {AppBar, Toolbar, IconButton, Typography, useTheme, } from '@mui/material';
+import { memo } from 'react';
 
 interface HeaderProps {
     title: string;
     children?: React.ReactNode;
-    icon?: React.ReactNode;
+    icon: React.ReactNode;
     onIconClick?: () => void;
 }
 
-function Header(props: HeaderProps) {
+export default memo(function Header(props: HeaderProps) {
+    const theme = useTheme();
+
     return (
-    <div>
-        <AppBar position="sticky"
-            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-         >
+        <AppBar position="sticky" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
             <Toolbar>
                 <IconButton
                     size="large"
@@ -23,7 +22,7 @@ function Header(props: HeaderProps) {
                     sx={{ mr: 2 }}
                     onClick={props.onIconClick}
                 >
-                    {props.icon || <MenuIcon />}
+                    {props.icon}
                 </IconButton>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     {props.title}
@@ -31,8 +30,5 @@ function Header(props: HeaderProps) {
                 {props.children}
             </Toolbar>
         </AppBar>
-    </div>
     );
-}
-
-export default Header;
+});

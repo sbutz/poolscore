@@ -26,7 +26,7 @@ export default function FormDialog(props: FormDialogProps) {
             <Button onClick={props.onCancel}>Abbrechen</Button>
             <Button
                 onClick={props.onSave}
-                disabled={'disableSave' in props ? props.disableSave : false}
+                disabled={props.disableSave || false}
             >
                 Speichern
             </Button>

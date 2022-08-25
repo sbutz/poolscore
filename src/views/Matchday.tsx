@@ -1,9 +1,9 @@
-import { useCallback, useContext, useReducer } from 'react';
+import { memo, useCallback, useContext, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Stack } from '@mui/material';
 
-import { initialState, reducer, Match, Matchday } from '../store/MatchdayState';
+import { initialState, reducer, Match, Matchday, leagues } from '../store/MatchdayState';
 import MatchForm from '../components/MatchForm';
 import FormField from '../components/FormField';
 import { Context } from '../store/Store';
@@ -46,7 +46,7 @@ interface MatchdayFormStartProps {
     teamGuest: string;
     onTeamGuestChange: (v: string) => void;
 }
-function MatchdayFormStart(props: MatchdayFormStartProps) {
+const MatchdayFormStart = memo((props: MatchdayFormStartProps) => {
     return <>
         <Stack key={'date'} direction="row" alignItems="center">
             <FormField
@@ -61,7 +61,7 @@ function MatchdayFormStart(props: MatchdayFormStartProps) {
             <FormField
                 label="Liga"
                 type="select"
-                options={['Oberliga', 'Verbandsliga', 'Landesliga', 'Bezirksliga', 'Kreisliga', 'Kreisklasse']}
+                options={leagues}
                 value={props.league || ''}
                 onChange={props.onLeagueChange}
             />
@@ -79,7 +79,7 @@ function MatchdayFormStart(props: MatchdayFormStartProps) {
             />
         </Stack>
     </>;
-}
+});
 
 interface MatchdayFormEndProps {
     endTime: string;
@@ -87,7 +87,7 @@ interface MatchdayFormEndProps {
     pointsHome: number;
     pointsGuest: number;
 }
-function MatchdayFormEnd(props: MatchdayFormEndProps) {
+const MatchdayFormEnd = memo((props: MatchdayFormEndProps) => {
     return (
         <Stack
             direction={{ xs: 'column', md: 'row' }}
@@ -115,7 +115,7 @@ function MatchdayFormEnd(props: MatchdayFormEndProps) {
             </Stack>
         </Stack>
     );
-}
+});
 
 export default function MatchdayView() {
     const globalState = useContext(Context)[0];
@@ -139,8 +139,11 @@ export default function MatchdayView() {
     const setTeamGuest = useCallback((v: string) => {
         dispatch({type: 'set_team_guest', value: v});
     }, []);
+    const setEndTime = useCallback((v: string) => {
+        console.log(v);
+    }, []);
 
-    const steps=[
+    const steps = [
         {
             label: 'Allgemein',
             content: <MatchdayFormStart
@@ -183,17 +186,21 @@ export default function MatchdayView() {
             label: 'Ergebnis',
             content: <MatchdayFormEnd
                 endTime={dayjs(state.endTime).format("YYYY-MM-DD HH:MM")}
-                onEndTimeChange={console.log}
+                onEndTimeChange={setEndTime}
                 pointsHome={6}
                 pointsGuest={4}
             />,
         },
     ];
 
+    const onCancel = useCallback(() => {
+        navigate(-1);
+    }, [navigate]);
+
     return <ResponsiveStepper
         title="Neuer Spieltag"
         steps={steps}
-        onCancel={() => { navigate(-1); }}
-        onSave={() => { navigate(-1); }}
+        onCancel={onCancel}
+        onSave={onCancel}
     />;
 }

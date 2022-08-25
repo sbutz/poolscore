@@ -15,7 +15,7 @@ interface FormFieldProps {
     disabled?: boolean;
 }
 
-function FormField(props: FormFieldProps) {
+function FormFieldBuilder(props: FormFieldProps) {
     const errorMsg = firstErrorMessage(props.value, props.validators || []);
     switch (props.type) {
         case 'select':
@@ -96,10 +96,10 @@ function FormField(props: FormFieldProps) {
     }
 }
 
-export default memo((props : FormFieldProps) => {
+export default memo(function FormField(props : FormFieldProps) {
     return (
         <Box sx={{pt: 1, px: 1, width: '100%'}}>
-            <FormField {...props} />
+            <FormFieldBuilder {...props} />
         </Box>
     );
 });

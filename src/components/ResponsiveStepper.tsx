@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import { useTheme, MobileStepper, Button, Stepper, Step, StepLabel, StepContent, Stack, useMediaQuery } from "@mui/material";
 import { KeyboardArrowRight, KeyboardArrowLeft } from "@mui/icons-material";
 
@@ -16,27 +16,28 @@ interface ResponsiveStepperProps {
 
 function MyMobileStepper(props : ResponsiveStepperProps) {
     const [activeStep, setActiveStep] = useState(0);
+
+    const { onCancel, onSave } = props;
+    const numSteps = props.steps.length;
     const isFirstStep = activeStep === 0;
-    const isLastStep = activeStep === props.steps.length - 1;
-    const handleNext = () => {
+    const isLastStep = activeStep === numSteps - 1;
+
+    const handleNext = useCallback(() => {
         if (isLastStep)
-            props.onSave?.();
+            onSave?.();
         else
             setActiveStep((prev: number) => prev + 1);
-    };
-    const handleBack = () => {
+    }, [onSave, isLastStep]);
+    const handleBack = useCallback(() => {
         if (isFirstStep)
-            props.onCancel?.();
+            onCancel?.();
         else
             setActiveStep((prev: number) => prev - 1);
-    };
+    }, [onCancel, isFirstStep]);
 
-    return <>
-        <Layout nested title={props.steps[activeStep].label}>
-            {props.steps[activeStep].content}
-        </Layout>
+    const stepper = useMemo(() => (
         <MobileStepper
-            steps={props.steps.length}
+            steps={numSteps}
             activeStep={activeStep}
             nextButton={
                 <Button size="small" onClick={handleNext}>
@@ -51,6 +52,13 @@ function MyMobileStepper(props : ResponsiveStepperProps) {
                 </Button>
             }
         />
+    ), [numSteps, activeStep, isFirstStep, isLastStep, handleBack, handleNext]);
+
+    return <>
+        <Layout nested title={props.steps[activeStep].label}>
+            {props.steps[activeStep].content}
+        </Layout>
+        {stepper}
     </>;
 }
 
@@ -58,6 +66,7 @@ function MyDesktopStepper(props: ResponsiveStepperProps) {
     return (
         <Layout nested title={props.title}>
             <Stepper orientation="vertical">
+                {/*TODO: optimize render of step away, requires const/memo steps */}
                 {props.steps.map((s) => (
                     <Step key={s.label} active={true}>
                         <StepLabel>{s.label}</StepLabel>

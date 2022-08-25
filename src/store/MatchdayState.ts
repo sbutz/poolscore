@@ -27,7 +27,7 @@ export interface Match {
         guest: number;
     };
 }
-
+export const leagues = ['Oberliga', 'Verbandsliga', 'Landesliga', 'Bezirksliga', 'Kreisliga', 'Kreisklasse'];
 export interface Matchday {
     id: string;
     league: 'Oberliga' | 'Verbandsliga' | 'Landesliga' | 'Bezirksliga' | 'Kreisliga' | 'Kreisklasse' | undefined;
