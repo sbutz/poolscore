@@ -13,7 +13,6 @@ interface FormFieldProps {
     onChange?: (val: string) => void;
     validators?: Validator[];
     disabled?: boolean;
-    sx?: BoxProps['sx'];
 }
 
 function render(props: FormFieldProps) {
@@ -81,7 +80,7 @@ function render(props: FormFieldProps) {
 
 export default function FormField(props : FormFieldProps) {
     return (
-        <Box sx={{pt: 1, px: 1, ...props.sx}}>
+        <Box sx={{pt: 1, px: 1, width: '100%'}}>
             {render(props)}
         </Box>
     );

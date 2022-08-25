@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export interface Match {
     id: string;
     players: {
@@ -70,12 +72,20 @@ export const initialState = {
 
 //TODO: interface per action type
 interface Action {
-    //TODO: fixed strings
-    type: string;
+    type: 'set_start_time' | 'set_league' | 'set_team_home' | 'set_team_guest';
+    value: string;
 }
 
-export function reducer(state: Matchday, action: Action) {
+export function reducer(state: Matchday, action: Action) : Matchday{
     switch (action.type) {
+        case 'set_start_time':
+            return {...state, startTime: dayjs(action.value).toDate()};
+        case 'set_league':
+            return {...state, league: action.value} as Matchday;
+        case 'set_team_home':
+            return {...state, teams: { home: action.value, guest: state.teams.guest}};
+        case 'set_team_guest':
+            return {...state, teams: { home: state.teams.home, guest: action.value}};
         default:
             return state;
     }

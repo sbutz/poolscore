@@ -1,179 +1,128 @@
-import { useState } from 'react';
+import { useContext, useState, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Box, Button, Divider, MobileStepper, Stack, Step, StepContent, StepLabel, Stepper, TextField, Typography, useTheme } from '@mui/material';
+import { Box, Button, MobileStepper, Stack, Step, StepContent, StepLabel, Stepper, TextField, Typography, useTheme } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { TimePicker } from '@mui/x-date-pickers';
 
-import { Match } from '../store/MatchdayState';
+import { initialState, reducer, Match, Matchday } from '../store/MatchdayState';
+import MatchForm from '../components/MatchForm';
 import FormField from '../components/FormField';
 import Layout from '../components/Layout';
+import { Context } from '../store/Store';
 
-function MatchRow(m: Match) {
-    return (
-    <Box>
-        <Divider textAlign="left">
-            <Typography variant="overline">
-                {`${m.discipline} ${m.team ? '(Doppel)' : ''}`}
-            </Typography>
-        </Divider>
-        <Stack direction={{ xs: 'column', md: 'row' }}>
-            {['home', 'guest'].map(t => (
-                <Stack key={t} direction="column" sx={{width: '100%'}}>
-                    <FormField
-                        label={`Spieler (${t === 'home' ? 'Heim' : 'Gast'})`}
-                        value={m.players[t as keyof typeof m.players][0]}
-                        sx={{width: '100%'}}
-                    />
-                    {m.team ?
-                    <FormField
-                        label={`Spieler (${t === 'home' ? 'Heim' : 'Gast'})`}
-                        value={m.players[t as keyof typeof m.players][1]}
-                        sx={{width: '100%'}}
-                    /> : null
-                    }
-                    {m.discipline === "14/1 endlos" ?
-                    <Stack direction="row">
-                        <FormField
-                            label="Bälle"
-                            type="number"
-                            value={String(55)}
-                            sx={{width: '100%'}}
-                        />
-                        <FormField
-                            label="Aufn."
-                            type="number"
-                            value={String(10)}
-                            sx={{width: '100%'}}
-                        />
-                        <FormField
-                            label="HS"
-                            type="number"
-                            value={String(11)}
-                            sx={{width: '100%'}}
-                        />
-                    </Stack> : null}
-                </Stack>
-            ))}
-            <Stack direction="column">
-                <Stack direction="row" alignItems="center">
-                    <FormField
-                        label="Heim"
-                        type="number"
-                        value={String(0)}
-                        sx={{width: '6rem'}}
-                    />
-                    <Typography>:</Typography>
-                    <FormField
-                        label="Gast"
-                        type="number"
-                        value={String(0)}
-                        sx={{width: '6rem'}}
-                    />
-                </Stack>
-            </Stack>
-        </Stack>
-    </Box>
-    );
-}
+const matches = [
+    ['14/1 endlos', false, 70],
+    ['8-Ball', false, 5],
+    ['9-Ball', false, 7],
+    ['10-Ball', false, 6],
+    ['9-Ball', true, 6],
+    ['10-Ball', true, 5],
+    ['14/1 endlos', false, 70],
+    ['8-Ball', false, 5],
+    ['9-Ball', false, 7],
+    ['10-Ball', false, 6],
+].map(([mode, team, firstTo], i) => {
+    return {
+        id: i.toString(),
+        players: {
+            home: [],
+            guest: [],
+        },
+        team: team,
+        discipline: mode,
+        firstTo: firstTo,
+        winner: undefined,
+        points: { home: 0, guest: 0 },
+        pocketPoints: { home: 0, guest: 0 },
+    };
+}) as Match[];
 
-export default function Matchday() {
+export default function MatchdayView() {
+    const globalState = useContext(Context)[0];
     const theme = useTheme();
     const navigate = useNavigate();
+    const {id} = useParams();
 
-    const matches = [
-        ['14/1 endlos', false, 70],
-        ['8-Ball', false, 5],
-        ['9-Ball', false, 7],
-        ['10-Ball', false, 6],
-        ['9-Ball', true, 6],
-        ['10-Ball', true, 5],
-        ['14/1 endlos', false, 70],
-        ['8-Ball', false, 5],
-        ['9-Ball', false, 7],
-        ['10-Ball', false, 6],
-    ].map(([mode, team, firstTo], i) => {
-        return {
-            id: i.toString(),
-            players: {
-                home: [],
-                guest: [],
-            },
-            team: team,
-            discipline: mode,
-            firstTo: firstTo,
-            winner: undefined,
-            points: { home: 0, guest: 0 },
-            pocketPoints: { home: 0, guest: 0 },
-        };
-    }) as Match[];
+    const matchday = globalState.matchdays.find(m => m.id === id)
+        || {...initialState, id} as Matchday;
+    const [state, dispatch] = useReducer(reducer, matchday);
+
+    const date = dayjs(state.startTime).format("YYYY-MM-DD");
+    const setDate = (v: string) => {
+        dispatch({type: 'set_start_time', value: v});
+    };
 
     const steps=[
         {
             label: 'Allgemein',
-            /*TODO: add liga select -> set remaining template*/
-            content: [
+            content: <>
                 <Stack key={'date'} direction="row" alignItems="center">
                     <FormField
                         label="Datum"
                         type="date"
-                        value={"2022-08-01"}
-                        sx={{width: '100%'}}
+                        value={date}
+                        onChange={setDate}
                     />
-                </Stack>,
-                <Stack key={'league'} direction="row" alignItems="center">
+                </Stack>
+                <Stack direction="row" alignItems="center">
                     <FormField
                         label="Liga"
                         type="select"
-                        value={""}
                         options={['Oberliga', 'Verbandsliga', 'Landesliga', 'Bezirksliga', 'Kreisliga', 'Kreisklasse']}
-                        sx={{width: '100%'}}
+                        value={state.league || ''}
+                        onChange={(v) => {
+                            dispatch({type: 'set_league', value: v});
+                        }}
                     />
-                </Stack>,
-                <Stack key={'names'} direction="row" alignItems="center">
+                </Stack>
+                <Stack direction="row" alignItems="center">
                     <FormField
                         label="Heimmannschaft"
-                        value={"BC73 Pfeffenhausen 2"}
-                        sx={{width: '100%'}}
+                        value={state.teams.home}
+                        onChange={(v) => {
+                            dispatch({type: 'set_team_home', value: v});
+                        }}
                     />
                     <FormField
                         label="Gastmannschaft"
-                        value={"BC Ingolstadt 1"}
-                        sx={{width: '100%'}}
+                        value={state.teams.guest}
+                        onChange={(v) => {
+                            dispatch({type: 'set_team_guest', value: v});
+                        }}
                     />
                 </Stack>
-            ],
+            </>,
         },
         {
             label: 'Durchgang #1',
-            content: [
-                <MatchRow key={0} {...matches[0]} />,
-                <MatchRow key={1} {...matches[1]} />,
-                <MatchRow key={2} {...matches[2]} />,
-                <MatchRow key={3} {...matches[3]} />,
-            ],
+            content: <>
+                <MatchForm match={matches[0]} />
+                <MatchForm match={matches[1]} />
+                <MatchForm match={matches[2]} />
+                <MatchForm match={matches[3]} />
+            </>,
         },
         {
             label: 'Durchgang #2',
-            content: [
-                <MatchRow key={4} {...matches[4]} />,
-                <MatchRow key={5} {...matches[5]} />,
-            ],
+            content: <>
+                <MatchForm match={matches[4]} />
+                <MatchForm match={matches[5]} />
+            </>,
         },
         {
             label: 'Durchgang #3',
-            content: [
-                <MatchRow key={6} {...matches[6]} />,
-                <MatchRow key={7} {...matches[7]} />,
-                <MatchRow key={8} {...matches[8]} />,
-                <MatchRow key={9} {...matches[9]} />,
-            ],
+            content: <>
+                <MatchForm match={matches[6]} />
+                <MatchForm match={matches[7]} />
+                <MatchForm match={matches[8]} />
+                <MatchForm match={matches[9]} />
+            </>,
         },
         {
             label: 'Ergebnis',
-            content: [
+            content: (
                 <Stack
-                    key={'result'}
                     direction={{ xs: 'column', md: 'row' }}
                     alignItems="center"
                     justifyContent="space-between"
@@ -181,7 +130,7 @@ export default function Matchday() {
                 >
                     <TimePicker
                         label="Spielende"
-                        value={null}
+                        value={state.endTime}
                         onChange={(newValue) => {
                             if (dayjs(newValue).isValid())
                                 console.log(dayjs(newValue).format("HH:mm"));
@@ -190,7 +139,7 @@ export default function Matchday() {
                         />
                     <Typography variant='h6'>Endergebnis: 6 - 4</Typography>
                 </Stack>
-            ],
+            ),
         },
     ];
 
@@ -232,8 +181,8 @@ export default function Matchday() {
                         size="small"
                         onClick={handleBack}
                     >
-                        {activeStep > 0 ? 'Zurück' : 'Abbrechen'}
                         {activeStep > 0 ? <KeyboardArrowLeft/>: null}
+                        {activeStep > 0 ? 'Zurück' : 'Abbrechen'}
                     </Button>
                 }
             />
