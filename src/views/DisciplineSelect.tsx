@@ -10,7 +10,7 @@ const styles = {
 function DisciplineSelect() {
     return (
     <Layout title="Freies Spiel" fullwidth>
-        <Grid container alignItems="center" spacing={2} justifyContent="space-evenly" height="100vh">
+        <Grid container alignItems="center" spacing={2} justifyContent="space-evenly" height="100%">
             <Grid item>
                 <Button variant="contained" component={Link} to={"/game"} style={styles}>
                     8/9/10 Ball
