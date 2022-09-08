@@ -158,7 +158,7 @@ function Game() {
         <Grid container justifyContent="center">
             <Grid item textAlign="center" width="100%">
                 <Typography variant="h3" sx={{ mb: 4 }}>
-                    Verbleibende Kugeln:
+                    Anzahl verbleibender Kugeln:
                 </Typography>
                 {range(1, 16).map(i =>  {
                     const enabled = i <= state.remaining_balls;
