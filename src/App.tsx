@@ -1,11 +1,10 @@
 import { CssBaseline, ThemeProvider, createTheme, } from '@mui/material';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import { Store } from './store/Store';
 import ErrorPage from './views/ErrorPage';
-import DisciplineSelect from './views/DisciplineSelect';
 import Game from './views/Game';
 import Game14 from './views/Game14';
 import Tables from './views/Tables';
@@ -25,7 +24,7 @@ function Router() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
-          <Route path="/" element={<DisciplineSelect/>} />
+          <Route path="/" element={<Navigate to="/game" replace={true}/>}/>
           <Route path="/game" element={<Game/>} />
           <Route path="/game14" element={<Game14/>} />
           {isAdmin ? <Route path="/club" element={<Club/>} /> : null}

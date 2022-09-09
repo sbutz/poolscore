@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Link } from "react-router-dom";
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemButton,
     ListItemText, Divider, useTheme} from '@mui/material'
-import { CalendarMonth, Groups, SportsEsports, TableRestaurant } from '@mui/icons-material';
+import { CalendarMonth, Games, Groups, SportsEsports, TableRestaurant } from '@mui/icons-material';
 
 interface AppDrawerProps {
     open: boolean;
@@ -53,11 +53,19 @@ export default memo(function AppDrawer(props: AppDrawerProps) {
                 <Divider/>
             </> : null}
             <ListItem disablePadding>
-                <ListItemButton component={Link} to={"/"}>
+                <ListItemButton component={Link} to={"/game"}>
                     <ListItemIcon>
                         <SportsEsports />
                     </ListItemIcon>
-                    <ListItemText primary={'Freies Spiel'} />
+                    <ListItemText primary={'8/9/10-Ball'} />
+                </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+                <ListItemButton component={Link} to={"/game14"}>
+                    <ListItemIcon>
+                        <Games />
+                    </ListItemIcon>
+                    <ListItemText primary={'14/1 endlos'} />
                 </ListItemButton>
             </ListItem>
         </List>
