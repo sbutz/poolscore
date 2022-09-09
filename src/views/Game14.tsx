@@ -158,9 +158,22 @@ function Game() {
         <Grid container justifyContent="center">
             <Grid item textAlign="center" width="100%">
                 <Typography variant="h3" sx={{ mb: 4 }}>
-                    Anzahl verbleibender Kugeln:
+                    Restliche Kugeln:
                 </Typography>
-                {range(1, 16).map(i =>  {
+                <img
+                    src={`${process.env.PUBLIC_URL}/14+.svg`}
+                    alt={"+14"}
+                    style={{
+                        width: "6%",
+                    }}
+                    onClick={() => {
+                        dispatch?.({
+                            type: 'remaining_balls',
+                            remaining_balls: 1,
+                        });
+                    }}
+                />
+                {range(2, 16).map(i =>  {
                     const enabled = i <= state.remaining_balls;
                     return (
                         <img
