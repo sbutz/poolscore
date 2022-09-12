@@ -30,7 +30,7 @@ const initialState : State14 = {
 interface Action14 {
   //TODO: fixed strings
   type: string;
-  starting_player?: "home" | "guest";
+  player?: "home" | "guest";
   remaining_balls?: number;
 }
 const reducer = (state: State14, action: Action14) : State14 => {
@@ -45,9 +45,9 @@ const reducer = (state: State14, action: Action14) : State14 => {
       return {
         ...state,
         history,
-        playing: action.starting_player,
-        runs_home: action.starting_player === 'home' ? [new_run] : [],
-        runs_guest: action.starting_player === 'guest' ? [new_run] : [],
+        playing: action.player,
+        runs_home: action.player === 'home' ? [new_run] : [],
+        runs_guest: action.player === 'guest' ? [new_run] : [],
       };
     case 'remaining_balls':
       if (action.remaining_balls === undefined) {
@@ -115,8 +115,13 @@ const reducer = (state: State14, action: Action14) : State14 => {
 
         const isBreak = (state.runs_home.length + state.runs_guest.length) === 1; 
 
-        const update_runs2 = (active: Run[], passive: Run[]) => {
-          const last = active.at(-1)!;
+        const update_runs = (runs: Run[]) => {
+          const last = runs.at(-1)!;
+
+          // only one foul per run
+          if (last.foul)
+            return runs;
+
           const current = { ...last, foul: true};
           if (isBreak)
             current.points -= 2;
@@ -126,23 +131,34 @@ const reducer = (state: State14, action: Action14) : State14 => {
           // break foul does not count to 3-fouls
           // rack with 15 balls
           // current player performs new break
-          if (active.length >= 4 && active.at(-2)?.foul && active.at(-3)?.foul) {
+          if (runs.length >= 4 && runs.at(-2)?.foul && runs.at(-3)?.foul) {
             current.points -= 15;
             remaining_balls = 15;
           }
 
-          return [[...active.slice(0, -1), current], passive];
-        }
+          return [...runs.slice(0, -1), current];
+        };
 
-        let runs_home, runs_guest;
+        const update_fouls = (runs: Run[], fouls: number) => {
+          const last = runs.at(-1)!;
+
+          // only one foul per run
+          if (last.foul)
+            return fouls;
+          else
+            return fouls + 1;
+        };
+
+        let runs_home = state.runs_home;
+        let runs_guest = state.runs_guest;
         let fouls_home = state.fouls_home;
         let fouls_guest = state.fouls_guest;
-        if (state.playing === 'home') {
-          [runs_home, runs_guest] = update_runs2(state.runs_home, state.runs_guest);
-          fouls_home = isBreak ? 0 : fouls_home + 1;
+        if (action.player === 'home') {
+          runs_home = update_runs(state.runs_home);
+          fouls_home = update_fouls(state.runs_home, fouls_home);
         } else {
-          [runs_guest, runs_home] = update_runs2(state.runs_guest, state.runs_home);
-          fouls_guest = isBreak ? 0 : fouls_guest + 1;
+          runs_guest = update_runs(state.runs_guest);
+          fouls_guest = update_fouls(state.runs_guest, fouls_guest);
         }
 
         return {

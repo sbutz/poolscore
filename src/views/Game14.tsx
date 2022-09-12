@@ -49,7 +49,7 @@ function Game() {
                     onClick={() => {
                         dispatch?.({
                             type: 'starting_player',
-                            starting_player: 'home',
+                            player: 'home',
                         });
                     }}
                 >
@@ -65,7 +65,7 @@ function Game() {
                     onClick={() => {
                         dispatch?.({
                             type: 'starting_player',
-                            starting_player: 'guest',
+                            player: 'guest',
                         });
                     }}
                 >
@@ -120,9 +120,10 @@ function Game() {
                     onClick={() => {
                         dispatch?.({
                             type: 'foul',
+                            player: 'home',
                         });
                     }}
-                    disabled={state.playing !== 'home'}
+                    disabled={state.runs_home.at(-1)?.foul}
                 >
                     Foul
                 </Button>
@@ -147,9 +148,10 @@ function Game() {
                     onClick={() => {
                         dispatch?.({
                             type: 'foul',
+                            player: 'guest',
                         });
                     }}
-                    disabled={state.playing !== 'guest'}
+                    disabled={state.runs_guest.at(-1)?.foul}
                 >
                     Foul
                 </Button>
