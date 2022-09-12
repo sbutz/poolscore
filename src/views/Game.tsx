@@ -1,6 +1,6 @@
-import { useReducer } from 'react';
+import { useReducer, useState } from 'react';
 import { Button, Grid, Stack, Typography, } from '@mui/material'
-import { Add, Remove, Undo, } from '@mui/icons-material';
+import { Add, PowerSettingsNew, Remove, Undo, } from '@mui/icons-material';
 
 import { reducer, initialState } from '../store/GameState';
 import Layout from '../components/Layout';
@@ -30,6 +30,7 @@ const RemoveButton = (props: ButtonProps) => (
 
 function Game() {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [showReset, setShowReset] = useState(false);
     const [showPrompt, confirmNavigation, cancelNavigation] =
       useCallbackPrompt(true);
 
@@ -38,7 +39,7 @@ function Game() {
     const guest_plus_one = () => { dispatch?.({type: "guest_plus_one"}); };
     const guest_minus_one = () => { dispatch?.({type: "guest_minus_one"}); };
 
-    const toolbar = (
+    const toolbar = <>
         <Button
             color="inherit"
             startIcon={<Undo/>}
@@ -46,7 +47,14 @@ function Game() {
         >
             Rückgängig
         </Button>
-    );
+        <Button
+            color="inherit"
+            startIcon={<PowerSettingsNew/>}
+            onClick={() => { setShowReset(true); }}
+        >
+            Neues Spiel
+        </Button>
+    </>;
 
     return (
     <Layout title="8/9/10-Ball" fullwidth toolbar={toolbar}>
@@ -91,15 +99,23 @@ function Game() {
             </Grid>
         </Stack>
         <AlertDialog
-            open={showPrompt as boolean}
-            title={"Zurück zur Startseite?"}
+            open={showPrompt as boolean || showReset}
+            title={showPrompt ? "Zurück zur Startseite?" : "Neues Spiel starten"}
             text={"Der aktuelle Spielstand geht dabei verloren."}
             cancelText={"Abbrechen"}
-            onCancel={()=> { (cancelNavigation as (() => void))(); }}
+            onCancel={()=> {
+                if (showPrompt)
+                    (cancelNavigation as (() => void))();
+                else
+                    setShowReset(false);
+            }}
             acceptText={"Ok"}
             onAccept={() => {
                 dispatch?.({type: 'reset_score'});
-                (confirmNavigation as (() => void))();
+                if (showPrompt)
+                    (confirmNavigation as (() => void))();
+                else
+                    setShowReset(false);
             }}
         />
     </Layout>
