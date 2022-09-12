@@ -21,9 +21,12 @@ export function useCallbackPrompt(when: boolean): (boolean | (() => void))[] {
   const handleBlockedNavigation = useCallback(
     (nextLocation: any) => {
         // in if condition we are checking next location and current location are equals or not
+      let nextPath = nextLocation.location.pathname;
+      if (nextPath.startsWith(process.env.PUBLIC_URL))
+        nextPath = nextPath.slice(process.env.PUBLIC_URL.length);
       if (
         !confirmedNavigation &&
-        nextLocation.location.pathname !== location.pathname
+        nextPath !== location.pathname
       ) {
         setShowPrompt(true);
         setLastLocation(nextLocation);
