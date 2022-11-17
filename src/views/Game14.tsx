@@ -144,7 +144,7 @@ function Game() {
                         Aufnahme: {state.runs_guest.length}
                     </Typography>
                     <Typography variant="h5" sx={{
-                        color: state.fouls_home === 1 ?
+                        color: state.fouls_guest === 1 ?
                             'warning.main' : (state.fouls_guest > 1 ? 'error.main' : 'inherit')
                     }}>
                         Fouls: {state.fouls_guest}
