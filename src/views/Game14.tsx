@@ -35,7 +35,7 @@ function Game() {
         <Button
             color="inherit"
             startIcon={<Undo/>}
-            onClick={() => { dispatch?.({type: 'rollback'}); }}
+            onClick={() => { dispatch?.({type: 'ROLLBACK'}); }}
         >
             Rückgängig
         </Button>
@@ -56,7 +56,7 @@ function Game() {
                     sx={{ fontSize: "3rem" }}
                     onClick={() => {
                         dispatch?.({
-                            type: 'starting_player',
+                            type: 'SET_STARTING_PLAYER',
                             player: 'home',
                         });
                     }}
@@ -72,7 +72,7 @@ function Game() {
                     sx={{ fontSize: "3rem" }}
                     onClick={() => {
                         dispatch?.({
-                            type: 'starting_player',
+                            type: 'SET_STARTING_PLAYER',
                             player: 'guest',
                         });
                     }}
@@ -88,10 +88,10 @@ function Game() {
             <Grid item xs={5} textAlign="center">
                 <Typography
                     variant="h1"
-                    sx={state.playing === 'home' ?
+                    sx={state.activePlayer === 'home' ?
                         {...scoreSx, ...activeSx} : scoreSx}
                 >
-                    {state.score_home}
+                    {state.scoreHome}
                 </Typography>
             </Grid>
             <Grid item xs={2} textAlign="center">
@@ -100,10 +100,10 @@ function Game() {
             <Grid item xs={5} textAlign="center">
                 <Typography
                     variant="h1"
-                    sx={state.playing === 'guest' ?
+                    sx={state.activePlayer === 'guest' ?
                         {...scoreSx, ...activeSx} : scoreSx}
                 >
-                    {state.score_guest}
+                    {state.scoreGuest}
                 </Typography>
             </Grid>
         </Grid>
@@ -113,13 +113,13 @@ function Game() {
             <Grid item xs={5} textAlign="center">
                 <Stack direction="row" spacing={2} justifyContent="center" pb={2}>
                     <Typography variant="h5">
-                        Aufnahme: {state.runs_home.length}
+                        Aufnahme: {state.runsHome.length}
                     </Typography>
                     <Typography variant="h5" sx={{
-                        color: state.fouls_home === 1 ?
-                            'warning.main' : (state.fouls_home > 1 ? 'error.main' : 'inherit')
+                        color: state.foulsHome === 1 ?
+                            'warning.main' : (state.foulsHome > 1 ? 'error.main' : 'inherit')
                     }}>
-                        Fouls: {state.fouls_home}
+                        Fouls: {state.foulsHome}
                     </Typography>
                 </Stack>
                 <Button
@@ -127,11 +127,11 @@ function Game() {
                     sx={{ fontSize: "2rem" }}
                     onClick={() => {
                         dispatch?.({
-                            type: 'foul',
+                            type: 'FOUL',
                             player: 'home',
                         });
                     }}
-                    disabled={state.runs_home.at(-1)?.foul}
+                    disabled={state.runsHome.at(-1) && state.runsHome.at(-1)!.fouls === 1}
                 >
                     Foul
                 </Button>
@@ -141,13 +141,13 @@ function Game() {
             <Grid item xs={5} textAlign="center">
                 <Stack direction="row" spacing={2} justifyContent="center" pb={2}>
                     <Typography variant="h5">
-                        Aufnahme: {state.runs_guest.length}
+                        Aufnahme: {state.runsGuest.length}
                     </Typography>
                     <Typography variant="h5" sx={{
-                        color: state.fouls_guest === 1 ?
-                            'warning.main' : (state.fouls_guest > 1 ? 'error.main' : 'inherit')
+                        color: state.foulsGuest === 1 ?
+                            'warning.main' : (state.foulsGuest > 1 ? 'error.main' : 'inherit')
                     }}>
-                        Fouls: {state.fouls_guest}
+                        Fouls: {state.foulsGuest}
                     </Typography>
                 </Stack>
                 <Button
@@ -155,11 +155,11 @@ function Game() {
                     sx={{ fontSize: "2rem" }}
                     onClick={() => {
                         dispatch?.({
-                            type: 'foul',
+                            type: 'FOUL',
                             player: 'guest',
                         });
                     }}
-                    disabled={state.runs_guest.at(-1)?.foul}
+                    disabled={state.runsGuest.at(-1) && state.runsGuest.at(-1)!.fouls === 1}
                 >
                     Foul
                 </Button>
@@ -178,13 +178,13 @@ function Game() {
                     }}
                     onClick={() => {
                         dispatch?.({
-                            type: 'remaining_balls',
-                            remaining_balls: 1,
+                            type: 'SET_REMAINING_BALLS',
+                            balls: 1,
                         });
                     }}
                 />
                 {range(2, 16).map(i =>  {
-                    const enabled = i <= state.remaining_balls;
+                    const enabled = i <= state.remainingBalls;
                     return (
                         <img
                             key={i}
@@ -198,8 +198,8 @@ function Game() {
                             onClick={() => {
                                 if (enabled)
                                     dispatch?.({
-                                        type: 'remaining_balls',
-                                        remaining_balls: i,
+                                        type: 'SET_REMAINING_BALLS',
+                                        balls: i,
                                     });
                             }}
                         />
@@ -216,7 +216,7 @@ function Game() {
                 <Grid item xs={5} textAlign="center">
                     <Typography
                         variant="h1"
-                        sx={state.playing === 'home' ? activeSx : null}
+                        sx={state.activePlayer === 'home' ? activeSx : null}
                     >
                         Heim
                     </Typography>
@@ -227,13 +227,13 @@ function Game() {
                 <Grid item xs={5} textAlign="center">
                     <Typography
                         variant="h1"
-                        sx={state.playing === 'guest' ? activeSx : null}
+                        sx={state.activePlayer === 'guest' ? activeSx : null}
                     >
                         Gast
                     </Typography>
                 </Grid>
             </Grid>
-            {state.playing === undefined ?
+            {state.activePlayer === undefined ?
                 startingPlayerSelect : <>{score}{buttons}</>}
             {/*
             - foul anzeige
@@ -253,7 +253,7 @@ function Game() {
             }}
             acceptText={"Ok"}
             onAccept={() => {
-                dispatch?.({type: 'reset'});
+                dispatch?.({type: 'RESET'});
                 if (showPrompt)
                     (confirmNavigation as (() => void))();
                 else
