@@ -34,16 +34,16 @@ function Game() {
     const [showPrompt, confirmNavigation, cancelNavigation] =
       useCallbackPrompt(true);
 
-    const home_plus_one = () => { dispatch?.({type: "home_plus_one"}); };
-    const home_minus_one = () => { dispatch?.({type: "home_minus_one"}); };
-    const guest_plus_one = () => { dispatch?.({type: "guest_plus_one"}); };
-    const guest_minus_one = () => { dispatch?.({type: "guest_minus_one"}); };
+    const homePlusOne = () => { dispatch?.({type: "HOME_PLUS_ONE"}); };
+    const homeMinusOne = () => { dispatch?.({type: "HOME_MINUS_ONE"}); };
+    const guestPlusOne = () => { dispatch?.({type: "GUEST_PLUS_ONE"}); };
+    const guestMinusOne = () => { dispatch?.({type: "GUEST_MINUS_ONE"}); };
 
     const toolbar = <>
         <Button
             color="inherit"
             startIcon={<Undo/>}
-            onClick={() => { dispatch?.({type: 'rollback_score'}); }}
+            onClick={() => { dispatch?.({type: 'ROLLBACK'}); }}
         >
             Rückgängig
         </Button>
@@ -71,30 +71,30 @@ function Game() {
                 </Grid>
             </Grid>
             <Grid container justifyContent="center">
-                <Grid item xs={5} textAlign="center" onClick={home_plus_one}>
+                <Grid item xs={5} textAlign="center" onClick={homePlusOne}>
                     <Typography variant="h1" sx={scoreSx}>
-                        {state.score_home}
+                        {state.scoreHome}
                     </Typography>
                 </Grid>
                 <Grid item xs={2} textAlign="center">
                     <Typography variant="h1" sx={scoreSx}>:</Typography>
                 </Grid>
-                <Grid item xs={5} textAlign="center" onClick={guest_plus_one}>
+                <Grid item xs={5} textAlign="center" onClick={guestPlusOne}>
                     <Typography variant="h1" sx={scoreSx}>
-                        {state.score_guest}
+                        {state.scoreGuest}
                     </Typography>
                 </Grid>
             </Grid>
             <Grid container justifyContent="center" mb="2em">
                 <Grid item xs={5} textAlign="center">
-                    <AddButton onClick={home_plus_one}/>
-                    <RemoveButton onClick={home_minus_one}/>
+                    <AddButton onClick={homePlusOne}/>
+                    <RemoveButton onClick={homeMinusOne}/>
                 </Grid>
                 <Grid item xs={2} textAlign="center">
                 </Grid>
                 <Grid item xs={5} textAlign="center">
-                    <AddButton onClick={guest_plus_one}/>
-                    <RemoveButton onClick={guest_minus_one}/>
+                    <AddButton onClick={guestPlusOne}/>
+                    <RemoveButton onClick={guestMinusOne}/>
                 </Grid>
             </Grid>
         </Stack>
@@ -111,7 +111,7 @@ function Game() {
             }}
             acceptText={"Ok"}
             onAccept={() => {
-                dispatch?.({type: 'reset_score'});
+                dispatch?.({type: 'RESET'});
                 if (showPrompt)
                     (confirmNavigation as (() => void))();
                 else

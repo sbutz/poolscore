@@ -1,37 +1,38 @@
 interface State {
-    score_home: number;
-    score_guest: number;
-    history: Array<Object>;
+    actions: Action[];
+    scoreHome: number;
+    scoreGuest: number;
 }
-const initialState : State = {
-  score_home: 0,
-  score_guest: 0,
-  history: [],
+const initialState = {
+  actions: [] as Action[],
+  scoreHome: 0,
+  scoreGuest: 0,
 };
 
 interface Action {
-    type: 'home_plus_one' | 'home_minus_one' | 'guest_plus_one' |
-      'guest_minus_one' | 'rollback_score' | 'reset_score';
+    type: 'HOME_PLUS_ONE'
+      | 'HOME_MINUS_ONE'
+      | 'GUEST_PLUS_ONE'
+      | 'GUEST_MINUS_ONE'
+      | 'ROLLBACK'
+      | 'RESET';
 }
 const reducer = (state: State, action: Action) : State => {
-  let {history, ...rest} = state;
-  history =  [...history, rest]
+  const actions = [...state.actions, action];
 
   switch (action.type) {
-    case 'home_plus_one':
-      return {...state, history, score_home: state.score_home+1};
-    case 'home_minus_one':
-      return {...state, history, score_home: Math.max(0, state.score_home-1)};
-    case 'guest_plus_one':
-      return {...state, history, score_guest: state.score_guest+1};
-    case 'guest_minus_one':
-      return {...state, history, score_guest: Math.max(0, state.score_guest-1)};
-    case 'rollback_score':
-      return {...state, history: history.slice(0, -2), ...history.at(-2)};
-    case 'reset_score':
+    case 'HOME_PLUS_ONE':
+      return {...state, actions, scoreHome: state.scoreHome+1};
+    case 'HOME_MINUS_ONE':
+      return {...state, actions, scoreHome: Math.max(0, state.scoreHome-1)};
+    case 'GUEST_PLUS_ONE':
+      return {...state, actions, scoreGuest: state.scoreGuest+1};
+    case 'GUEST_MINUS_ONE':
+      return {...state, actions, scoreGuest: Math.max(0, state.scoreGuest-1)};
+    case 'ROLLBACK':
+      return state.actions.slice(0, -1).reduce((acc, a) => reducer(acc, a), initialState);
+    case 'RESET':
       return initialState;
-    default:
-        throw Error(`Unknown action type: ${action.type}`);
   }
 };
 
