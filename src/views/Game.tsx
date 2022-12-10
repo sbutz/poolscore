@@ -63,8 +63,7 @@ function Game() {
                 <Grid item xs={5} textAlign="center">
                     <Typography variant="h1">Heim</Typography>
                 </Grid>
-                <Grid item xs={2} textAlign="center">
-                    <Typography variant="h1">vs</Typography>
+                <Grid item xs={2}>
                 </Grid>
                 <Grid item xs={5} textAlign="center">
                     <Typography variant="h1">Gast</Typography>
