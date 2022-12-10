@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with PhotoLine 23.02 (www.pl32.com) -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="65" height="65" viewBox="0 0 65 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg viewBox="0 0 65 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g id="layer1" transform="matrix(1 0 0 1 0 -987.362121)">
     <g id="path3336">
       <path stroke-width="0.66" fill="none" stroke="#000000" d="M0.7 1019.74 C0.7 1002.35 14.96 988.23 32.51 988.23 C50.05 988.23 64.31 1002.35 64.31 1019.74 C64.31 1037.12 50.05 1051.25 32.51 1051.25 C14.96 1051.25 0.7 1037.12 0.7 1019.74 Z"/>
@@ -10,15 +10,19 @@
       <path stroke-width="0.17" fill="#ffffff" fill-rule="evenodd" stroke="#000000" d="M15.44 1018.83 C15.44 1010.07 22.93 1002.95 32.15 1002.95 C41.38 1002.95 48.87 1010.07 48.87 1018.83 C48.87 1027.6 41.38 1034.72 32.15 1034.72 C22.93 1034.72 15.44 1027.6 15.44 1018.83 Z"/>
     </g>
     <g id="tspan3344" transform="matrix(1.013137 0 0 0.987034 15.919655 1011.155273)">
-      <g transform="matrix(1 0 0 1 -0 2.242503)">
-        <text kerning="0" font-family="Arial" font-weight="700" font-size="16">
-          <tspan x="0" y="11.65">+</tspan>
-        </text>
+      <g transform="matrix(1 0 0 1 0 2.242503)">
+        <g transform="matrix(1 0 0 1 0 0.001562)">
+          <text kerning="0" font-family="Arial" font-weight="700" font-size="16">
+            <tspan x="0" y="11.65">+</tspan>
+          </text>
+        </g>
       </g>
-      <g transform="matrix(1 0 0 1 9.77 0.440026)">
-        <text kerning="0" font-family="Arial" font-weight="700" font-size="19">
-          <tspan x="0" y="13.83">14</tspan>
-        </text>
+      <g transform="matrix(1 0 0 1 9.770001 0.440026)">
+        <g transform="matrix(1 0 0 1 0 -0.00252)">
+          <text kerning="0" font-family="Arial" font-weight="700" font-size="19">
+            <tspan x="0" y="13.83">14</tspan>
+          </text>
+        </g>
       </g>
     </g>
     <g id="a4153" transform="matrix(0.660883 0 0 0.657202 -0.849268 987.013)">

@@ -7,6 +7,7 @@ import Layout from '../components/Layout';
 import { useCallbackPrompt } from '../util/useCallbackPrompt';
 import AlertDialog from '../components/AlertDialog';
 import BorderBox from '../components/BorderBox';
+import { Balls } from '../assets/Balls';
 
 function Game() {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -126,28 +127,30 @@ function Game() {
             <BorderBox label="Anzahl verbleibender Kugeln">
                 {BALLS.map(i =>  {
                     const enabled = i <= state.remainingBalls;
-                    const name = i === 1 ? '14+' : `${i}B`;
-                    return <>
-                        <img
+                    const Image = Balls[i-1];
+                    return (
+                        <div
                             key={i}
-                            src={`${process.env.PUBLIC_URL}/${name}.svg`}
-                            alt={name}
                             style={{
+                                display: 'inline-block',
                                 marginRight: 6,
                                 marginLeft: 6,
-                                width: "5rem",
                                 filter: enabled ?  "none" : "grayscale(100%)",
                                 opacity: enabled ? "100%" : "10%",
+                                width: "5rem",
                             }}
-                            onClick={() => {
-                                if (enabled)
-                                    dispatch?.({
-                                        type: 'SET_REMAINING_BALLS',
-                                        balls: i,
-                                    });
-                            }}
-                        />
-                    </>;
+                        >
+                            <Image
+                                onClick={() => {
+                                    if (enabled)
+                                        dispatch?.({
+                                            type: 'SET_REMAINING_BALLS',
+                                            balls: i,
+                                        });
+                                }}
+                            />
+                        </div>
+                    );
                 })}
             </BorderBox>
         </Grid>
