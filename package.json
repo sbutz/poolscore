@@ -42,8 +42,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "firebase": "firebase emulators:start --import=./firebase.data --export-on-exit",
+    "start": "firebase emulators:exec --import ./firebase.data 'react-scripts start'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
