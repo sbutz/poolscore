@@ -51,9 +51,17 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+      "airbnb",
+      "airbnb-typescript",
+      "airbnb/hooks",
+      "plugin:react/jsx-runtime"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "no-console": "warn"
+    }
   },
   "browserslist": {
     "production": [
@@ -66,5 +74,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0"
   }
 }
