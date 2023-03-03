@@ -1,4 +1,4 @@
-/* 
+/*
  * Stolen from https://github.com/Bilal-Bangash/detecting-route-change-react-route-dom-v6
  */
 import * as React from 'react';

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* 
+/*
  * Stolen from https://github.com/Bilal-Bangash/detecting-route-change-react-route-dom-v6
  */
 import { useCallback, useEffect, useState } from 'react';
@@ -20,13 +20,12 @@ export function useCallbackPrompt(when: boolean): (boolean | (() => void))[] {
   // handle blocking when user click on another route prompt will be shown
   const handleBlockedNavigation = useCallback(
     (nextLocation: any) => {
-        // in if condition we are checking next location and current location are equals or not
+      // in if condition we are checking next location and current location are equals or not
       let nextPath = nextLocation.location.pathname;
-      if (nextPath.startsWith(process.env.PUBLIC_URL))
-        nextPath = nextPath.slice(process.env.PUBLIC_URL.length);
+      if (nextPath.startsWith(process.env.PUBLIC_URL)) nextPath = nextPath.slice(process.env.PUBLIC_URL.length);
       if (
-        !confirmedNavigation &&
-        nextPath !== location.pathname
+        !confirmedNavigation
+        && nextPath !== location.pathname
       ) {
         setShowPrompt(true);
         setLastLocation(nextLocation);
@@ -45,8 +44,7 @@ export function useCallbackPrompt(when: boolean): (boolean | (() => void))[] {
   useEffect(() => {
     if (confirmedNavigation && lastLocation) {
       let target = lastLocation.location.pathname;
-      if (target.startsWith(process.env.PUBLIC_URL))
-        target = target.slice(process.env.PUBLIC_URL.length);
+      if (target.startsWith(process.env.PUBLIC_URL)) target = target.slice(process.env.PUBLIC_URL.length);
       navigate(target);
     }
   }, [confirmedNavigation, lastLocation]);

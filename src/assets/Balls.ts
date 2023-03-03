@@ -14,4 +14,4 @@ import { ReactComponent as B13 } from './13B.svg';
 import { ReactComponent as B14 } from './14B.svg';
 import { ReactComponent as B15 } from './15B.svg';
 
-export const Balls = [ B14p, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14, B15 ];
+export const Balls = [B14p, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14, B15];

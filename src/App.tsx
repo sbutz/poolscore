@@ -1,5 +1,7 @@
-import { CssBaseline, ThemeProvider, createTheme, } from '@mui/material';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import {
+  BrowserRouter, Routes, Route, Navigate,
+} from 'react-router-dom';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
@@ -23,18 +25,18 @@ function Router() {
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Routes>
-          <Route path="/" element={<Navigate to="/game" replace={true}/>}/>
-          <Route path="/game" element={<Game/>} />
-          <Route path="/game14" element={<Game14/>} />
-          {isAdmin ? <Route path="/club" element={<Club/>} /> : null}
-          {isAdmin ? <Route path="/tables" element={<Tables/>} /> : null}
-          {isAdmin ? <Route path="/matchday" element={<Matchdays/>} /> : null}
-          {isAdmin ? <Route path="/matchday/:id" element={<Matchday/>} /> : null}
-          <Route path="*" element={<ErrorPage/>} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Navigate to="/game" replace />} />
+        <Route path="/game" element={<Game />} />
+        <Route path="/game14" element={<Game14 />} />
+        {isAdmin ? <Route path="/club" element={<Club />} /> : null}
+        {isAdmin ? <Route path="/tables" element={<Tables />} /> : null}
+        {isAdmin ? <Route path="/matchday" element={<Matchdays />} /> : null}
+        {isAdmin ? <Route path="/matchday/:id" element={<Matchday />} /> : null}
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
 export default function App() {
