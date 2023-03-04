@@ -3,10 +3,10 @@
  * Stolen from https://github.com/Bilal-Bangash/detecting-route-change-react-route-dom-v6
  */
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import { useBlocker } from './useBlocker';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useBlocker from './useBlocker';
 
-export function useCallbackPrompt(when: boolean): (boolean | (() => void))[] {
+export default function useCallbackPrompt(when: boolean): (boolean | (() => void))[] {
   const navigate = useNavigate();
   const location = useLocation();
   const [showPrompt, setShowPrompt] = useState(false);
@@ -22,7 +22,9 @@ export function useCallbackPrompt(when: boolean): (boolean | (() => void))[] {
     (nextLocation: any) => {
       // in if condition we are checking next location and current location are equals or not
       let nextPath = nextLocation.location.pathname;
-      if (nextPath.startsWith(process.env.PUBLIC_URL)) nextPath = nextPath.slice(process.env.PUBLIC_URL.length);
+      if (nextPath.startsWith(process.env.PUBLIC_URL)) {
+        nextPath = nextPath.slice(process.env.PUBLIC_URL.length);
+      }
       if (
         !confirmedNavigation
         && nextPath !== location.pathname
@@ -44,7 +46,9 @@ export function useCallbackPrompt(when: boolean): (boolean | (() => void))[] {
   useEffect(() => {
     if (confirmedNavigation && lastLocation) {
       let target = lastLocation.location.pathname;
-      if (target.startsWith(process.env.PUBLIC_URL)) target = target.slice(process.env.PUBLIC_URL.length);
+      if (target.startsWith(process.env.PUBLIC_URL)) {
+        target = target.slice(process.env.PUBLIC_URL.length);
+      }
       navigate(target);
     }
   }, [confirmedNavigation, lastLocation]);

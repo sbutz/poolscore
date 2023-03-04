@@ -5,7 +5,7 @@ import {
   doc, collection, onSnapshot, addDoc, deleteDoc,
 } from 'firebase/firestore';
 
-import { db } from './Firebase';
+import db from './Firebase';
 import { Matchday } from './MatchdayState';
 
 export interface Pooltable {
@@ -137,8 +137,8 @@ export function Store({ children } : StoreProps) {
     const tableRef = collection(db, 'club', state.id, 'tables');
     return onSnapshot(tableRef, (snapshot) => {
       const tmp = [] as Pooltable[];
-      snapshot.forEach((doc) => {
-        tmp.push({ id: doc.id, name: doc.data().name });
+      snapshot.forEach((d) => {
+        tmp.push({ id: d.id, name: d.data().name });
       });
       dispatch({
         type: 'set_tables',

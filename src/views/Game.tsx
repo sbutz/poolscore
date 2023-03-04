@@ -8,7 +8,7 @@ import {
 
 import { reducer, initialState } from '../store/GameState';
 import Layout from '../components/Layout';
-import { useCallbackPrompt } from '../util/useCallbackPrompt';
+import useCallbackPrompt from '../util/useCallbackPrompt';
 import AlertDialog from '../components/AlertDialog';
 
 const scoreSx = {

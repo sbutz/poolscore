@@ -159,28 +159,34 @@ export default function MatchdayView() {
     },
     {
       label: 'Durchgang #1',
-      content: <>
-        <MatchForm match={matches[0]} />
-        <MatchForm match={matches[1]} />
-        <MatchForm match={matches[2]} />
-        <MatchForm match={matches[3]} />
-               </>,
+      content: (
+        <>
+          <MatchForm match={matches[0]} />
+          <MatchForm match={matches[1]} />
+          <MatchForm match={matches[2]} />
+          <MatchForm match={matches[3]} />
+        </>
+      ),
     },
     {
       label: 'Durchgang #2',
-      content: <>
-        <MatchForm match={matches[4]} />
-        <MatchForm match={matches[5]} />
-               </>,
+      content: (
+        <>
+          <MatchForm match={matches[4]} />
+          <MatchForm match={matches[5]} />
+        </>
+      ),
     },
     {
       label: 'Durchgang #3',
-      content: <>
-        <MatchForm match={matches[6]} />
-        <MatchForm match={matches[7]} />
-        <MatchForm match={matches[8]} />
-        <MatchForm match={matches[9]} />
-               </>,
+      content: (
+        <>
+          <MatchForm match={matches[6]} />
+          <MatchForm match={matches[7]} />
+          <MatchForm match={matches[8]} />
+          <MatchForm match={matches[9]} />
+        </>
+      ),
     },
     {
       label: 'Ergebnis',

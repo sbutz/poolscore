@@ -13,21 +13,23 @@ interface AlertDialogProps {
   onAccept: () => void;
 }
 
-function AlertDialog(props: AlertDialogProps) {
+function AlertDialog({
+  open, title, text, cancelText, onCancel, acceptText, onAccept,
+}: AlertDialogProps) {
   return (
-    <Dialog open={props.open}>
+    <Dialog open={open}>
       <DialogTitle>
-        {props.title}
+        {title}
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {props.text}
+          {text}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onCancel}>{props.cancelText}</Button>
-        <Button onClick={props.onAccept} autoFocus>
-          {props.acceptText}
+        <Button onClick={onCancel}>{cancelText}</Button>
+        <Button onClick={onAccept} autoFocus>
+          {acceptText}
         </Button>
       </DialogActions>
     </Dialog>

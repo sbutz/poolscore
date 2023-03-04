@@ -12,23 +12,25 @@ interface FormDialogProps {
   onSave: () => void;
 }
 
-export default function FormDialog(props: FormDialogProps) {
+export default function FormDialog({
+  open, title, children = null, onCancel, disableSave = false, onSave,
+}: FormDialogProps) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Dialog open={props.open} fullScreen={fullScreen} maxWidth="md">
+    <Dialog open={open} fullScreen={fullScreen} maxWidth="md">
       <DialogTitle>
-        {props.title}
+        {title}
       </DialogTitle>
       <DialogContent>
-        {props.children}
+        {children}
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onCancel}>Abbrechen</Button>
+        <Button onClick={onCancel}>Abbrechen</Button>
         <Button
-          onClick={props.onSave}
-          disabled={props.disableSave || false}
+          onClick={onSave}
+          disabled={disableSave}
         >
           Speichern
         </Button>

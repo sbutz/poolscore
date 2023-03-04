@@ -18,13 +18,13 @@ interface ResponsiveStepperProps {
   onSave?: () => void;
 }
 
-function MyMobileStepper(props : ResponsiveStepperProps) {
+function MyMobileStepper({
+  steps, onCancel = undefined, onSave = undefined,
+}: ResponsiveStepperProps) {
   const [activeStep, setActiveStep] = useState(0);
 
-  const { onCancel, onSave } = props;
-  const numSteps = props.steps.length;
   const isFirstStep = activeStep === 0;
-  const isLastStep = activeStep === numSteps - 1;
+  const isLastStep = activeStep === steps.length - 1;
 
   const handleNext = useCallback(() => {
     if (isLastStep) onSave?.();
@@ -37,7 +37,7 @@ function MyMobileStepper(props : ResponsiveStepperProps) {
 
   const stepper = useMemo(() => (
     <MobileStepper
-      steps={numSteps}
+      steps={steps.length}
       activeStep={activeStep}
       nextButton={(
         <Button size="small" onClick={handleNext}>
@@ -52,24 +52,26 @@ function MyMobileStepper(props : ResponsiveStepperProps) {
         </Button>
               )}
     />
-  ), [numSteps, activeStep, isFirstStep, isLastStep, handleBack, handleNext]);
+  ), [steps.length, activeStep, isFirstStep, isLastStep, handleBack, handleNext]);
 
   return (
     <>
-      <Layout nested title={props.steps[activeStep].label}>
-        {props.steps[activeStep].content}
+      <Layout nested title={steps[activeStep].label}>
+        {steps[activeStep].content}
       </Layout>
       {stepper}
     </>
   );
 }
 
-function MyDesktopStepper(props: ResponsiveStepperProps) {
+function MyDesktopStepper({
+  title, steps, onCancel = undefined, onSave = undefined,
+}: ResponsiveStepperProps) {
   return (
-    <Layout nested title={props.title}>
+    <Layout nested title={title}>
       <Stepper orientation="vertical">
         {/* TODO: optimize render of step away, requires const/memo steps */}
-        {props.steps.map((s) => (
+        {steps.map((s) => (
           <Step key={s.label} active>
             <StepLabel>{s.label}</StepLabel>
             <StepContent>{s.content}</StepContent>
@@ -77,10 +79,10 @@ function MyDesktopStepper(props: ResponsiveStepperProps) {
         ))}
       </Stepper>
       <Stack direction="row" justifyContent="center" spacing={3} sx={{ pt: 3 }}>
-        <Button variant="contained" onClick={props.onCancel}>
+        <Button variant="contained" onClick={onCancel}>
           Abbrechen
         </Button>
-        <Button variant="contained" onClick={props.onSave}>
+        <Button variant="contained" onClick={onSave}>
           Speichern
         </Button>
       </Stack>

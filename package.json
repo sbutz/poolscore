@@ -60,7 +60,11 @@
       "project": "./tsconfig.json"
     },
     "rules": {
-      "no-console": "warn"
+      "no-console": "warn",
+      "no-underscore-dangle": "off",
+      "react/require-default-props": [2, {
+        "functions": "defaultArguments"
+      }]
     }
   },
   "browserslist": {

@@ -5,7 +5,7 @@ interface BorderBoxProps {
   children: React.ReactNode;
 }
 
-export default function BorderBox(props: BorderBoxProps) {
+export default function BorderBox({ label, children }: BorderBoxProps) {
   const theme = useTheme();
 
   return (
@@ -21,7 +21,7 @@ export default function BorderBox(props: BorderBoxProps) {
           fontSize: '1.1em',
         }}
       >
-        {props.label}
+        {label}
       </FormLabel>
       <Box
         sx={{
@@ -32,7 +32,7 @@ export default function BorderBox(props: BorderBoxProps) {
           padding: '0.65em',
         }}
       >
-        {props.children}
+        {children}
       </Box>
     </div>
   );

@@ -77,11 +77,14 @@ function calculatePlayerState(runs: Array<Run>) : PlayerState {
   if (runs.length === 0) return { ...initialPlayerState };
 
   const score = runs.reduce((acc, r) => acc + r.balls - r.fouls, 0);
-  const highestScore = runs.reduce((acc, r) => Math.max(acc, r.balls - r.fouls), Number.NEGATIVE_INFINITY);
+  const highestScore = runs.reduce(
+    (acc, r) => Math.max(acc, r.balls - r.fouls),
+    Number.NEGATIVE_INFINITY,
+  );
   const averageScore = score / runs.length;
   let fouls = 0;
   for (const r of [...runs].reverse()) {
-    if (r.fouls % 2 === 1) fouls++;
+    if (r.fouls % 2 === 1) fouls += 1;
     if (r.fouls % 2 === 0 || r.balls > 0 || r.fouls > 1 || fouls === 3) break;
   }
 
@@ -92,6 +95,30 @@ function calculatePlayerState(runs: Array<Run>) : PlayerState {
     averageScore,
     fouls,
   };
+}
+
+export function isFoulPossible(state: State) {
+  if (!state.activePlayer) return false;
+
+  const { runs } = state[state.activePlayer];
+  const lastRun = { ...runs[runs.length - 1] };
+
+  return lastRun.fouls % 2 === 0;
+}
+
+export function isBreakFoulPossible(state: State) {
+  // Break foul situations:
+  // 1. on break: first run, balls = 15, fouls = 2*i
+  // 2. after 3 fouls: balls = 15, fouls = 16+2*i
+
+  if (!state.activePlayer) return false;
+
+  const { runs } = state[state.activePlayer];
+  const lastRun = runs[runs.length - 1];
+
+  return state.remainingBalls === 15
+    && lastRun.fouls % 2 === 0
+    && (state.home.runs.length + state.guest.runs.length === 1 || lastRun.fouls >= 16);
 }
 
 export function reducer(state: State, action: Action) : State {
@@ -189,28 +216,4 @@ export function reducer(state: State, action: Action) : State {
       return initialState;
     }
   }
-}
-
-export function isFoulPossible(state: State) {
-  if (!state.activePlayer) return false;
-
-  const { runs } = state[state.activePlayer];
-  const lastRun = { ...runs[runs.length - 1] };
-
-  return lastRun.fouls % 2 === 0;
-}
-
-export function isBreakFoulPossible(state: State) {
-  // Break foul situations:
-  // 1. on break: first run, balls = 15, fouls = 2*i
-  // 2. after 3 fouls: balls = 15, fouls = 16+2*i
-
-  if (!state.activePlayer) return false;
-
-  const { runs } = state[state.activePlayer];
-  const lastRun = runs[runs.length - 1];
-
-  return state.remainingBalls === 15
-    && lastRun.fouls % 2 === 0
-    && (state.home.runs.length + state.guest.runs.length === 1 || lastRun.fouls >= 16);
 }

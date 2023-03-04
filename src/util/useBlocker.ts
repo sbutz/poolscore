@@ -5,7 +5,7 @@ import * as React from 'react';
 import { UNSAFE_NavigationContext } from 'react-router-dom';
 import type { History, Blocker, Transition } from 'history';
 
-export function useBlocker(blocker: Blocker, when = true): void {
+export default function useBlocker(blocker: Blocker, when = true): void {
   const navigator = React.useContext(UNSAFE_NavigationContext)
     .navigator as History;
 

@@ -17,25 +17,28 @@ interface FormFieldProps {
   disabled?: boolean;
 }
 
-function FormFieldBuilder(props: FormFieldProps) {
-  const errorMsg = firstErrorMessage(props.value, props.validators || []);
-  switch (props.type) {
+function FormFieldBuilder({
+  label, type = 'text', value, options = [], onChange = undefined, validators = [], disabled = false,
+}: FormFieldProps) {
+  const errorMsg = firstErrorMessage(value, validators || []);
+  let field;
+  switch (type) {
     case 'select':
-      return (
+      field = (
         <FormControl fullWidth sx={{ mb: 3 }}>
-          <InputLabel id={props.label}>{props.label}</InputLabel>
+          <InputLabel id={label}>{label}</InputLabel>
           <Select
-            labelId={props.label}
-            value={props.value}
-            label={props.label}
-            onChange={(e) => { props.onChange?.(e.target.value); }}
+            labelId={label}
+            value={value}
+            label={label}
+            onChange={(e) => { onChange?.(e.target.value); }}
             fullWidth
           >
-            {props.options?.map((o) => (
+            {options?.map((o) => (
               <MenuItem
                 key={o}
                 value={o}
-                selected={o === props.value}
+                selected={o === value}
               >
                 {o}
               </MenuItem>
@@ -43,34 +46,36 @@ function FormFieldBuilder(props: FormFieldProps) {
           </Select>
         </FormControl>
       );
+      break;
     case 'date':
-      return (
+      field = (
         <DesktopDatePicker
-          label={props.label}
+          label={label}
           inputFormat="DD.MM.YYYY"
-          value={props.value}
+          value={value}
           onChange={(d) => {
-            if (d !== null && dayjs(d).isValid()) props.onChange?.(dayjs(d).format('YYYY-MM-DD'));
-            else props.onChange?.('');
+            if (d !== null && dayjs(d).isValid()) onChange?.(dayjs(d).format('YYYY-MM-DD'));
+            else onChange?.('');
           }}
           renderInput={(params) => (
             <TextField
               {...params}
-              disabled={props.disabled}
+              disabled={disabled}
               sx={{ mb: 3 }}
               fullWidth
             />
           )}
         />
       );
+      break;
     case 'time':
-      return (
+      field = (
         <Box sx={{ mb: 3, width: '100%' }}>
           <TimePicker
-            label={props.label}
-            value={props.value}
+            label={label}
+            value={value}
             onChange={(newValue) => {
-              if (dayjs(newValue).isValid()) props.onChange?.(dayjs(newValue).format('HH:mm'));
+              if (dayjs(newValue).isValid()) onChange?.(dayjs(newValue).format('HH:mm'));
             }}
             renderInput={(params) => (
               <TextField
@@ -78,30 +83,34 @@ function FormFieldBuilder(props: FormFieldProps) {
                 fullWidth
               />
             )}
-            disabled={props.disabled}
+            disabled={disabled}
           />
         </Box>
       );
+      break;
     case 'text':
     case 'number':
     default:
-      return (
+      field = (
         <TextField
-          type={props.type || 'text'}
-          label={props.label}
-          value={props.value}
-          onChange={(e) => { props.onChange?.(e.target.value); }}
+          type={type}
+          label={label}
+          value={value}
+          onChange={(e) => { onChange?.(e.target.value); }}
           helperText={errorMsg || ' '}
           error={errorMsg !== null}
-          disabled={props.disabled}
+          disabled={disabled}
           fullWidth
         />
       );
+      break;
   }
+
+  return (
+    <Box sx={{ pt: 1, px: 1, width: '100%' }}>
+      {field}
+    </Box>
+  );
 }
 
-export default memo((props : FormFieldProps) => (
-  <Box sx={{ pt: 1, px: 1, width: '100%' }}>
-    <FormFieldBuilder {...props} />
-  </Box>
-));
+export default memo(FormFieldBuilder);

@@ -18,7 +18,9 @@ interface LayoutProps {
 const backIcon = <ArrowBack />;
 const menuIcon = <MenuIcon />;
 
-export default function Layout(props : LayoutProps) {
+export default function Layout({
+  title, children, fullwidth = false, nested = false, toolbar = undefined,
+} : LayoutProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -30,11 +32,11 @@ export default function Layout(props : LayoutProps) {
     <Stack height="100vh">
       <Box sx={{ flexGrow: 0, flexShrink: 1, flexBasis: 'auto' }}>
         <Header
-          title={props.title}
-          onIconClick={props.nested ? goBack : toggleDrawer}
-          icon={props.nested ? backIcon : menuIcon}
+          title={title}
+          onIconClick={nested ? goBack : toggleDrawer}
+          icon={nested ? backIcon : menuIcon}
         >
-          {props.toolbar}
+          {toolbar}
         </Header>
         <AppDrawer
           open={open}
@@ -42,10 +44,10 @@ export default function Layout(props : LayoutProps) {
         />
       </Box>
       <Box sx={{ flexGrow: 1, flexShrink: 1, flexBasis: 'auto' }}>
-        {props.fullwidth ? props.children
+        {fullwidth ? children
           : (
             <Container maxWidth="md" sx={{ py: 5 }}>
-              {props.children}
+              {children}
             </Container>
           )}
       </Box>

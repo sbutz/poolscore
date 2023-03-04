@@ -10,7 +10,7 @@ import FormDialog from '../components/FormDialog';
 import FormField from '../components/FormField';
 import { firstErrorMessage, NotEmptyValidator, NotInValidator } from '../util/Validators';
 
-function Tables() {
+export default function Tables() {
   const [state, dispatch] = useContext(Context);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
@@ -85,5 +85,3 @@ function Tables() {
     </Layout>
   );
 }
-
-export default Tables;

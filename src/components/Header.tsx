@@ -10,7 +10,9 @@ interface HeaderProps {
   onIconClick?: () => void;
 }
 
-export default memo((props: HeaderProps) => {
+function Header({
+  title, children = null, icon, onIconClick = undefined,
+}: HeaderProps) {
   const theme = useTheme();
 
   return (
@@ -22,15 +24,17 @@ export default memo((props: HeaderProps) => {
           color="inherit"
           aria-label="menu"
           sx={{ mr: 2 }}
-          onClick={props.onIconClick}
+          onClick={onIconClick}
         >
-          {props.icon}
+          {icon}
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          {props.title}
+          {title}
         </Typography>
-        {props.children}
+        {children}
       </Toolbar>
     </AppBar>
   );
-});
+}
+
+export default memo(Header);
