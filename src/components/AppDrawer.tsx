@@ -14,7 +14,7 @@ interface AppDrawerProps {
 }
 
 // TODO: replace after implementing user management
-const isAdmin = false;
+const isAdmin = true;
 
 const drawerBoxSx = {
   width: 250,

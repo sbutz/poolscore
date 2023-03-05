@@ -215,5 +215,6 @@ export function reducer(state: State, action: Action) : State {
     case 'RESET': {
       return initialState;
     }
+    // no default
   }
 }

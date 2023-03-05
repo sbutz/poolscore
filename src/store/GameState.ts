@@ -17,7 +17,7 @@ interface Action {
   | 'ROLLBACK'
   | 'RESET';
 }
-const reducer = (state: State, action: Action) : State => {
+function reducer(state: State, action: Action) : State {
   const actions = [...state.actions, action];
 
   switch (action.type) {
@@ -33,7 +33,8 @@ const reducer = (state: State, action: Action) : State => {
       return state.actions.slice(0, -1).reduce((acc, a) => reducer(acc, a), initialState);
     case 'RESET':
       return initialState;
+    // no default
   }
-};
+}
 
 export { reducer, initialState };

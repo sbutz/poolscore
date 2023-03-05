@@ -18,7 +18,7 @@ import Balls from '../assets/Balls';
 interface PlayersProps {
   activePlayer: 'home' | 'guest' | undefined;
 }
-function Players(props: PlayersProps) {
+function Players({ activePlayer }: PlayersProps) {
   const theme = useTheme();
 
   return (
@@ -28,8 +28,8 @@ function Players(props: PlayersProps) {
           <ChevronRight
             sx={{
               marginLeft: `-${theme.typography.h1.fontSize}`,
-              opacity: props.activePlayer === 'home' ? 1 : 0.1,
-              color: props.activePlayer === 'home' ? 'error.main' : null,
+              opacity: activePlayer === 'home' ? 1 : 0.1,
+              color: activePlayer === 'home' ? 'error.main' : null,
               fontSize: theme.typography.h1.fontSize,
             }}
           />
@@ -43,8 +43,8 @@ function Players(props: PlayersProps) {
           <ChevronLeft
             sx={{
               marginRight: `-${theme.typography.h1.fontSize}`,
-              opacity: props.activePlayer === 'guest' ? 1 : 0.1,
-              color: props.activePlayer === 'guest' ? 'error.main' : null,
+              opacity: activePlayer === 'guest' ? 1 : 0.1,
+              color: activePlayer === 'guest' ? 'error.main' : null,
               fontSize: theme.typography.h1.fontSize,
             }}
           />
@@ -64,12 +64,12 @@ interface ScoreProps {
   home: number;
   guest: number;
 }
-function Score(props: ScoreProps) {
+function Score({ home, guest }: ScoreProps) {
   return (
     <Grid container justifyContent="center">
       <Grid item xs={5} textAlign="center">
         <Typography sx={scoreSx}>
-          {props.home}
+          {home}
         </Typography>
       </Grid>
       <Grid item xs={2} textAlign="center">
@@ -79,7 +79,7 @@ function Score(props: ScoreProps) {
       </Grid>
       <Grid item xs={5} textAlign="center">
         <Typography sx={scoreSx}>
-          {props.guest}
+          {guest}
         </Typography>
       </Grid>
     </Grid>
@@ -90,16 +90,16 @@ interface EndRunButtonProps {
   disabled: boolean;
   onClick: () => void;
 }
-function EndRunButton(props: EndRunButtonProps) {
+function EndRunButton({ disabled, onClick }: EndRunButtonProps) {
   const theme = useTheme();
 
   return (
     <Button
       color="success"
-      disabled={props.disabled}
+      disabled={disabled}
       sx={{ fontSize: theme.typography.h6.fontSize }}
       variant="contained"
-      onClick={props.onClick}
+      onClick={onClick}
     >
       Aufnahme
       <br />
@@ -112,7 +112,7 @@ interface FoulButtonProps {
   disabled: boolean;
   onClick: () => void;
 }
-function FoulButton(props: FoulButtonProps) {
+function FoulButton({ disabled, onClick }: FoulButtonProps) {
   const theme = useTheme();
 
   return (
@@ -120,14 +120,14 @@ function FoulButton(props: FoulButtonProps) {
       variant="contained"
       color="error"
       sx={{ fontSize: theme.typography.h6.fontSize }}
-      onClick={props.onClick}
-      disabled={props.disabled}
+      onClick={onClick}
+      disabled={disabled}
     >
       Foul
     </Button>
   );
 }
-function BreakFoulButton(props: FoulButtonProps) {
+function BreakFoulButton({ disabled, onClick }: FoulButtonProps) {
   const theme = useTheme();
 
   return (
@@ -135,8 +135,8 @@ function BreakFoulButton(props: FoulButtonProps) {
       variant="contained"
       color="error"
       sx={{ fontSize: theme.typography.h6.fontSize }}
-      onClick={props.onClick}
-      disabled={props.disabled}
+      onClick={onClick}
+      disabled={disabled}
     >
       Break
       <br />
@@ -148,10 +148,13 @@ function BreakFoulButton(props: FoulButtonProps) {
 interface PlayerStatisticsProps {
   state: PlayerState;
 }
-function PlayerStatistics(props: PlayerStatisticsProps) {
+function PlayerStatistics({ state }: PlayerStatisticsProps) {
   const theme = useTheme();
-  const color = props.state.fouls === 2
-    ? theme.palette.error.main : props.state.fouls === 1 ? theme.palette.warning.main : undefined;
+  const color = {
+    0: undefined,
+    1: theme.palette.warning.main,
+    2: theme.palette.error.main,
+  }[state.fouls];
   return (
     <BorderBox label="Statistik">
       <Stack direction="row" justifyContent="center" gap={2}>
@@ -160,11 +163,11 @@ function PlayerStatistics(props: PlayerStatisticsProps) {
             <tbody>
               <tr>
                 <td><Typography variant="h6">AN:</Typography></td>
-                <td><Typography variant="h6">{props.state.runs.length}</Typography></td>
+                <td><Typography variant="h6">{state.runs.length}</Typography></td>
               </tr>
               <tr>
                 <td><Typography variant="h6">HS:</Typography></td>
-                <td><Typography variant="h6">{props.state.highestScore}</Typography></td>
+                <td><Typography variant="h6">{state.highestScore}</Typography></td>
               </tr>
             </tbody>
           </table>
@@ -174,11 +177,11 @@ function PlayerStatistics(props: PlayerStatisticsProps) {
             <tbody>
               <tr>
                 <td><Typography variant="h6">GD:</Typography></td>
-                <td><Typography variant="h6">{props.state.averageScore.toFixed(2)}</Typography></td>
+                <td><Typography variant="h6">{state.averageScore.toFixed(2)}</Typography></td>
               </tr>
               <tr>
                 <td><Typography variant="h6" sx={{ color }}>Fouls:</Typography></td>
-                <td><Typography variant="h6" sx={{ color }}>{props.state.fouls}</Typography></td>
+                <td><Typography variant="h6" sx={{ color }}>{state.fouls}</Typography></td>
               </tr>
             </tbody>
           </table>

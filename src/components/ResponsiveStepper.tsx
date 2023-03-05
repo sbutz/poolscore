@@ -8,19 +8,27 @@ import { KeyboardArrowRight, KeyboardArrowLeft } from '@mui/icons-material';
 
 import Layout from './Layout';
 
+interface StepProp {
+  label: string;
+  content: ReactNode;
+}
+
 interface ResponsiveStepperProps {
   title: string;
-  steps: {
-    label: string;
-    content: ReactNode;
-  }[];
+  steps: StepProp[];
+  onCancel?: () => void;
+  onSave?: () => void;
+}
+
+interface MobileStepperProps {
+  steps: StepProp[];
   onCancel?: () => void;
   onSave?: () => void;
 }
 
 function MyMobileStepper({
   steps, onCancel = undefined, onSave = undefined,
-}: ResponsiveStepperProps) {
+}: MobileStepperProps) {
   const [activeStep, setActiveStep] = useState(0);
 
   const isFirstStep = activeStep === 0;
@@ -90,9 +98,18 @@ function MyDesktopStepper({
   );
 }
 
-export default function ResponsiveStepper(props: ResponsiveStepperProps) {
+export default function ResponsiveStepper({
+  title, steps, onCancel = undefined, onSave = undefined,
+}: ResponsiveStepperProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  return isMobile
-    ? <MyMobileStepper {...props} /> : <MyDesktopStepper {...props} />;
+  const Component = isMobile ? MyMobileStepper : MyDesktopStepper;
+  return (
+    <Component
+      title={title}
+      steps={steps}
+      onCancel={onCancel}
+      onSave={onSave}
+    />
+  );
 }

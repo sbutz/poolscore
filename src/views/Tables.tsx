@@ -80,7 +80,15 @@ export default function Tables() {
           });
         }}
       >
-        {fields.map((f) => <FormField key={f.label} {...f} />)}
+        {fields.map((f) => (
+          <FormField
+            key={f.label}
+            label={f.label}
+            value={f.value}
+            onChange={f.onChange}
+            validators={f.validators}
+          />
+        ))}
       </FormDialog>
     </Layout>
   );

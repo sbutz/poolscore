@@ -1,5 +1,5 @@
 import React, {
-  useEffect, createContext, Dispatch, useReducer,
+  useEffect, createContext, Dispatch, useReducer, useMemo, useCallback,
 } from 'react';
 import {
   doc, collection, onSnapshot, addDoc, deleteDoc,
@@ -109,7 +109,8 @@ const asyncReducer = async (dispatch: Dispatch<Action>, state: State, action: As
 };
 
 type AsyncDispatch<A> = (value: A) => Promise<void>;
-export const Context = createContext<[State, AsyncDispatch<AsyncAction>?]>([initialState]);
+type ContextType = [State, AsyncDispatch<AsyncAction>?];
+export const Context = createContext<ContextType>([initialState]);
 
 interface StoreProps {
   children: React.ReactNode;
@@ -117,9 +118,9 @@ interface StoreProps {
 export function Store({ children } : StoreProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const asyncDispatch = async (a: AsyncAction) => {
+  const asyncDispatch = useCallback(async (a: AsyncAction) => {
     asyncReducer(dispatch, state, a);
-  };
+  }, [dispatch, state]);
 
   useEffect(() => {
     const clubRef = doc(db, 'club', state.id);
@@ -147,8 +148,10 @@ export function Store({ children } : StoreProps) {
     });
   }, [state.id]);
 
+  const value = useMemo(() => [state, asyncDispatch] as ContextType, [state, asyncDispatch]);
+
   return (
-    <Context.Provider value={[state, asyncDispatch]}>
+    <Context.Provider value={value}>
       {children}
     </Context.Provider>
   );

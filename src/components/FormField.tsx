@@ -59,6 +59,7 @@ function FormFieldBuilder({
           }}
           renderInput={(params) => (
             <TextField
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...params}
               disabled={disabled}
               sx={{ mb: 3 }}
@@ -79,6 +80,7 @@ function FormFieldBuilder({
             }}
             renderInput={(params) => (
               <TextField
+                // eslint-disable-next-line react/jsx-props-no-spreading
                 {...params}
                 fullWidth
               />

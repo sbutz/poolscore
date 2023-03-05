@@ -72,7 +72,7 @@ export const initialState = {
 
 // TODO: interface per action type
 interface Action {
-  type: 'set_start_time' | 'set_league' | 'set_team_home' | 'set_team_guest';
+  type: 'set_start_time' | 'set_end_time' | 'set_league' | 'set_team_home' | 'set_team_guest';
   value: string;
 }
 
@@ -80,6 +80,8 @@ export function reducer(state: Matchday, action: Action) : Matchday {
   switch (action.type) {
     case 'set_start_time':
       return { ...state, startTime: dayjs(action.value).toDate() };
+    case 'set_end_time':
+      return { ...state, endTime: dayjs(action.value).toDate() };
     case 'set_league':
       return { ...state, league: action.value } as Matchday;
     case 'set_team_home':

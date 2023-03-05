@@ -21,16 +21,16 @@ const scoreSx = {
 interface ButtonProps {
   onClick: () => void;
 }
-function AddButton(props: ButtonProps) {
+function AddButton({ onClick }: ButtonProps) {
   return (
-    <Button variant="contained" color="success" sx={{ mx: 3 }} {...props}>
+    <Button variant="contained" color="success" sx={{ mx: 3 }} onClick={onClick}>
       <Add sx={{ fontSize: '5rem' }} />
     </Button>
   );
 }
-function RemoveButton(props: ButtonProps) {
+function RemoveButton({ onClick }: ButtonProps) {
   return (
-    <Button variant="contained" color="error" sx={{ mx: 3 }} {...props}>
+    <Button variant="contained" color="error" sx={{ mx: 3 }} onClick={onClick}>
       <Remove sx={{ fontSize: '5rem' }} />
     </Button>
   );

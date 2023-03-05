@@ -6,6 +6,7 @@ export const firstErrorMessage = (value: string, validators: Validator[]) => {
 };
 
 export function NotEmptyValidator(value: string) {
+  // eslint-disable-next-line react/destructuring-assignment
   return value.trim().length === 0 ? 'Darf nicht leer sein.' : null;
 }
 

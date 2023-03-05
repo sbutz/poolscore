@@ -10,7 +10,7 @@ export default function useBlocker(blocker: Blocker, when = true): void {
     .navigator as History;
 
   React.useEffect(() => {
-    if (!when) return;
+    if (!when) return undefined;
 
     const unblock = navigator.block((tx: Transition) => {
       const autoUnblockingTx = {

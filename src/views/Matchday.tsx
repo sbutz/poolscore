@@ -130,6 +130,9 @@ export default function MatchdayView() {
   const setDate = useCallback((v: string) => {
     dispatch({ type: 'set_start_time', value: v });
   }, []);
+  const setEndTime = useCallback((v: string) => {
+    dispatch({ type: 'set_end_time', value: v });
+  }, []);
   const setLeague = useCallback((v: string) => {
     dispatch({ type: 'set_league', value: v });
   }, []);
@@ -138,9 +141,6 @@ export default function MatchdayView() {
   }, []);
   const setTeamGuest = useCallback((v: string) => {
     dispatch({ type: 'set_team_guest', value: v });
-  }, []);
-  const setEndTime = useCallback((v: string) => {
-    console.log(v);
   }, []);
 
   const steps = [
