@@ -5,7 +5,7 @@ import {
   doc, collection, onSnapshot, addDoc, deleteDoc,
 } from 'firebase/firestore';
 
-import db from './Firebase';
+import { db } from './Firebase';
 import { Matchday } from './MatchdayState';
 
 export interface Pooltable {
@@ -122,6 +122,8 @@ export function Store({ children } : StoreProps) {
     asyncReducer(dispatch, state, a);
   }, [dispatch, state]);
 
+  const value = useMemo(() => [state, asyncDispatch] as ContextType, [state, asyncDispatch]);
+
   useEffect(() => {
     const clubRef = doc(db, 'club', state.id);
     return onSnapshot(clubRef, (snapshot) => {
@@ -147,8 +149,6 @@ export function Store({ children } : StoreProps) {
       });
     });
   }, [state.id]);
-
-  const value = useMemo(() => [state, asyncDispatch] as ContextType, [state, asyncDispatch]);
 
   return (
     <Context.Provider value={value}>
