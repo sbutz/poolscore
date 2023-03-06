@@ -17,6 +17,8 @@ interface Action {
   | 'ROLLBACK'
   | 'RESET';
 }
+
+// eslint-disable-next-line consistent-return
 function reducer(state: State, action: Action) : State {
   const actions = [...state.actions, action];
 
