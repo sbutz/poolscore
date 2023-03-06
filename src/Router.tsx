@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider,
 } from 'react-router-dom';
@@ -25,8 +26,19 @@ function RequireLogin({ children } : RequireProps) {
 }
 
 function RequireAdmin({ children } : RequireProps) {
-  const isAdmin = false;
+  const [user] = useAuthState(auth);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [claimLoading, setClaimLoading] = useState(true);
 
+  useEffect(() => {
+    if (!user) return;
+    user.getIdTokenResult().then((result) => {
+      setClaimLoading(false);
+      if (result.claims.role && result.claims.role === 'admin') setIsAdmin(true);
+    });
+  }, [user]);
+
+  if (claimLoading) return null;
   if (!isAdmin) return <Navigate to="/login" replace />;
 
   return <RequireLogin>{children}</RequireLogin>;
