@@ -83,10 +83,19 @@ function calculatePlayerState(runs: Array<Run>) : PlayerState {
   );
   const averageScore = score / runs.length;
   let fouls = 0;
-  for (const r of [...runs].reverse()) {
-    if (r.fouls % 2 === 1) fouls += 1;
-    if (r.fouls % 2 === 0 || r.balls > 0 || r.fouls > 1 || fouls === 3) break;
-  }
+
+  fouls = runs.reduce((acc, r) => {
+    // foul
+    if (r.fouls % 2 === 1) {
+      // reset after 3 fouls
+      if (acc === 2) return 1;
+      // default foul
+      return acc + 1;
+    }
+
+    // no foul or 3 fouls
+    return 0;
+  }, 0);
 
   return {
     runs,
