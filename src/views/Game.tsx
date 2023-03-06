@@ -39,7 +39,8 @@ function RemoveButton({ onClick }: ButtonProps) {
 function Game() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showReset, setShowReset] = useState(false);
-  const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(true);
+  const isBlocked = state.actions.length !== 0;
+  const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(isBlocked);
 
   const homePlusOne = () => { dispatch?.({ type: 'HOME_PLUS_ONE' }); };
   const homeMinusOne = () => { dispatch?.({ type: 'HOME_MINUS_ONE' }); };
