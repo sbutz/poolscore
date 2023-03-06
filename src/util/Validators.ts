@@ -1,18 +1,15 @@
 export type Validator = (value: string) => string | null;
 
 export const firstErrorMessage = (value: string, validators: Validator[]) => {
-    for (const v of validators)
-        if (v(value) !== null)
-            return v(value);
-    return null;
+  const error = validators.find((v) => v(value) !== null);
+  return error ? error(value) : null;
 };
 
-export const NotEmptyValidator = (value: string) => {
-    return value.trim().length === 0 ? "Darf nicht leer sein." : null;
-};
+export function NotEmptyValidator(value: string) {
+  // eslint-disable-next-line react/destructuring-assignment
+  return value.trim().length === 0 ? 'Darf nicht leer sein.' : null;
+}
 
-export const NotInValidator = (values: string[], error: string) => {
-    return function(value: string) {
-        return values.includes(value) ? error : null;
-    }
+export function NotInValidator(values: string[], error: string) {
+  return (value: string) => (values.includes(value) ? error : null);
 }

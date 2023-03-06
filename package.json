@@ -46,13 +46,31 @@
     "start": "firebase emulators:exec --import ./firebase.data 'react-scripts start'",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "lint": "eslint src/",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+      "airbnb",
+      "airbnb-typescript",
+      "airbnb/hooks",
+      "plugin:react/jsx-runtime"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "consistent-return": "warn",
+      "no-console": "warn",
+      "no-restricted-syntax": "warn",
+      "no-underscore-dangle": "off",
+      "react/require-default-props": [
+        2,
+        {
+          "functions": "defaultArguments"
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
@@ -65,5 +83,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0"
   }
 }

@@ -27,7 +27,7 @@ const initialPlayerState = {
 
 interface State {
   actions: Action[];
-  activePlayer: undefined | "home" | "guest";
+  activePlayer: undefined | 'home' | 'guest';
   remainingBalls: number;
   home: PlayerState,
   guest: PlayerState,
@@ -36,8 +36,8 @@ export const initialState : State = {
   actions: [],
   activePlayer: undefined,
   remainingBalls: 15,
-  home: { ...initialPlayerState},
-  guest: { ...initialPlayerState},
+  home: { ...initialPlayerState },
+  guest: { ...initialPlayerState },
 };
 
 interface SetActivePlayerAction {
@@ -67,25 +67,25 @@ interface ResetAction {
 }
 
 type Action = SetActivePlayerAction
-  | SetRemainingBallsAction
-  | BreakFoulAction
-  | FoulAction
-  | RollbackAction
-  | ResetAction;
+| SetRemainingBallsAction
+| BreakFoulAction
+| FoulAction
+| RollbackAction
+| ResetAction;
 
 function calculatePlayerState(runs: Array<Run>) : PlayerState {
-  if (runs.length === 0)
-    return { ...initialPlayerState };
+  if (runs.length === 0) return { ...initialPlayerState };
 
   const score = runs.reduce((acc, r) => acc + r.balls - r.fouls, 0);
-  const highestScore = runs.reduce((acc, r) => Math.max(acc, r.balls - r.fouls),  Number.NEGATIVE_INFINITY);
+  const highestScore = runs.reduce(
+    (acc, r) => Math.max(acc, r.balls - r.fouls),
+    Number.NEGATIVE_INFINITY,
+  );
   const averageScore = score / runs.length;
   let fouls = 0;
   for (const r of [...runs].reverse()) {
-    if (r.fouls % 2 === 1)
-      fouls++;
-    if (r.fouls % 2 === 0 || r.balls > 0 || r.fouls > 1 || fouls === 3)
-      break;
+    if (r.fouls % 2 === 1) fouls += 1;
+    if (r.fouls % 2 === 0 || r.balls > 0 || r.fouls > 1 || fouls === 3) break;
   }
 
   return {
@@ -97,13 +97,36 @@ function calculatePlayerState(runs: Array<Run>) : PlayerState {
   };
 }
 
+export function isFoulPossible(state: State) {
+  if (!state.activePlayer) return false;
+
+  const { runs } = state[state.activePlayer];
+  const lastRun = { ...runs[runs.length - 1] };
+
+  return lastRun.fouls % 2 === 0;
+}
+
+export function isBreakFoulPossible(state: State) {
+  // Break foul situations:
+  // 1. on break: first run, balls = 15, fouls = 2*i
+  // 2. after 3 fouls: balls = 15, fouls = 16+2*i
+
+  if (!state.activePlayer) return false;
+
+  const { runs } = state[state.activePlayer];
+  const lastRun = runs[runs.length - 1];
+
+  return state.remainingBalls === 15
+    && lastRun.fouls % 2 === 0
+    && (state.home.runs.length + state.guest.runs.length === 1 || lastRun.fouls >= 16);
+}
+
 export function reducer(state: State, action: Action) : State {
   switch (action.type) {
     case 'SET_ACTIVE_PLAYER': {
-      if (state.activePlayer === action.player)
-        throw Error(`It's already players ${action.player}'s turn.`);
+      if (state.activePlayer === action.player) throw Error(`It's already players ${action.player}'s turn.`);
 
-      const runs = [...state[action.player].runs, {...initialRun}];
+      const runs = [...state[action.player].runs, { ...initialRun }];
 
       return {
         ...state,
@@ -112,22 +135,21 @@ export function reducer(state: State, action: Action) : State {
         [action.player]: {
           ...calculatePlayerState(state[action.player].runs),
           runs,
-        }
+        },
       };
     }
     case 'SET_REMAINING_BALLS': {
-      if (!state.activePlayer)
-        throw Error('Starting player is not set.');
+      if (!state.activePlayer) throw Error('Starting player is not set.');
 
-      let runs = state[state.activePlayer].runs;
-      let lastRun = { ...runs[runs.length-1]};
+      let { runs } = state[state.activePlayer];
+      const lastRun = { ...runs[runs.length - 1] };
 
       // Action Reordering:
       // SET_REMAINING_BALLS after ...
       // - standard foul will be interpreted as balls before foul.
       // - severe foul will be interpreted as points after break.
       if (lastRun.fouls % 2 === 1) {
-        const lastAction = state.actions[state.actions.length-1];
+        const lastAction = state.actions[state.actions.length - 1];
         if (lastAction.type === 'FOUL') {
           const actions = [...state.actions.slice(0, -1), action, lastAction];
           return actions.reduce((acc, a) => reducer(acc, a), initialState);
@@ -135,13 +157,12 @@ export function reducer(state: State, action: Action) : State {
       }
 
       const diff = state.remainingBalls - action.balls;
-      if (diff < 0)
-        throw Error('Remaining balls must be less than last time.');
-      
+      if (diff < 0) throw Error('Remaining balls must be less than last time.');
+
       lastRun.balls += diff;
       runs = [...runs.slice(0, -1), lastRun];
 
-      const remainingBalls = action.balls === 1 ?  15 : action.balls;
+      const remainingBalls = action.balls === 1 ? 15 : action.balls;
 
       return {
         ...state,
@@ -150,36 +171,32 @@ export function reducer(state: State, action: Action) : State {
         [state.activePlayer]: calculatePlayerState(runs),
       };
     }
-    case 'BREAK_FOUL' : {
-      if (!state.activePlayer)
-        throw Error('Starting player is not set.');
-      if (!isBreakFoulPossible(state))
-        throw Error('Break foul can only occur on break or after 3 fouls.');
+    case 'BREAK_FOUL': {
+      if (!state.activePlayer) throw Error('Starting player is not set.');
+      if (!isBreakFoulPossible(state)) throw Error('Break foul can only occur on break or after 3 fouls.');
 
-      let runs = state[state.activePlayer].runs;
-      let lastRun = { ...runs[runs.length-1]};
-      lastRun.fouls += 2
+      let { runs } = state[state.activePlayer];
+      const lastRun = { ...runs[runs.length - 1] };
+      lastRun.fouls += 2;
       runs = [...runs.slice(0, -1), lastRun];
 
       return {
         ...state,
         actions: [...state.actions, action],
         [state.activePlayer]: calculatePlayerState(runs),
-      }
+      };
     }
     case 'FOUL': {
-      if (!state.activePlayer)
-        throw Error('Starting player is not set.');
-      if (!isFoulPossible)
-        throw Error('Only one standard foul per run can be commited.');
+      if (!state.activePlayer) throw Error('Starting player is not set.');
+      if (!isFoulPossible) throw Error('Only one standard foul per run can be commited.');
 
-      let runs = state[state.activePlayer].runs;
-      let lastRun = {...runs[runs.length-1]};
+      let { runs } = state[state.activePlayer];
+      const lastRun = { ...runs[runs.length - 1] };
       lastRun.fouls += 1;
       runs = [...runs.slice(0, -1), lastRun];
 
       // Severe foul
-      let remainingBalls = state.remainingBalls;
+      let { remainingBalls } = state;
       if (state[state.activePlayer].fouls === 2) {
         remainingBalls = 15;
         lastRun.fouls += 15;
@@ -190,7 +207,7 @@ export function reducer(state: State, action: Action) : State {
         actions: [...state.actions, action],
         remainingBalls,
         [state.activePlayer]: calculatePlayerState(runs),
-      }
+      };
     }
     case 'ROLLBACK': {
       return state.actions.slice(0, -1).reduce((acc, a) => reducer(acc, a), initialState);
@@ -198,31 +215,6 @@ export function reducer(state: State, action: Action) : State {
     case 'RESET': {
       return initialState;
     }
+    // no default
   }
-};
-
-export function isFoulPossible(state: State) {
-  if (!state.activePlayer)
-    return false;
-
-  const runs = state[state.activePlayer].runs;
-  const lastRun = {...runs[runs.length-1]};
-
-  return lastRun.fouls % 2 === 0;
-}
-
-export function isBreakFoulPossible(state: State) {
-  // Break foul situations:
-  // 1. on break: first run, balls = 15, fouls = 2*i
-  // 2. after 3 fouls: balls = 15, fouls = 16+2*i
-
-  if (!state.activePlayer)
-    return false;
-
-  let runs = state[state.activePlayer].runs;
-  let lastRun = runs[runs.length-1];
-
-  return state.remainingBalls === 15
-    && lastRun.fouls % 2 === 0
-    && (state.home.runs.length + state.guest.runs.length === 1 || lastRun.fouls >= 16);
 }
