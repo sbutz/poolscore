@@ -13,3 +13,8 @@ export function NotEmptyValidator(value: string) {
 export function NotInValidator(values: string[], error: string) {
   return (value: string) => (values.includes(value) ? error : null);
 }
+
+export function EmailValidator(value: string) {
+  // eslint-disable-next-line react/destructuring-assignment
+  return value.includes('@') ? null : 'Muss eine valide E-Mail Adresse sein.';
+}
