@@ -1,4 +1,4 @@
-import { ReactComponent as B14p } from './14+.svg';
+import { ReactComponent as B14p } from './14plus.svg';
 import { ReactComponent as B2 } from './2B.svg';
 import { ReactComponent as B3 } from './3B.svg';
 import { ReactComponent as B4 } from './4B.svg';
