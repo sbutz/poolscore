@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import {
-  BrowserRouter, Routes, Route, Navigate,
+  Route, Navigate, createBrowserRouter, createRoutesFromElements, RouterProvider,
 } from 'react-router-dom';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -23,9 +23,9 @@ const darkTheme = createTheme({
 function Router() {
   const isAdmin = true;
 
-  return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <Routes>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
         <Route path="/" element={<Navigate to="/game" replace />} />
         <Route path="/game" element={<Game />} />
         <Route path="/game14" element={<Game14 />} />
@@ -34,9 +34,14 @@ function Router() {
         {isAdmin ? <Route path="/matchday" element={<Matchdays />} /> : null}
         {isAdmin ? <Route path="/matchday/:id" element={<Matchday />} /> : null}
         <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </BrowserRouter>
+      </>,
+    ),
+    {
+      basename: process.env.PUBLIC_URL,
+    },
   );
+
+  return <RouterProvider router={router} />;
 }
 
 export default function App() {
