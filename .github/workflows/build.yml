@@ -6,9 +6,6 @@ on:
       - opened
       - synchronize
       - reopend
-  push:
-    branches:
-      - master
 
 jobs:
   build:

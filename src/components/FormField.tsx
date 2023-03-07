@@ -56,7 +56,7 @@ function FormFieldBuilder({
           inputFormat="DD.MM.YYYY"
           value={value}
           onChange={(d) => {
-            if (d !== null && dayjs(d).isValid()) onChange?.(dayjs(d).format('YYYY-MM-DD'));
+            if (d !== null && dayjs(d).isValid()) onChange?.(dayjs(d).format('YYYY-MM-DD HH:mm'));
             else onChange?.('');
           }}
           renderInput={(params) => (
@@ -77,8 +77,11 @@ function FormFieldBuilder({
           <TimePicker
             label={label}
             value={value}
+            ampm={false}
+            views={['hours', 'minutes']}
+            inputFormat="YYYY-MM-DD HH:mm"
             onChange={(newValue) => {
-              if (dayjs(newValue).isValid()) onChange?.(dayjs(newValue).format('HH:mm'));
+              if (dayjs(newValue).isValid()) onChange?.(dayjs(newValue).format('YYYY-MM-DD HH:mm'));
             }}
             renderInput={(params) => (
               <TextField

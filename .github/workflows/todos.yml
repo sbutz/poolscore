@@ -1,0 +1,21 @@
+name: Find ToDos
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopend
+
+jobs:
+  todo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find ToDos
+        run: |
+         if git grep -nEwi "TODO|FIXME|XXX" -- ':!.github/workflows/todos.yml'; then
+              exit 1
+         else
+             echo "All good"
+         fi

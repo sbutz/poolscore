@@ -70,7 +70,6 @@ export const initialState = {
   matches: [],
 } as Matchday;
 
-// TODO: interface per action type
 interface Action {
   type: 'set_start_time' | 'set_end_time' | 'set_league' | 'set_team_home' | 'set_team_guest';
   value: string;
