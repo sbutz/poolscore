@@ -57,7 +57,12 @@ const MatchdayFormStart = memo((props: MatchdayFormStartProps) => (
         value={props.date}
         onChange={props.onDateChange}
       />
-      {/* TODO: startTime */}
+      <FormField
+        label="Startzeit"
+        type="time"
+        value={props.date}
+        onChange={props.onDateChange}
+      />
     </Stack>
     <Stack direction="row" alignItems="center">
       <FormField
@@ -126,7 +131,7 @@ export default function MatchdayView() {
         || { ...initialState, id } as Matchday;
   const [state, dispatch] = useReducer(reducer, matchday);
 
-  const date = dayjs(state.startTime).format('YYYY-MM-DD');
+  const date = dayjs(state.startTime).format('YYYY-MM-DD HH:mm');
   const setDate = useCallback((v: string) => {
     dispatch({ type: 'set_start_time', value: v });
   }, []);

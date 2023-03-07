@@ -20,7 +20,6 @@ interface State {
   matchdays: Matchday[];
 }
 const initialState = {
-  // TODO: derive club id from login
   id: 'bc73',
   name: '',
   tables: [],
@@ -68,43 +67,49 @@ const initialState = {
   ],
 } as State;
 
-// TODO: different interface per action type
-interface Action {
-  type: 'set_name' | 'set_tables';
-  name?: string;
-  tables?: Pooltable[],
+interface SetNameAction {
+  type: 'set_name';
+  name: string;
 }
+interface SetTablesAction {
+  type: 'set_tables';
+  tables: Pooltable[];
+}
+type Action = SetNameAction | SetTablesAction;
+
 const reducer = (state: State, action: Action) : State => {
   switch (action.type) {
     case 'set_name':
       return { ...state, name: action.name! };
     case 'set_tables':
       return { ...state, tables: action.tables! };
-    default:
-      throw Error(`Unknown action type: ${action.type}`);
+    // no default
   }
 };
 
-// TODO: interface per async action type
-interface AsyncAction {
-  type: 'add_table' | 'delete_table';
-  tableName?: string;
-  tableId?: string;
+interface AddTableAction {
+  type: 'add_table';
+  name: string;
 }
+interface DeleteTableAction {
+  type: 'delete_table';
+  id: string;
+}
+type AsyncAction = AddTableAction | DeleteTableAction;
+
 const asyncReducer = async (dispatch: Dispatch<Action>, state: State, action: AsyncAction) => {
   switch (action.type) {
     case 'add_table': {
       const tableRef = collection(db, 'club', state.id, 'tables');
-      await addDoc(tableRef, { name: action.tableName! });
+      await addDoc(tableRef, { name: action.name });
       break;
     }
     case 'delete_table': {
-      const tableRef = doc(db, 'club', state.id, 'tables', action.tableId!);
+      const tableRef = doc(db, 'club', state.id, 'tables', action.id);
       await deleteDoc(tableRef);
       break;
     }
-    default:
-      throw Error(`Unknown action type: ${action.type}`);
+    // no default
   }
 };
 

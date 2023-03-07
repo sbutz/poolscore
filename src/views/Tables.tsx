@@ -56,7 +56,7 @@ export default function Tables() {
               <Button
                 color="primary"
                 onClick={() => {
-                  dispatch?.({ type: 'delete_table', tableId: t.id });
+                  dispatch?.({ type: 'delete_table', id: t.id });
                 }}
               >
                 Löschen
@@ -73,7 +73,7 @@ export default function Tables() {
         onSave={() => {
           dispatch?.({
             type: 'add_table',
-            tableName: name,
+            name,
           }).finally(() => {
             setOpen(false);
             setName('');

@@ -13,8 +13,7 @@ interface AppDrawerProps {
   onClose: () => void;
 }
 
-// TODO: replace after implementing user management
-const isAdmin = false;
+const hideAdminRoutes = true;
 
 const drawerBoxSx = {
   width: 250,
@@ -29,7 +28,7 @@ export default memo((props: AppDrawerProps) => {
       onClick={props.onClose}
     >
       <List>
-        {isAdmin ? (
+        {hideAdminRoutes ? (
           <>
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/club">

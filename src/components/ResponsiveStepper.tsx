@@ -78,7 +78,6 @@ function MyDesktopStepper({
   return (
     <Layout nested title={title}>
       <Stepper orientation="vertical">
-        {/* TODO: optimize render of step away, requires const/memo steps */}
         {steps.map((s) => (
           <Step key={s.label} active>
             <StepLabel>{s.label}</StepLabel>
