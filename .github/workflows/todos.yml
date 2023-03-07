@@ -8,7 +8,7 @@ on:
       - reopend
 
 jobs:
-  test:
+  todo:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
