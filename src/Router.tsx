@@ -49,8 +49,8 @@ export default function Router() {
     createRoutesFromElements(
       <>
         <Route path="/" element={<Navigate to="/game" replace />} />
-        <Route path="/game" element={<RequireLogin><Game /></RequireLogin>} />
-        <Route path="/game14" element={<RequireLogin><Game14 /></RequireLogin>} />
+        <Route path="/game" element={<Game />} />
+        <Route path="/game14" element={<Game14 />} />
         <Route path="/login" element={<Login />} />
         <Route path="/club" element={<RequireAdmin><Club /></RequireAdmin>} />
         <Route path="/tables" element={<RequireAdmin><Tables /></RequireAdmin>} />
