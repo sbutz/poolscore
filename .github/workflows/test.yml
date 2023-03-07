@@ -18,5 +18,4 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Run Tests
-        # TODO: should only pass if tests ran
-        run: npm test -- --passWithNoTests
+        run: npm test
