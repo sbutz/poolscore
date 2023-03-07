@@ -20,6 +20,11 @@ export default function Login() {
   ] = useSignInWithEmailAndPassword(auth);
   const onSubmit = () => signInWithEmailAndPassword(email, password);
 
+  const authValidator = () => {
+    if (error) return 'E-Mail oder Passwort falsch.';
+    return null;
+  };
+
   useEffect(() => {
     if (loading || error) return;
     if (user) navigate('/');
@@ -30,14 +35,14 @@ export default function Login() {
       label: 'E-Mail',
       value: email,
       onChange: setEmail,
-      validators: [NotEmptyValidator, EmailValidator],
+      validators: [NotEmptyValidator, EmailValidator, authValidator],
     },
     {
       label: 'Password',
       type: 'password' as FormFieldType,
       value: password,
       onChange: setPassword,
-      validators: [NotEmptyValidator],
+      validators: [NotEmptyValidator, authValidator],
     },
   ];
 
