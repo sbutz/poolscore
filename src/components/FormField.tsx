@@ -7,9 +7,11 @@ import { DesktopDatePicker, TimePicker } from '@mui/x-date-pickers';
 
 import { Validator, firstErrorMessage } from '../util/Validators';
 
+export type FormFieldType = 'text' | 'password' | 'number' | 'select' | 'date' | 'time';
+
 interface FormFieldProps {
   label: string;
-  type?: 'text' | 'number' | 'select' | 'date' | 'time';
+  type?: FormFieldType;
   value: string;
   options?: string[];
   onChange?: (val: string) => void;
@@ -91,6 +93,7 @@ function FormFieldBuilder({
       );
       break;
     case 'text':
+    case 'password':
     case 'number':
     default:
       field = (

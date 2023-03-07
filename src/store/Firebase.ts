@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -11,7 +12,11 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+connectAuthEmulator(auth, 'http://localhost:9099');
+
 const db = getFirestore(app);
 connectFirestoreEmulator(db, 'localhost', 8080);
 
-export default db;
+export { auth, db };
