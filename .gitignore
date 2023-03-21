@@ -23,7 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # google cloud
-firebase.data
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
