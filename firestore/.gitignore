@@ -1,0 +1,6 @@
+# npm
+/node_modules
+
+# firebase
+firestore-debug.log
+ui-debug.log

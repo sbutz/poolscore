@@ -5,5 +5,8 @@
   "homepage": "https://sbutz.github.io/poolscore",
   "private": true,
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "scripts": {
+    "start": "cd client && npm start"
+  }
 }
