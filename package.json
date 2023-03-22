@@ -7,6 +7,12 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "cd client && npm start"
+    "start": "concurrently --kill-others \"npm:start:client\" \"npm:start:functions\" \"npm:start:emulator\"",
+    "start:client": "cd client && npm start",
+    "start:functions": "cd functions && npm run build:watch",
+    "start:emulator": "npx firebase-tools emulators:start --import ./firestore/emulator_data"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
   }
 }
