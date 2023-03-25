@@ -5,8 +5,18 @@ service cloud.firestore {
       return request.auth != null && request.auth.uid == userId;
     }
 
-    match /user/{userId} {
+    function isClubMember(clubId) {
+      let userRef = /databases/$(database)/documents/users/$(request.auth.uid);
+      let clubRef = /databases/$(database)/documents/clubs/$(clubId);
+      return request.auth != null && get(userRef).data.club == clubRef;
+    }
+
+    match /users/{userId} {
       allow read: if isAuthenticated(userId);
+    }
+
+    match /clubs/{clubId} {
+      allow read: if isClubMember(clubId);
     }
   }
 }
