@@ -1,4 +1,4 @@
-name: Client
+name: Firestore
 
 on:
   pull_request:
@@ -8,10 +8,10 @@ on:
       - reopend
 
 jobs:
-  client:
+  firestore-rules:
     runs-on: ubuntu-latest
     env: 
-      working-directory: ./client
+      working-directory: ./firestore
     steps:
       - uses: actions/checkout@v2
       - name: Install Dependencies
@@ -19,9 +19,6 @@ jobs:
         working-directory: ${{env.working-directory}}
       - name: Run Lint
         run: npm run lint
-        working-directory: ${{env.working-directory}}
-      - name: Build PWA
-        run: npm run build
         working-directory: ${{env.working-directory}}
       - name: Run Tests
         run: npm run test

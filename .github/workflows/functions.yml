@@ -1,4 +1,4 @@
-name: Client
+name: Cloud Functions
 
 on:
   pull_request:
@@ -8,10 +8,10 @@ on:
       - reopend
 
 jobs:
-  client:
+  cloud-functions:
     runs-on: ubuntu-latest
     env: 
-      working-directory: ./client
+      working-directory: ./functions
     steps:
       - uses: actions/checkout@v2
       - name: Install Dependencies
@@ -20,7 +20,7 @@ jobs:
       - name: Run Lint
         run: npm run lint
         working-directory: ${{env.working-directory}}
-      - name: Build PWA
+      - name: Build
         run: npm run build
         working-directory: ${{env.working-directory}}
       - name: Run Tests
