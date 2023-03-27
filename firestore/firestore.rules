@@ -17,6 +17,9 @@ service cloud.firestore {
 
     match /clubs/{clubId} {
       allow read: if isClubMember(clubId);
+      allow update: if isClubMember(clubId) &&
+                       request.resource.data.name.size() > 0 &&
+                       request.resource.data.name.size() < 128;
     }
   }
 }

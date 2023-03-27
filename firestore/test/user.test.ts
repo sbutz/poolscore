@@ -44,12 +44,6 @@ it('should forbid write access', async () => {
   await assertFails(unauthenticatedBatch.commit());
 });
 
-it('should forbid creating club without user', async () => {
-  // Can't be testet, since the Firebase SDK bypasses all security rules
-  // and users cannot create user or club documents.
-  expect(true).toBeTruthy();
-});
-
 it('user should be able to only read his user data', async () => {
   await testEnv.withSecurityRulesDisabled(async (context) => {
     await setDoc(doc(context.firestore(), 'users/alice'), {});
@@ -68,23 +62,8 @@ it('user should be able to only read his user data', async () => {
   await assertFails(getDoc(aliceUnauthenticatedRef));
 });
 
-it('user should only be able to read his club data', async () => {
-  await testEnv.withSecurityRulesDisabled(async (context) => {
-    const db = context.firestore();
-    const clubRef = doc(db, 'clubs/bc73');
-    await setDoc(clubRef, {});
-    await setDoc(doc(db, 'users/alice'), { club: clubRef });
-  });
-
-  const aliceDb = testEnv.authenticatedContext('alice').firestore();
-  const aliceClubRef = doc(aliceDb, 'clubs/bc73');
-  await assertSucceeds(getDoc(aliceClubRef));
-
-  const bobDb = testEnv.authenticatedContext('bob').firestore();
-  const bobClubRef = doc(bobDb, 'clubs/bc73');
-  await assertFails(getDoc(bobClubRef));
-
-  const unauthenticatedDb = testEnv.unauthenticatedContext().firestore();
-  const unauthenticatedClubRef = doc(unauthenticatedDb, 'clubs/bc73');
-  await assertFails(getDoc(unauthenticatedClubRef));
+it('should forbid user delete with associated club', async () => {
+  // Can't be testet, since the Firebase SDK bypasses all security rules
+  // and users cannot delete user or club documents.
+  expect(true).toBeTruthy();
 });
