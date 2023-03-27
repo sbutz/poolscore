@@ -12,6 +12,7 @@ import Club from './views/Club';
 import Matchdays from './views/Matchdays';
 import Matchday from './views/Matchday';
 import Login from './views/Login';
+import Register from './views/Register';
 import { auth } from './store/Firebase';
 
 interface RequireProps {
@@ -52,6 +53,7 @@ export default function Router() {
         <Route path="/game" element={<Game />} />
         <Route path="/game14" element={<Game14 />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/club" element={<RequireAdmin><Club /></RequireAdmin>} />
         <Route path="/tables" element={<RequireAdmin><Tables /></RequireAdmin>} />
         <Route path="/matchday" element={<RequireAdmin><Matchdays /></RequireAdmin>} />
