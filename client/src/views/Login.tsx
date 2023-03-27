@@ -1,34 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Box, Stack } from '@mui/material';
 
 import FormButton from '../components/FormButton';
 import FormField, { FormFieldType } from '../components/FormField';
-import { auth } from '../store/Firebase';
-import { EmailValidator, NotEmptyValidator } from '../util/Validators';
+import {
+  AuthValidator, EmailValidator, firstErrorMessage, NotEmptyValidator,
+} from '../util/Validators';
+import { useAuth } from '../store/AuthProvider';
 
 export default function Login() {
+  const { userId, signIn, signInError } = useAuth();
   const navigate = useNavigate();
+  const [error, setError] = useState(signInError);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [
-    signInWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useSignInWithEmailAndPassword(auth);
-  const onSubmit = () => signInWithEmailAndPassword(email, password);
+  const onSubmit = () => signIn(email, password);
 
-  const authValidator = () => {
-    if (error) return 'E-Mail oder Passwort falsch.';
-    return null;
-  };
+  useEffect(() => { if (userId) navigate('/'); }, [navigate, userId]);
 
-  useEffect(() => {
-    if (loading || error) return;
-    if (user) navigate('/');
-  }, [navigate, user, loading, error]);
+  useEffect(() => { setError(signInError); }, [signInError]);
+  useEffect(() => { setError(undefined); }, [email, password]);
+  const authValidator = AuthValidator(error);
 
   const fields = [
     {
@@ -46,6 +39,8 @@ export default function Login() {
     },
   ];
 
+  const submitDisabled = !!fields.find((f) => firstErrorMessage(f.value, f.validators) != null);
+
   return (
     <Stack height="100vh" justifyContent="center" alignItems="center">
       <Box sx={{ width: { xs: '100%', sm: '20rem' } }}>
@@ -53,7 +48,7 @@ export default function Login() {
           // eslint-disable-next-line react/jsx-props-no-spreading
           <FormField key={f.label} {...f} />
         ))}
-        <FormButton onClick={onSubmit}>Login</FormButton>
+        <FormButton disabled={submitDisabled} onClick={onSubmit}>Login</FormButton>
       </Box>
     </Stack>
   );

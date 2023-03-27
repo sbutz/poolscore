@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+     function isAuthenticated(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    function isClubMember(clubId) {
+      let userRef = /databases/$(database)/documents/users/$(request.auth.uid);
+      let clubRef = /databases/$(database)/documents/clubs/$(clubId);
+      return request.auth != null && get(userRef).data.club == clubRef;
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated(userId);
+    }
+
+    match /clubs/{clubId} {
+      allow read: if isClubMember(clubId);
+      allow update: if isClubMember(clubId) &&
+                       request.resource.data.name.size() > 0 &&
+                       request.resource.data.name.size() < 128;
+    }
+  }
+}

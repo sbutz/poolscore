@@ -1,0 +1,25 @@
+name: Firestore
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopend
+
+jobs:
+  firestore-rules:
+    runs-on: ubuntu-latest
+    env: 
+      working-directory: ./firestore
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: ${{env.working-directory}}
+      - name: Run Lint
+        run: npm run lint
+        working-directory: ${{env.working-directory}}
+      - name: Run Tests
+        run: npm run test
+        working-directory: ${{env.working-directory}}
