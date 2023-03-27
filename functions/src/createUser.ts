@@ -1,4 +1,4 @@
-import { db } from "./firebase";
+import {db} from "./firebase";
 
 /**
  * Create Club and assign it to user with id `userId`.
@@ -11,7 +11,7 @@ export default async function createClub(userId: string): Promise<void> {
   batch.set(clubRef, {});
 
   const userRef = db.doc(`users/${userId}`);
-  batch.set(userRef, { club: clubRef });
+  batch.set(userRef, {club: clubRef});
 
   await batch.commit();
 }

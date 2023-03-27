@@ -1,8 +1,8 @@
-import { doc, DocumentReference, getDoc } from "firebase/firestore";
+import {doc, DocumentReference, getDoc} from "firebase/firestore";
 import {
   initializeTestEnvironment, RulesTestEnvironment,
 } from "@firebase/rules-unit-testing";
-import { readFileSync } from "fs";
+import {readFileSync} from "fs";
 
 import createUser from "./createUser";
 
@@ -19,7 +19,7 @@ afterAll(async () => {
   await testEnv.cleanup();
 });
 
-it("should add create user and club", async function () {
+it("should add create user and club", async function() {
   await createUser("alice");
 
   await testEnv.withSecurityRulesDisabled(async (context) => {

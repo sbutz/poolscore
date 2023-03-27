@@ -1,4 +1,4 @@
-import { auth } from "firebase-functions";
+import {auth} from "firebase-functions";
 
 import createUser from "./createUser";
 
