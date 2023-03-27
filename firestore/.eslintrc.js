@@ -1,5 +1,4 @@
 module.exports = {
-    //TODO: unify eslint configs
     root: true,
     extends: [
         "airbnb",

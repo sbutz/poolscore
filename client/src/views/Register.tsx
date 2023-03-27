@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
-  Box, Stack, Typography, Link, Button,
+  Box, Stack, Typography, Link,
 } from '@mui/material';
 
 import FormButton from '../components/FormButton';
@@ -14,9 +14,7 @@ import { useClub } from '../store/ClubProvider';
 
 export default function Register() {
   const navigate = useNavigate();
-  const {
-    clubId, signUp, signUpError, signOut,
-  } = useAuth();
+  const { clubId, signUp, signUpError } = useAuth();
   const { name, setName } = useClub();
   const [error, setError] = useState(signUpError);
   const [clubname, setClubname] = useState('');
@@ -37,8 +35,6 @@ export default function Register() {
   useEffect(() => { setError(undefined); }, [email, password]);
   const authValidator = AuthValidator(error);
 
-  // TODO: create component per type?
-  // beneift: no prop spreading
   const fields = [
     {
       label: 'Vereinsname',
@@ -82,8 +78,6 @@ export default function Register() {
           </Typography>
         </Box>
       </Box>
-      {/* TODO: Remove */}
-      <Button onClick={async () => { await signOut(); }}>Sign out</Button>
     </Stack>
   );
 }
