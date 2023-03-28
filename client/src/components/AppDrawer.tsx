@@ -7,13 +7,12 @@ import {
 import {
   CalendarMonth, Games, Groups, SportsEsports, TableRestaurant,
 } from '@mui/icons-material';
+import { useAuth } from '../store/AuthProvider';
 
 interface AppDrawerProps {
   open: boolean;
   onClose: () => void;
 }
-
-const hideAdminRoutes = true;
 
 const drawerBoxSx = {
   width: 250,
@@ -21,6 +20,7 @@ const drawerBoxSx = {
 };
 
 export default memo((props: AppDrawerProps) => {
+  const { clubId } = useAuth();
   const drawerList = (
     <Box
       role="presentation"
@@ -28,7 +28,7 @@ export default memo((props: AppDrawerProps) => {
       onClick={props.onClose}
     >
       <List>
-        {hideAdminRoutes ? (
+        {clubId ? (
           <>
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/club">

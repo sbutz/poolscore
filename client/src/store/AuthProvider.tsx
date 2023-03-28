@@ -12,6 +12,7 @@ import { auth, db } from './Firebase';
 
 interface AuthState {
   userId?: string;
+  userIdLoading: boolean;
   clubId?: string;
   signUp: (email: string, password: string) => void;
   signUpError?: AuthError;
@@ -33,7 +34,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const [user, , errorAuth] = useAuthState(auth, {});
+  const [user, userLoading, errorAuth] = useAuthState(auth, {});
   useEffect(() => { if (errorAuth) throw errorAuth; }, [errorAuth]);
 
   const userRef = user?.uid ? doc(db, 'users', user.uid) : null;
@@ -60,6 +61,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   const value = useMemo(() => ({
     userId: user?.uid,
+    userIdLoading: userLoading,
     clubId: userData?.club.id,
     signUp,
     signUpError,
@@ -67,7 +69,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     signInError,
     signOut,
     signOutError: signOutError as AuthError,
-  }), [user, userData, signUp, signUpError, signIn, signInError, signOut, signOutError]);
+  }), [
+    user, userLoading, userData, signUp, signUpError, signIn, signInError, signOut, signOutError,
+  ]);
 
   return (
     <AuthContext.Provider value={value}>
