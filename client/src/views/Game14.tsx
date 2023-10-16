@@ -313,7 +313,7 @@ export default function Game() {
         <BorderBox label="Anzahl verbleibender Kugeln">
           {BALLS.map((i) => {
             const enabled = i <= state.remainingBalls;
-            const Image = Balls[i - 1];
+            const Image = Balls[i];
             return (
               <div
                 key={i}
@@ -323,7 +323,7 @@ export default function Game() {
                   marginLeft: 6,
                   filter: enabled ? 'none' : 'grayscale(100%)',
                   opacity: enabled ? '100%' : '10%',
-                  width: '5rem',
+                  width: '4.5rem',
                 }}
               >
                 <Image
