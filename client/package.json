@@ -2,6 +2,7 @@
   "name": "client",
   "version": "1.0.0",
   "description": "Client package of poolscore",
+  "homepage": "https://sbutz.github.io/poolscore",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",

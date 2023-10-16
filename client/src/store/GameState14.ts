@@ -171,7 +171,7 @@ export function reducer(state: State, action: Action) : State {
       lastRun.balls += diff;
       runs = [...runs.slice(0, -1), lastRun];
 
-      const remainingBalls = action.balls === 1 ? 15 : action.balls;
+      const remainingBalls = action.balls === 0 || action.balls === 1 ? 15 : action.balls;
 
       return {
         ...state,
