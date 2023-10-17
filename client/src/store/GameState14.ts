@@ -85,11 +85,11 @@ function calculatePlayerState(runs: Array<Run>) : PlayerState {
   let fouls = 0;
 
   fouls = runs.reduce((acc, r) => {
-    // foul
     if (r.fouls % 2 === 1) {
-      // reset after 3 fouls
-      if (acc === 2) return 1;
-      // default foul
+      // reset after 3 fouls or potting a ball
+      if (acc === 2 || r.balls > 0) {
+        return 1;
+      }
       return acc + 1;
     }
 
@@ -135,9 +135,10 @@ export function reducer(state: State, action: Action) : State {
     case 'SET_ACTIVE_PLAYER': {
       if (state.activePlayer === action.player) throw Error(`It's already players ${action.player}'s turn.`);
 
+      const currentPlayer = state.activePlayer;
       const runs = [...state[action.player].runs, { ...initialRun }];
 
-      return {
+      const newState = {
         ...state,
         actions: [...state.actions, action],
         activePlayer: action.player,
@@ -146,24 +147,18 @@ export function reducer(state: State, action: Action) : State {
           runs,
         },
       };
+
+      if (currentPlayer !== undefined) {
+        newState[currentPlayer] = calculatePlayerState(state[currentPlayer].runs);
+      }
+
+      return newState;
     }
     case 'SET_REMAINING_BALLS': {
       if (!state.activePlayer) throw Error('Starting player is not set.');
 
       let { runs } = state[state.activePlayer];
       const lastRun = { ...runs[runs.length - 1] };
-
-      // Action Reordering:
-      // SET_REMAINING_BALLS after ...
-      // - standard foul will be interpreted as balls before foul.
-      // - severe foul will be interpreted as points after break.
-      if (lastRun.fouls % 2 === 1) {
-        const lastAction = state.actions[state.actions.length - 1];
-        if (lastAction.type === 'FOUL') {
-          const actions = [...state.actions.slice(0, -1), action, lastAction];
-          return actions.reduce((acc, a) => reducer(acc, a), initialState);
-        }
-      }
 
       const diff = state.remainingBalls - action.balls;
       if (diff < 0) throw Error('Remaining balls must be less than last time.');
@@ -197,7 +192,7 @@ export function reducer(state: State, action: Action) : State {
     }
     case 'FOUL': {
       if (!state.activePlayer) throw Error('Starting player is not set.');
-      if (!isFoulPossible) throw Error('Only one standard foul per run can be commited.');
+      if (!isFoulPossible(state)) throw Error('Only one standard foul per run can be commited.');
 
       let { runs } = state[state.activePlayer];
       const lastRun = { ...runs[runs.length - 1] };

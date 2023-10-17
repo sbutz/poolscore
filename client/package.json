@@ -46,7 +46,7 @@
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
     "lint": "eslint src/",
     "eject": "react-scripts eject"
   },
@@ -65,5 +65,14 @@
   "devDependencies": {
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "src/store/GameState*": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    }
   }
 }
