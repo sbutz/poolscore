@@ -5,3 +5,6 @@
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+
+# MacOs
+.DS_Store
