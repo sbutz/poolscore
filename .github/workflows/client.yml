@@ -8,7 +8,7 @@ on:
       - reopend
 
 jobs:
-  client:
+  test:
     runs-on: ubuntu-latest
     env: 
       working-directory: ./client
@@ -26,3 +26,19 @@ jobs:
       - name: Run Tests
         run: npm run test
         working-directory: ${{env.working-directory}}
+  preview:
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Install Dependencies and build'
+        run: npm ci && npm run build
+        working-directory: ${{env.working-directory}}
+      - name: Deploy Preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_POOLSCORE_1973 }}'
+          projectId: poolscore-1973

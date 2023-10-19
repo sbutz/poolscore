@@ -2,7 +2,7 @@
   "name": "poolscore",
   "version": "1.0.0",
   "description": "A pool billard score tracker built with React and Google Cloud Platform.",
-  "homepage": "https://sbutz.github.io/poolscore",
+  "homepage": "https://github.com/sbutz/poolscore",
   "private": true,
   "author": "",
   "license": "ISC",
