@@ -8,7 +8,7 @@ on:
       - reopend
 
 jobs:
-  cloud-functions:
+  test:
     runs-on: ubuntu-latest
     env: 
       working-directory: ./functions

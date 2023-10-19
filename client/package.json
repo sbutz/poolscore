@@ -2,7 +2,7 @@
   "name": "client",
   "version": "1.0.0",
   "description": "Client package of poolscore",
-  "homepage": "https://sbutz.github.io/poolscore",
+  "homepage": "https://poolscore.butz.st",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -19,7 +19,6 @@
     "@types/react-dom": "^18.0.5",
     "dayjs": "^1.11.5",
     "firebase": "^9.9.3",
-    "gh-pages": "^4.0.0",
     "history": "^5.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -43,7 +42,8 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "npx firebase-tools deploy --only hosting",
+    "deploy-local": "serve -s build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage",
@@ -64,7 +64,9 @@
   },
   "devDependencies": {
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0"
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "firestore-tools": "^1.0.2",
+    "serve": "^14.2.1"
   },
   "jest": {
     "coverageThreshold": {

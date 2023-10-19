@@ -3,7 +3,7 @@
 A pool billard score tracker built with React and Google
 Cloud Platform.
 
-Live Version: [butz.st/poolscore](https://butz.st/poolscore/game)
+Live Version: [poolscore.butz.st](https://poolscore.butz.st/)
 
 ## Goal
 
