@@ -8,7 +8,7 @@ on:
       - reopend
 
 jobs:
-  test:
+  client_test:
     runs-on: ubuntu-latest
     env: 
       working-directory: ./client
@@ -26,7 +26,7 @@ jobs:
       - name: Run Tests
         run: npm run test
         working-directory: ${{env.working-directory}}
-  preview:
+  client_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     env:

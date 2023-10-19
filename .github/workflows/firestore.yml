@@ -8,7 +8,7 @@ on:
       - reopend
 
 jobs:
-  test:
+  firestore_test:
     runs-on: ubuntu-latest
     env: 
       working-directory: ./firestore
