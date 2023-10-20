@@ -41,13 +41,16 @@
     "workbox-streams": "^6.5.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "npx firebase-tools deploy --only hosting",
-    "deploy-local": "serve -s build",
+    "prestart": "./scripts/prebuild.sh",
     "start": "react-scripts start",
+    "prebuild": "./scripts/prebuild.sh",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage",
     "lint": "eslint src/",
+    "predeploy": "npm run build",
+    "deploy": "npx firebase-tools deploy --only hosting",
+    "predeploy-local": "npm run build",
+    "deploy-local": "serve -s build",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -66,6 +69,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "firestore-tools": "^1.0.2",
+    "license-checker": "^25.0.1",
     "serve": "^14.2.1"
   },
   "jest": {

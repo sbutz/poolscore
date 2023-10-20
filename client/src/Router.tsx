@@ -12,6 +12,7 @@ import Matchdays from './views/Matchdays';
 import Matchday from './views/Matchday';
 import Login from './views/Login';
 import Register from './views/Register';
+import ThirdParty from './views/ThirdParty';
 
 interface RequireProps {
   children: JSX.Element;
@@ -38,6 +39,7 @@ export default function Router() {
         <Route path="/tables" element={<RequireLogin><Tables /></RequireLogin>} />
         <Route path="/matchday" element={<RequireLogin><Matchdays /></RequireLogin>} />
         <Route path="/matchday/:id" element={<RequireLogin><Matchday /></RequireLogin>} />
+        <Route path="/third-party" element={<ThirdParty />} />
         <Route path="*" element={<ErrorPage />} />
       </>,
     ),

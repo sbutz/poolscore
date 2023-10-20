@@ -9,6 +9,9 @@
 # production
 /build
 
+# generated assets
+/src/assets/licenses.json
+
 # misc
 .DS_Store
 .env.local
