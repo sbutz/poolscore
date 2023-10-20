@@ -2,7 +2,6 @@ import {
   createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider,
 } from 'react-router-dom';
 
-import { useAuth } from './store/AuthProvider';
 import ErrorPage from './views/ErrorPage';
 import Game from './views/Game';
 import Game14 from './views/Game14';
@@ -13,17 +12,7 @@ import Matchday from './views/Matchday';
 import Login from './views/Login';
 import Register from './views/Register';
 import ThirdParty from './views/ThirdParty';
-
-interface RequireProps {
-  children: JSX.Element;
-}
-function RequireLogin({ children } : RequireProps) {
-  const { userId, userIdLoading } = useAuth();
-
-  if (!userId && !userIdLoading) return <Navigate to="/login" replace />;
-
-  return children;
-}
+import RequireLogin from './components/RequireLogin';
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -39,7 +28,7 @@ export default function Router() {
         <Route path="/tables" element={<RequireLogin><Tables /></RequireLogin>} />
         <Route path="/matchday" element={<RequireLogin><Matchdays /></RequireLogin>} />
         <Route path="/matchday/:id" element={<RequireLogin><Matchday /></RequireLogin>} />
-        <Route path="/third-party" element={<ThirdParty />} />
+        <Route path="/thirdparty" element={<ThirdParty />} />
         <Route path="*" element={<ErrorPage />} />
       </>,
     ),

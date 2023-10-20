@@ -345,7 +345,7 @@ export default function Game() {
   );
 
   return (
-    <Layout title="14/1 endlos" fullwidth toolbar={toolbar}>
+    <Layout requireDesktop title="14/1 endlos" fullwidth toolbar={toolbar}>
       <Stack height="100%" justifyContent="space-around">
         <Players activePlayer={state.activePlayer} />
         <Score

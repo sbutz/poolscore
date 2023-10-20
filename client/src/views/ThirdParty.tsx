@@ -2,11 +2,11 @@ import { Stack } from '@mui/material';
 import Layout from '../components/Layout';
 
 import Packages from '../assets/licenses.json';
-import ThirdPartyCard from '../components/ThirdPartyCard';
+import ThirdPartyAccordion from '../components/ThirdPartyAccordion';
 
 export default function ThirdParty() {
   const list = Packages.map((p) => (
-    <ThirdPartyCard
+    <ThirdPartyAccordion
       name={p.name}
       email={p.email}
       key={p.name}

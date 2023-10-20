@@ -67,7 +67,7 @@ function Game() {
   );
 
   return (
-    <Layout title="8/9/10-Ball" fullwidth toolbar={toolbar}>
+    <Layout requireDesktop title="8/9/10-Ball" fullwidth toolbar={toolbar}>
       <Stack height="100%" alignItems="center" justifyContent="space-around">
         <Grid container justifyContent="space-evenly" mt="1em">
           <Grid item xs={5} textAlign="center">
