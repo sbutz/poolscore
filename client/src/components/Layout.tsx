@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import Header from './Header';
 import AppDrawer from './AppDrawer';
+import RequireDesktop from './RequireDesktop';
 
 interface LayoutProps {
   title: string;
@@ -13,13 +14,14 @@ interface LayoutProps {
   fullwidth?: boolean;
   nested?: boolean;
   toolbar?: React.ReactNode;
+  requireDesktop?: boolean;
 }
 
 const backIcon = <ArrowBack />;
 const menuIcon = <MenuIcon />;
 
 export default function Layout({
-  title, children, fullwidth = false, nested = false, toolbar = undefined,
+  title, children, fullwidth = false, nested = false, toolbar = undefined, requireDesktop = false,
 } : LayoutProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ export default function Layout({
   const toggleDrawer = useCallback(() => { setOpen(!open); }, [open]);
   const goBack = useCallback(() => { navigate(-1); }, [navigate]);
 
-  return (
+  const content = (
     <Stack height="100vh">
       <Box sx={{ flexGrow: 0, flexShrink: 1, flexBasis: 'auto' }}>
         <Header
@@ -53,4 +55,6 @@ export default function Layout({
       </Box>
     </Stack>
   );
+
+  return requireDesktop ? <RequireDesktop>{content}</RequireDesktop> : content;
 }
