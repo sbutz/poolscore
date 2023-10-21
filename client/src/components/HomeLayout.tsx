@@ -11,7 +11,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <Stack height="100vh" spacing={5}>
+    <Stack height="100vh" spacing={5} alignItems="center">
       <AppBar color="transparent" position="sticky">
         <Toolbar>
           <Button component={Link} to="/">Poolscore</Button>

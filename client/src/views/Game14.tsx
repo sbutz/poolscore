@@ -3,13 +3,14 @@ import {
   Button, Grid, Stack, Typography, useTheme,
 } from '@mui/material';
 import {
-  ChevronLeft, ChevronRight, PowerSettingsNew, Undo,
+  ChevronLeft, ChevronRight, PlayCircleFilled, SportsEsports, Undo,
 } from '@mui/icons-material';
 
+import { Link } from 'react-router-dom';
 import {
   reducer, initialState, BALLS, PlayerState, isBreakFoulPossible, isFoulPossible,
 } from '../store/GameState14';
-import Layout from '../components/Layout';
+import Layout from '../components/GameLayout';
 import useCallbackPrompt from '../util/useCallbackPrompt';
 import AlertDialog from '../components/AlertDialog';
 import BorderBox from '../components/BorderBox';
@@ -201,17 +202,25 @@ export default function Game() {
     <>
       <Button
         color="inherit"
+        startIcon={<SportsEsports />}
+        component={Link}
+        to="/game"
+      >
+        8/9/10 Ball
+      </Button>
+      <Button
+        color="inherit"
+        startIcon={<PlayCircleFilled />}
+        onClick={() => { setShowReset(true); }}
+      >
+        Neues Spiel
+      </Button>
+      <Button
+        color="inherit"
         startIcon={<Undo />}
         onClick={() => { dispatch?.({ type: 'ROLLBACK' }); }}
       >
         Rückgängig
-      </Button>
-      <Button
-        color="inherit"
-        startIcon={<PowerSettingsNew />}
-        onClick={() => { setShowReset(true); }}
-      >
-        Neues Spiel
       </Button>
     </>
   );
@@ -345,7 +354,7 @@ export default function Game() {
   );
 
   return (
-    <Layout requireDesktop title="14/1 endlos" fullwidth toolbar={toolbar}>
+    <Layout requireDesktop fullwidth toolbar={toolbar}>
       <Stack height="100%" justifyContent="space-around">
         <Players activePlayer={state.activePlayer} />
         <Score

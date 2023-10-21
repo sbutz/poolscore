@@ -3,11 +3,12 @@ import {
   Button, Grid, Stack, Typography,
 } from '@mui/material';
 import {
-  Add, PowerSettingsNew, Remove, Undo,
+  Add, PlayCircleFilled, Remove, SportsEsports, Undo,
 } from '@mui/icons-material';
 
+import { Link } from 'react-router-dom';
 import { reducer, initialState } from '../store/GameState';
-import Layout from '../components/Layout';
+import Layout from '../components/GameLayout';
 import useCallbackPrompt from '../util/useCallbackPrompt';
 import AlertDialog from '../components/AlertDialog';
 
@@ -51,23 +52,31 @@ function Game() {
     <>
       <Button
         color="inherit"
+        startIcon={<SportsEsports />}
+        component={Link}
+        to="/game14"
+      >
+        14/1 endlos
+      </Button>
+      <Button
+        color="inherit"
+        startIcon={<PlayCircleFilled />}
+        onClick={() => { setShowReset(true); }}
+      >
+        Neues Spiel
+      </Button>
+      <Button
+        color="inherit"
         startIcon={<Undo />}
         onClick={() => { dispatch?.({ type: 'ROLLBACK' }); }}
       >
         Rückgängig
       </Button>
-      <Button
-        color="inherit"
-        startIcon={<PowerSettingsNew />}
-        onClick={() => { setShowReset(true); }}
-      >
-        Neues Spiel
-      </Button>
     </>
   );
 
   return (
-    <Layout requireDesktop title="8/9/10-Ball" fullwidth toolbar={toolbar}>
+    <Layout requireDesktop fullwidth toolbar={toolbar}>
       <Stack height="100%" alignItems="center" justifyContent="space-around">
         <Grid container justifyContent="space-evenly" mt="1em">
           <Grid item xs={5} textAlign="center">
