@@ -1,12 +1,11 @@
 import {
-  createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider,
+  createBrowserRouter, createRoutesFromElements, Route, RouterProvider,
 } from 'react-router-dom';
 
 import ErrorPage from './views/ErrorPage';
 import Game from './views/Game';
 import Game14 from './views/Game14';
 import Tables from './views/Tables';
-import Club from './views/Club';
 import Matchdays from './views/Matchdays';
 import Matchday from './views/Matchday';
 import Login from './views/Login';
@@ -17,7 +16,6 @@ import Legal from './views/Legal';
 
 export default function Router() {
   const router = createBrowserRouter(
-    /* Keep in Sync with AppDrawer */
     createRoutesFromElements(
       <>
         <Route path="/" element={<Homepage />} />
@@ -25,7 +23,6 @@ export default function Router() {
         <Route path="/game14" element={<Game14 />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/club" element={<RequireLogin><Club /></RequireLogin>} />
         <Route path="/tables" element={<RequireLogin><Tables /></RequireLogin>} />
         <Route path="/matchday" element={<RequireLogin><Matchdays /></RequireLogin>} />
         <Route path="/matchday/:id" element={<RequireLogin><Matchday /></RequireLogin>} />

@@ -1,20 +1,19 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import Layout from '../components/Layout';
 
-function ErrorPage() {
-  return (
-    <Layout title="Error">
-      <Box sx={{ p: 5 }}>
-        <Typography variant="h6">
-          Ups, es ist ein Fehler aufgetreten.
-        </Typography>
-        <Button component={Link} to="/" sx={{ mt: 3 }}>
-          Zurück zur Startseite
-        </Button>
-      </Box>
-    </Layout>
-  );
+const defaultErrorMessage = 'Ups, es ist ein Fehler aufgetreten.';
+
+interface ErrorProps {
+  message?: string;
+  hint?: string;
 }
 
-export default ErrorPage;
+export default function ErrorPage({ message = defaultErrorMessage, hint = '' }:ErrorProps) {
+  return (
+    <Stack textAlign="center" height="100vh" justifyContent="center" sx={{ p: 5 }} spacing={2}>
+      <Typography variant="h4">{message}</Typography>
+      <Typography variant="body1" color="text.secondary" sx={{ mt: 3 }}>{hint}</Typography>
+      <Button component={Link} to="/">Zurück zur Startseite</Button>
+    </Stack>
+  );
+}

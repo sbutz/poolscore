@@ -1,6 +1,5 @@
-import {
-  Stack, Typography, useMediaQuery, useTheme,
-} from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
+import ErrorPage from '../views/ErrorPage';
 
 interface RequireProps {
   children: React.ReactNode;
@@ -13,18 +12,9 @@ export default function RequireDesktop({ children } : RequireProps) {
   if (isDesktop) return <div>{children}</div>;
 
   return (
-    <Stack textAlign="center" height="100vh" justifyContent="center" sx={{ p: 5 }}>
-      <Typography variant="h4">
-        Dieses Funktion ist nur für breite Bildschirme verfügbar.
-      </Typography>
-      {isPortrait
-        ? (
-          <Typography variant="body1" color="text.secondary" sx={{ mt: 3 }}>
-            Tipp: Dein Gerät befindet sich im Porträt-Modus (Hochformat).
-            Probiere es mal mit kippen!
-          </Typography>
-        )
-        : null}
-    </Stack>
+    <ErrorPage
+      message="Dieses Funktion ist nur für breite Bildschirme verfügbar."
+      hint={isPortrait ? 'Tipp: Dein Gerät befindet sich im Porträt-Modus (Hochformat). Probiere es mal mit kippen!' : undefined}
+    />
   );
 }
