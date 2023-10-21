@@ -11,15 +11,16 @@ import Matchdays from './views/Matchdays';
 import Matchday from './views/Matchday';
 import Login from './views/Login';
 import Register from './views/Register';
-import ThirdParty from './views/ThirdParty';
 import RequireLogin from './components/RequireLogin';
+import Homepage from './views/Homepage';
+import Legal from './views/Legal';
 
 export default function Router() {
   const router = createBrowserRouter(
     /* Keep in Sync with AppDrawer */
     createRoutesFromElements(
       <>
-        <Route path="/" element={<Navigate to="/game" replace />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/game" element={<Game />} />
         <Route path="/game14" element={<Game14 />} />
         <Route path="/login" element={<Login />} />
@@ -28,7 +29,7 @@ export default function Router() {
         <Route path="/tables" element={<RequireLogin><Tables /></RequireLogin>} />
         <Route path="/matchday" element={<RequireLogin><Matchdays /></RequireLogin>} />
         <Route path="/matchday/:id" element={<RequireLogin><Matchday /></RequireLogin>} />
-        <Route path="/thirdparty" element={<ThirdParty />} />
+        <Route path="/legal" element={<Legal />} />
         <Route path="*" element={<ErrorPage />} />
       </>,
     ),
