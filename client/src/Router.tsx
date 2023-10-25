@@ -1,5 +1,5 @@
 import {
-  createBrowserRouter, createRoutesFromElements, Route, RouterProvider,
+  createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider,
 } from 'react-router-dom';
 
 import ErrorPage from './views/ErrorPage';
@@ -18,7 +18,8 @@ export default function Router() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<Navigate to="/game" replace />} />
+        <Route path="/home" element={<Homepage />} />
         <Route path="/game" element={<Game />} />
         <Route path="/game14" element={<Game14 />} />
         <Route path="/login" element={<Login />} />

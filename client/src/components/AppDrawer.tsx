@@ -35,7 +35,7 @@ export default memo((props: AppDrawerProps) => {
         </ListItemButton>
       </ListItem>
       <ListItem>
-        <ListItemButton component={Link} to="/">
+        <ListItemButton component={Link} to="/home">
           <ListItemIcon>
             <Home />
           </ListItemIcon>

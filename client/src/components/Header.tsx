@@ -31,13 +31,13 @@ export default function Header() {
       >
         <Menu />
       </IconButton>
-      <Button component={Link} to="/">Poolscore</Button>
+      <Button component={Link} to="/home">Poolscore</Button>
     </>
   );
 
   const desktopToolbar = (
     <>
-      <Button component={Link} to="/">Poolscore</Button>
+      <Button component={Link} to="/home">Poolscore</Button>
       <Box sx={{ flexGrow: 1 }} />
       { loggedIn ? (
         <>

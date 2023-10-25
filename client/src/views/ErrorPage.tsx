@@ -13,7 +13,7 @@ export default function ErrorPage({ message = defaultErrorMessage, hint = '' }:E
     <Stack textAlign="center" height="100vh" justifyContent="center" sx={{ p: 5 }} spacing={2}>
       <Typography variant="h4">{message}</Typography>
       <Typography variant="body1" color="text.secondary" sx={{ mt: 3 }}>{hint}</Typography>
-      <Button component={Link} to="/">Zurück zur Startseite</Button>
+      <Button component={Link} to="/home">Zurück zur Startseite</Button>
     </Stack>
   );
 }

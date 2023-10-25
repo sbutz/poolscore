@@ -18,7 +18,7 @@ function Header({ children }: HeaderProps) {
             size="large"
             sx={{ ml: 2, position: 'fixed', left: 0 }}
             component={Link}
-            to="/"
+            to="/home"
           >
             <Home />
           </IconButton>
