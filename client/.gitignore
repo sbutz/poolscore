@@ -10,7 +10,7 @@
 /build
 
 # generated assets
-/src/assets/licenses.json
+/public/licenses.txt
 
 # misc
 .DS_Store

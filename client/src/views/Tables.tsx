@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 
-import Layout from '../components/Layout';
+import Layout from '../components/HomeLayout';
 import { Context } from '../store/Store';
 import FormDialog from '../components/FormDialog';
 import FormField from '../components/FormField';
@@ -28,7 +28,7 @@ export default function Tables() {
   const invalid = fields.some((f) => firstErrorMessage(f.value, f.validators) !== null);
 
   return (
-    <Layout title="Tische">
+    <Layout>
       <Stack spacing={3}>
         <Box>
           <Button

@@ -8,6 +8,7 @@ import {
   AuthValidator, EmailValidator, firstErrorMessage, NotEmptyValidator,
 } from '../util/Validators';
 import { useAuth } from '../store/AuthProvider';
+import Layout from '../components/HomeLayout';
 
 export default function Login() {
   const { userId, signIn, signInError } = useAuth();
@@ -42,14 +43,16 @@ export default function Login() {
   const submitDisabled = !!fields.find((f) => firstErrorMessage(f.value, f.validators) != null);
 
   return (
-    <Stack height="100vh" justifyContent="center" alignItems="center">
-      <Box sx={{ width: { xs: '100%', sm: '20rem' } }}>
-        {fields.map((f) => (
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          <FormField key={f.label} {...f} />
-        ))}
-        <FormButton disabled={submitDisabled} onClick={onSubmit}>Login</FormButton>
-      </Box>
-    </Stack>
+    <Layout>
+      <Stack height="100%" justifyContent="center" alignItems="center">
+        <Box sx={{ width: { xs: '100%', sm: '20rem' } }}>
+          {fields.map((f) => (
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            <FormField key={f.label} {...f} />
+          ))}
+          <FormButton disabled={submitDisabled} onClick={onSubmit}>Login</FormButton>
+        </Box>
+      </Stack>
+    </Layout>
   );
 }

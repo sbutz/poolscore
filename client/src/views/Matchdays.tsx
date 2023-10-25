@@ -2,13 +2,13 @@ import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import {
-  Box, Button, Card, CardActions, CardContent, Chip, Stack, Typography,
+  Box, Button, Card, CardActions, CardContent, Chip, Container, Stack, Typography,
 } from '@mui/material';
 import {
   Add, Delete, Edit, Tv,
 } from '@mui/icons-material';
 
-import Layout from '../components/Layout';
+import Layout from '../components/HomeLayout';
 import { Context, generateId } from '../store/Store';
 import { Matchday } from '../store/MatchdayState';
 
@@ -56,33 +56,35 @@ export default function Matchdays() {
   const navigate = useNavigate();
 
   return (
-    <Layout title="Spieltage">
-      <Stack spacing={3}>
-        <Box>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => {
-              navigate(`/matchday/${generateId()}`);
-            }}
-          >
-            Neuer Spieltag
-          </Button>
-        </Box>
-        {state.matchdays.length === 0
-          ? (
-            <Typography>
-              Du hast noch keine Spieltage angelegt.
-            </Typography>
-          ) : null }
-        {state.matchdays.map((m) => (
-          <MatchdayCard
-            key={m.id}
+    <Layout>
+      <Container>
+        <Stack spacing={3}>
+          <Box>
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => {
+                navigate(`/matchday/${generateId()}`);
+              }}
+            >
+              Neuer Spieltag
+            </Button>
+          </Box>
+          {state.matchdays.length === 0
+            ? (
+              <Typography>
+                Du hast noch keine Spieltage angelegt.
+              </Typography>
+            ) : null }
+          {state.matchdays.map((m) => (
+            <MatchdayCard
+              key={m.id}
             // eslint-disable-next-line react/jsx-props-no-spreading
-            {...m}
-          />
-        ))}
-      </Stack>
+              {...m}
+            />
+          ))}
+        </Stack>
+      </Container>
     </Layout>
   );
 }

@@ -1,13 +1,14 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Box, Drawer, List, ListItem, ListItemIcon, ListItemButton,
-  ListItemText, Divider, useTheme,
+  Box, Drawer, List, ListItem, ListItemIcon, ListItemButton, useTheme, ListItemText, Divider,
 } from '@mui/material';
 import {
-  CalendarMonth, Games, Groups, SportsEsports, TableRestaurant,
+  CalendarMonth,
+  Close, Home, Logout, TableRestaurant,
 } from '@mui/icons-material';
 import { useAuth } from '../store/AuthProvider';
+import { footerText } from './Footer';
 
 interface AppDrawerProps {
   open: boolean;
@@ -20,25 +21,43 @@ const drawerBoxSx = {
 };
 
 export default memo((props: AppDrawerProps) => {
-  const { clubId } = useAuth();
+  const theme = useTheme();
+  const { userId, userIdLoading, signOut } = useAuth();
+  const isLoggedIn = userId && !userIdLoading;
+
   const drawerList = (
-    <Box
-      role="presentation"
-      sx={drawerBoxSx}
-      onClick={props.onClose}
-    >
-      <List>
-        {clubId ? (
+    <List>
+      <ListItem disablePadding>
+        <ListItemButton onClick={props.onClose}>
+          <ListItemIcon>
+            <Close />
+          </ListItemIcon>
+        </ListItemButton>
+      </ListItem>
+      <ListItem>
+        <ListItemButton component={Link} to="/home">
+          <ListItemIcon>
+            <Home />
+          </ListItemIcon>
+          <ListItemText primary="Startseite" />
+        </ListItemButton>
+      </ListItem>
+      <Divider />
+      { /* isLoggedIn ? null
+        : (
+          <ListItem>
+            <ListItemButton component={Link} to="/login">
+              <ListItemIcon>
+                <Login />
+              </ListItemIcon>
+              <ListItemText primary="Login" />
+            </ListItemButton>
+          </ListItem>
+        ) */}
+      { isLoggedIn
+        ? (
           <>
-            <ListItem disablePadding>
-              <ListItemButton component={Link} to="/club">
-                <ListItemIcon>
-                  <Groups />
-                </ListItemIcon>
-                <ListItemText primary="Verein" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
+            <ListItem>
               <ListItemButton component={Link} to="/tables">
                 <ListItemIcon>
                   <TableRestaurant />
@@ -46,7 +65,7 @@ export default memo((props: AppDrawerProps) => {
                 <ListItemText primary="Tische" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            <ListItem>
               <ListItemButton component={Link} to="/matchday">
                 <ListItemIcon>
                   <CalendarMonth />
@@ -55,29 +74,24 @@ export default memo((props: AppDrawerProps) => {
               </ListItemButton>
             </ListItem>
             <Divider />
+            <ListItem>
+              <ListItemButton onClick={signOut}>
+                <ListItemIcon>
+                  <Logout />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </ListItem>
           </>
-        ) : null}
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to="/game">
-            <ListItemIcon>
-              <SportsEsports />
-            </ListItemIcon>
-            <ListItemText primary="8/9/10-Ball" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to="/game14">
-            <ListItemIcon>
-              <Games />
-            </ListItemIcon>
-            <ListItemText primary="14/1 endlos" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </Box>
+        )
+        : null}
+      <ListItem disablePadding sx={{ position: 'fixed', bottom: 0 }}>
+        <ListItemButton component={Link} to="/legal">
+          <ListItemText primary={footerText} secondary="Legal" />
+        </ListItemButton>
+      </ListItem>
+    </List>
   );
-
-  const theme = useTheme();
 
   return (
     <Drawer
@@ -86,11 +100,18 @@ export default memo((props: AppDrawerProps) => {
       onClose={props.onClose}
       PaperProps={{
         sx: {
-          pt: theme.spacing(8),
+          backgroundColor: theme.palette.primary.dark,
         },
       }}
     >
-      {drawerList}
+      <Box
+        role="presentation"
+        sx={drawerBoxSx}
+        onClick={props.onClose}
+        textAlign="start"
+      >
+        {drawerList}
+      </Box>
     </Drawer>
   );
 });

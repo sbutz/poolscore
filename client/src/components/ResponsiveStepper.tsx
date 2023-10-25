@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { KeyboardArrowRight, KeyboardArrowLeft } from '@mui/icons-material';
 
-import Layout from './Layout';
+import NestedLayout from './NestedLayout';
 
 interface StepProp {
   label: string;
@@ -64,9 +64,9 @@ function MyMobileStepper({
 
   return (
     <>
-      <Layout nested title={steps[activeStep].label}>
+      <NestedLayout title={steps[activeStep].label}>
         {steps[activeStep].content}
-      </Layout>
+      </NestedLayout>
       {stepper}
     </>
   );
@@ -76,7 +76,7 @@ function MyDesktopStepper({
   title, steps, onCancel = undefined, onSave = undefined,
 }: ResponsiveStepperProps) {
   return (
-    <Layout nested title={title}>
+    <NestedLayout title={title}>
       <Stepper orientation="vertical">
         {steps.map((s) => (
           <Step key={s.label} active>
@@ -93,7 +93,7 @@ function MyDesktopStepper({
           Speichern
         </Button>
       </Stack>
-    </Layout>
+    </NestedLayout>
   );
 }
 

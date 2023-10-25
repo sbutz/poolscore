@@ -1,7 +1,7 @@
 import {
   memo, useCallback, useContext, useReducer,
 } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Stack } from '@mui/material';
 
@@ -124,7 +124,6 @@ const MatchdayFormEnd = memo((props: MatchdayFormEndProps) => (
 
 export default function MatchdayView() {
   const globalState = useContext(Context)[0];
-  const navigate = useNavigate();
   const { id } = useParams();
 
   const matchday = globalState.matchdays.find((m) => m.id === id)
@@ -204,16 +203,10 @@ export default function MatchdayView() {
     },
   ];
 
-  const onCancel = useCallback(() => {
-    navigate(-1);
-  }, [navigate]);
-
   return (
     <ResponsiveStepper
-      title="Neuer Spieltag"
+      title="Spieltag"
       steps={steps}
-      onCancel={onCancel}
-      onSave={onCancel}
     />
   );
 }

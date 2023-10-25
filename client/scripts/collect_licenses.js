@@ -29,19 +29,19 @@ checker.init({
       process.exit(1);
   } else {
     const data = Object.keys(packages).map(function(name) {
-      const text = (packages[name].licenseFile === undefined)
-        ? undefined
-        : readFileSync(packages[name].licenseFile, { encoding: 'utf8', flag: 'r'});
-
-      return {
-        name,
-        publisher: packages[name].publisher,
-        email: packages[name].email,
-        source: packages[name].repository,
-        license: packages[name].licenses,
-        licenseText: text,
-      };
-    });
-    console.log(JSON.stringify(data));
+      let text = `${name}\n\n`;
+      if (packages[name].publisher)
+        text += `Publisher: ${packages[name].publisher}\n`;
+      if (packages[name].email)
+        text += `Contact: ${packages[name].email}\n`;
+      if (packages[name].source)
+        text += `Source: ${packages[name].source}\n`;
+      if (packages[name].licenseFile) {
+        text += "\n";
+        text += readFileSync(packages[name].licenseFile, { encoding: 'utf8', flag: 'r'});
+      }
+      return text;
+    }).join("\n---\n\n");
+    console.log(data)
   }
 });
