@@ -1,6 +1,9 @@
 # Compiled JavaScript files
 lib/
 
+# Coverage reports
+coverage/
+
 # TypeScript v1 declaration files
 typings/
 

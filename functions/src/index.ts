@@ -1,6 +1,21 @@
-import {auth} from "firebase-functions";
+import {beforeUserCreated} from "firebase-functions/v2/identity";
 
-import createUser from "./createUser";
+import createUserAndClub from "./createUser";
+import {createJWT, createToken} from "./createToken";
 
+export const user = {
+  /*
+   * Called before the creation of a user.
+   * Exceptions:
+   * - It is not called for Registrations with a custom token.
+   * - It is not called by the emulators.
+  */
+  beforecreate: beforeUserCreated((event) => {
+    createUserAndClub(event.data.uid);
+  }),
+};
 
-export default auth.user().beforeCreate((user) => createUser(user.uid));
+export const table = {
+  createtoken: createToken,
+  createjwt: createJWT,
+};

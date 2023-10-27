@@ -4,7 +4,11 @@ import {
 } from "@firebase/rules-unit-testing";
 import {readFileSync} from "fs";
 
-import createUser from "./createUser";
+/*
+ * Blocking Auth Triggers are not called by emulators.
+ * Therefore we test the executed function directly.
+ */
+import createUserAndClub from "./createUser";
 
 let testEnv: RulesTestEnvironment;
 beforeAll(async () => {
@@ -20,7 +24,7 @@ afterAll(async () => {
 });
 
 it("should add create user and club", async function() {
-  await createUser("alice");
+  await createUserAndClub("alice");
 
   await testEnv.withSecurityRulesDisabled(async (context) => {
     const db = context.firestore();

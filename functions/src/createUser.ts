@@ -4,7 +4,7 @@ import {db} from "./firebase";
  * Create Club and assign it to user with id `userId`.
  * @param {string} userId - The id of the new user.
  */
-export default async function createClub(userId: string): Promise<void> {
+export default async function createUserAndClub(userId: string): Promise<void> {
   const batch = db.batch();
 
   const clubRef = db.collection("clubs").doc();
