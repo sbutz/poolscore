@@ -1,17 +1,16 @@
+import {
+  BeforeCreateResponse,
+} from "firebase-functions/lib/common/providers/identity";
 import {db} from "./firebase";
 
 /**
- * Create Club and assign it to user with id `userId`.
- * @param {string} userId - The id of the new user.
+ * Create Club and add the id to the user's claims.
  */
-export default async function createUserAndClub(userId: string): Promise<void> {
-  const batch = db.batch();
-
+export default async function createClub(): Promise<BeforeCreateResponse> {
   const clubRef = db.collection("clubs").doc();
-  batch.set(clubRef, {});
+  await clubRef.create({name: ""});
 
-  const userRef = db.doc(`users/${userId}`);
-  batch.set(userRef, {club: clubRef});
-
-  await batch.commit();
+  return {
+    customClaims: {clubId: clubRef.id},
+  };
 }

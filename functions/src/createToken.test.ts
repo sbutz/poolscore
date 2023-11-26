@@ -8,7 +8,6 @@ import {
 } from "firebase/functions";
 import {FirebaseError} from "firebase-admin";
 import {auth as adminAuth, db as adminDb} from "./firebase";
-import createUserAndClub from "./createUser";
 
 interface Token {
   token: string,
@@ -44,16 +43,22 @@ const createUser = async (
 };
 
 const getClubId = async (uid = defaultUid) => {
-  const userData = await adminDb.doc(`users/${uid}`).get();
-  return userData.get("club").id;
+  const user = await adminAuth.getUser(uid);
+  return user?.customClaims?.clubId;
+};
+
+const createClub = async (uid = defaultUid) => {
+  const clubRef = adminDb.collection("clubs").doc();
+  await clubRef.create({});
+  adminAuth.setCustomUserClaims(uid, {clubId: clubRef.id, admin: true});
+  return clubRef.id;
 };
 
 const createAdminUser = async (
   email = defaultEmail, password = defaultPassword, uid = defaultUid
 ) => {
   const user = await createUser(email, password, uid);
-  await createUserAndClub(user.uid);
-  const clubId = await getClubId(uid);
+  const clubId = await createClub(uid);
   return {...user, clubId};
 };
 
@@ -65,7 +70,9 @@ const signOut = async () => {
   await authSignOut(auth);
 };
 
-const createTable = async (tableId = defaultTable, clubId = undefined) => {
+const createTable = async (
+  tableId = defaultTable, clubId: string|undefined = undefined
+) => {
   clubId = clubId ? clubId : await getClubId(defaultUid);
   await adminDb.doc(`clubs/${clubId}/tables/${tableId}`).create({});
 };
@@ -79,7 +86,7 @@ const createTableToken = async (
   const {clubId} = await createAdminUser(email, password, uid);
   await createTable(tableId, clubId);
   await signIn(email, password);
-  const {data} = await createToken({clubId, tableId});
+  const {data} = await createToken({tableId});
   await signOut();
   return data as Token;
 };
@@ -110,7 +117,7 @@ afterEach(async () => {
 
 it("should throw error if not authenticated", async function() {
   try {
-    await createToken({clubId: "123", tableId: "123"});
+    await createToken({tableId: "123"});
   } catch (e) {
     const error = e as FirebaseError;
     expect(error.code).toBe("functions/unauthenticated");
@@ -122,7 +129,7 @@ it("should throw error authenticated as non admin", async function() {
   await signIn();
 
   try {
-    await createToken({clubId: "123", tableId: "123"});
+    await createToken({tableId: "123"});
   } catch (e) {
     const error = e as FirebaseError;
     expect(error.code).toBe("functions/permission-denied");
@@ -130,10 +137,10 @@ it("should throw error authenticated as non admin", async function() {
 });
 
 it("should throw error if required parameters are missing", async function() {
-  await createUser();
+  await createAdminUser();
   await signIn();
 
-  const invalidArgs = [{tableId: "123"}, {clubId: "123"}];
+  const invalidArgs = [{foo: "123"}, {}];
   invalidArgs.forEach(async (arg) => {
     try {
       await createToken(arg);
@@ -144,24 +151,12 @@ it("should throw error if required parameters are missing", async function() {
   });
 });
 
-it("should throw error if wrong club id provided", async function() {
+it("should throw error if wrong table id provided", async function() {
   await createAdminUser();
   await signIn();
 
   try {
-    await createToken({clubId: "123", tableId: "123"});
-  } catch (e) {
-    const error = e as FirebaseError;
-    expect(error.code).toBe("functions/permission-denied");
-  }
-});
-
-it("should throw error if wrong table id provided", async function() {
-  const {clubId} = await createAdminUser();
-  await signIn();
-
-  try {
-    await createToken({clubId, tableId: "123"});
+    await createToken({tableId: "123"});
   } catch (e) {
     const error = e as FirebaseError;
     expect(error.code).toBe("functions/not-found");
@@ -205,6 +200,16 @@ it("fail to login with forged jwt", async function() {
     const error = e as FirebaseError;
     expect(error.code).toBe("auth/invalid-custom-token");
   }
+});
+
+it("should issue jwt with clubId", async function() {
+  const {token} = await createTableToken();
+  const {data} = await createJWT({token});
+  const {jwt} = data as JWT;
+  await signInWithCustomToken(auth, jwt);
+
+  const result = await auth.currentUser?.getIdTokenResult();
+  expect(result?.claims.clubId).toBeDefined();
 });
 
 it("should issue jwt usable for multiple logins", async function() {

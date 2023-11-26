@@ -1,6 +1,6 @@
 import {beforeUserCreated} from "firebase-functions/v2/identity";
 
-import createUserAndClub from "./createUser";
+import createClub from "./createUser";
 import {createJWT, createToken} from "./createToken";
 
 export const user = {
@@ -10,8 +10,8 @@ export const user = {
    * - It is not called for Registrations with a custom token.
    * - It is not called by the emulators.
   */
-  beforecreate: beforeUserCreated((event) => {
-    createUserAndClub(event.data.uid);
+  beforecreate: beforeUserCreated(async () => {
+    return await createClub();
   }),
 };
 

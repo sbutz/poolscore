@@ -1,25 +1,28 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-     function isAuthenticated(userId) {
-      return request.auth != null && request.auth.uid == userId;
+     function isAuthenticated() {
+      return request.auth != null;
     }
 
     function isClubMember(clubId) {
-      let userRef = /databases/$(database)/documents/users/$(request.auth.uid);
-      let clubRef = /databases/$(database)/documents/clubs/$(clubId);
-      return request.auth != null && get(userRef).data.club == clubRef;
+      return isAuthenticated() && request.auth.token.clubId == clubId;
     }
 
-    match /users/{userId} {
-      allow read: if isAuthenticated(userId);
+    function isClubAdmin(clubId) {
+      return isClubMember(clubId) && request.auth.token.admin == true;
     }
 
     match /clubs/{clubId} {
       allow read: if isClubMember(clubId);
-      allow update: if isClubMember(clubId) &&
-                       request.resource.data.name.size() > 0 &&
-                       request.resource.data.name.size() < 128;
+      allow update: if isClubAdmin(clubId) &&
+                      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name']) &&
+                      request.resource.data.name.size() > 0 &&
+                      request.resource.data.name.size() < 128;
+
+      match /tables/{tableId} {
+        allow read, create, delete: if isClubAdmin(clubId);
+      }
     }
   }
 }

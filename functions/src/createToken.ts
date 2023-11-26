@@ -1,39 +1,40 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import {auth, db} from "./firebase";
-import {DocumentReference} from "firebase-admin/firestore";
 import {customAlphabet, nanoid} from "nanoid";
 
-const generator = customAlphabet("123456789ABCDEFGHIJKLMNPQRSTUVWXYZ", 4);
 const minute = 60*1000;
+const tokenAlphabet = "123456789ABCDEFGHIJKLMNPQRSTUVWXYZ";
+const tokenLength = 4;
+const generator = customAlphabet(tokenAlphabet, tokenLength);
+
+const isValidToken = (token: string) => {
+  return token.length == tokenLength &&
+         !token.split("").some((e) => !tokenAlphabet.includes(e));
+};
 
 export const createToken = onCall({cors: true}, async (request) => {
   const uid = request.auth?.uid;
   if (!uid) {
     throw new HttpsError(
       "unauthenticated",
-      "The function must be called while authenticated."
-    );
-  }
-  const {clubId, tableId} = request.data;
-  if (!clubId || !tableId) {
-    throw new HttpsError(
-      "invalid-argument",
-      "Missing required parameters 'clubId' and 'tableId'."
+      "Not authenticated or missing privileges."
     );
   }
 
-  const userData = await db.doc(`users/${uid}`).get();
-  if (!userData.exists) {
-    throw new HttpsError(
-      "not-found",
-      "No user found for specified user id."
-    );
-  }
-  const clubRef : DocumentReference = userData.get("club");
-  if (clubRef.id != clubId) {
+  const clubId = request.auth?.token.clubId;
+  const isAdmin = request.auth?.token.admin;
+  if (!isAdmin || !clubId) {
     throw new HttpsError(
       "permission-denied",
-      "User not allowed to manage specified club."
+      "Missing privileges."
+    );
+  }
+
+  const {tableId} = request.data;
+  if (!tableId) {
+    throw new HttpsError(
+      "invalid-argument",
+      "Missing required parameter 'tableId'."
     );
   }
 
@@ -58,11 +59,11 @@ export const createToken = onCall({cors: true}, async (request) => {
 });
 
 export const createJWT = onCall({cors: true}, async (request) => {
-  const {token} = request.data;
-  if (!token) {
+  const {token} = request.data as {token: string};
+  if (!token || !isValidToken(token)) {
     throw new HttpsError(
       "invalid-argument",
-      "Missing required parameter 'token'."
+      "Missing or malformed parameter 'token'."
     );
   }
 
@@ -70,6 +71,9 @@ export const createJWT = onCall({cors: true}, async (request) => {
     .where("token.value", "==", token)
     .where("token.expires", ">", Date.now())
     .get();
+
+  // Invalidate token
+  await query.docs.at(0)?.ref.update({token: {}});
 
   // Missing unique check during insertion requires to check for duplicates
   if (query.size != 1) {
@@ -79,6 +83,8 @@ export const createJWT = onCall({cors: true}, async (request) => {
     );
   }
 
-  const jwt = await auth.createCustomToken(nanoid());
+  const clubId = query.docs.at(0)?.ref.parent?.parent?.id;
+  const jwt = await auth.createCustomToken(nanoid(), {clubId});
+
   return {jwt};
 });
