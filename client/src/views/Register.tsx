@@ -24,10 +24,10 @@ export default function Register() {
   const onSubmit = () => { signUp(email, password); };
   useEffect(() => {
     if (name) {
-      navigate('/');
+      navigate('/home');
     } else if (clubId && clubname) {
       setName(clubname);
-      navigate('/');
+      navigate('/home');
     }
   }, [clubId, clubname, name, setName, navigate]);
 

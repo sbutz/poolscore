@@ -1,8 +1,8 @@
 import React, {
-  useEffect, createContext, Dispatch, useReducer, useMemo, useCallback,
+  createContext, Dispatch, useReducer, useMemo, useCallback,
 } from 'react';
 import {
-  doc, collection, onSnapshot, addDoc, deleteDoc,
+  doc, collection, addDoc, deleteDoc,
 } from 'firebase/firestore';
 
 import { db } from './Firebase';
@@ -128,32 +128,6 @@ export function Store({ children } : StoreProps) {
   }, [dispatch, state]);
 
   const value = useMemo(() => [state, asyncDispatch] as ContextType, [state, asyncDispatch]);
-
-  useEffect(() => {
-    const clubRef = doc(db, 'club', state.id);
-    return onSnapshot(clubRef, (snapshot) => {
-      if (snapshot.exists()) {
-        dispatch({
-          type: 'set_name',
-          name: snapshot.data().name,
-        });
-      }
-    });
-  }, [state.id]);
-
-  useEffect(() => {
-    const tableRef = collection(db, 'club', state.id, 'tables');
-    return onSnapshot(tableRef, (snapshot) => {
-      const tmp = [] as Pooltable[];
-      snapshot.forEach((d) => {
-        tmp.push({ id: d.id, name: d.data().name });
-      });
-      dispatch({
-        type: 'set_tables',
-        tables: tmp.sort((a, b) => a.name.localeCompare(b.name)),
-      });
-    });
-  }, [state.id]);
 
   return (
     <Context.Provider value={value}>

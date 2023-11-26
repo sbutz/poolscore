@@ -1,18 +1,22 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import {
   Button, Stack, Box, Typography, CardActions, Card, CardContent,
 } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Add, Delete, VpnKey } from '@mui/icons-material';
 
 import Layout from '../components/HomeLayout';
-import { Context } from '../store/Store';
 import FormDialog from '../components/FormDialog';
 import FormField from '../components/FormField';
 import { firstErrorMessage, NotEmptyValidator, NotInValidator } from '../util/Validators';
+import { useTables } from '../store/TableProvider';
+import AlertDialog from '../components/AlertDialog';
 
 export default function Tables() {
-  const [state, dispatch] = useContext(Context);
-  const [open, setOpen] = useState(false);
+  const {
+    tables, addTable, removeTable, generateToken,
+  } = useTables();
+  const [openNew, setOpenNew] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [name, setName] = useState('');
   const fields = [
     {
@@ -21,11 +25,12 @@ export default function Tables() {
       onChange: setName,
       validators: [
         NotEmptyValidator,
-        NotInValidator(state.tables.map((t) => t.name), 'Existiert bereits.'),
+        NotInValidator(tables.map((t) => t.name), 'Existiert bereits.'),
       ],
     },
   ];
   const invalid = fields.some((f) => firstErrorMessage(f.value, f.validators) !== null);
+  const now = new Date();
 
   return (
     <Layout>
@@ -35,29 +40,58 @@ export default function Tables() {
             variant="contained"
             startIcon={<Add />}
             onClick={() => {
-              setOpen(true);
+              setName('');
+              setOpenNew(true);
             }}
           >
             Neuer Tisch
           </Button>
         </Box>
-        {state.tables.length === 0
+        {tables.length === 0
           ? (
             <Typography>
               Du hast noch keine Tische angelegt.
             </Typography>
           ) : null }
-        {state.tables.map((t) => (
-          <Card key={t.id} sx={{ my: 2 }}>
+        {tables.map((t) => (
+          <Card key={t.name} sx={{ my: 2 }}>
             <CardContent>
               <Typography variant="h6">{t.name}</Typography>
+              {t.token && t.token.expires > now
+                ? (
+                  <Typography variant="body1" color="text.secondary">
+                    Token:
+                    {' '}
+                    {t.token.value}
+                    {' '}
+                    (gültig bis
+                    {' '}
+                    {(new Date(t.token.expires)).getHours()}
+                    :
+                    {(new Date(t.token.expires)).getMinutes()}
+                    {' '}
+                    Uhr)
+                  </Typography>
+                ) : null }
             </CardContent>
             <CardActions>
               <Button
                 color="primary"
+                disabled={Boolean(t.token && t.token.expires > now)}
                 onClick={() => {
-                  dispatch?.({ type: 'delete_table', id: t.id });
+                  generateToken(t.name);
                 }}
+                startIcon={<VpnKey />}
+              >
+                Token generieren
+              </Button>
+              <Button
+                color="primary"
+                onClick={() => {
+                  setName(t.name);
+                  setOpenDelete(true);
+                }}
+                startIcon={<Delete />}
               >
                 Löschen
               </Button>
@@ -66,18 +100,13 @@ export default function Tables() {
         ))}
       </Stack>
       <FormDialog
-        open={open}
+        open={openNew}
         title="Neuer Tisch"
-        onCancel={() => { setOpen(false); }}
+        onCancel={() => { setOpenNew(false); }}
         disableSave={invalid}
         onSave={() => {
-          dispatch?.({
-            type: 'add_table',
-            name,
-          }).finally(() => {
-            setOpen(false);
-            setName('');
-          });
+          addTable(name);
+          setOpenNew(false);
         }}
       >
         {fields.map((f) => (
@@ -90,6 +119,20 @@ export default function Tables() {
           />
         ))}
       </FormDialog>
+      <AlertDialog
+        open={openDelete}
+        title="Tisch löschen"
+        text="Vorsicht: Das Löschen eines Tisches der in Benutzung ist kann unerwartete Auswirkungen haben."
+        cancelText="Abbrechen"
+        onCancel={() => {
+          setOpenDelete(false);
+        }}
+        acceptText="Löschen"
+        onAccept={() => {
+          removeTable(name);
+          setOpenDelete(false);
+        }}
+      />
     </Layout>
   );
 }

@@ -40,8 +40,15 @@ export function AuthValidator(error?: AuthError): Validator {
         return 'Es ist kein Nutzer mit dieser E-Mail-Adresse registriert.';
       case 'auth/wrong-password':
         return 'Das Passwort ist falsch.';
+      case 'functions/not-found':
+        return 'Ungültiger oder abgelaufener Tischcode';
       default:
         throw error;
     }
   };
+}
+
+export function TableCodeValidator(value: string) {
+  // eslint-disable-next-line react/destructuring-assignment
+  return value.trim().match('[0-9A-Z]{4}') ? null : 'Ungültiger Tischcode.';
 }
