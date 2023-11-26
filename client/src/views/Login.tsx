@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Divider, Typography } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { Divider, Grid, Typography } from '@mui/material';
 
 import FormButton from '../components/FormButton';
 import FormField, { FormFieldType } from '../components/FormField';
@@ -97,14 +96,20 @@ export default function Login() {
 
   return (
     <Layout>
-      <Grid container spacing={5}>
-        <Grid xs={12} md={5}>
+      <Grid
+        container
+        spacing={{
+          xs: 5,
+          md: 0,
+        }}
+      >
+        <Grid item xs={12} md={5}>
           <TableLogin />
         </Grid>
-        <Grid xs={12} md={2} justifyContent="center" container>
+        <Grid item xs={12} md={2} justifyContent="center" container>
           <Divider textAlign="center" orientation="vertical" />
         </Grid>
-        <Grid xs={12} md={5}>
+        <Grid item xs={12} md={5}>
           <AdminLogin />
         </Grid>
       </Grid>

@@ -8,7 +8,7 @@ import {db} from "./firebase";
  */
 export default async function createClub(): Promise<BeforeCreateResponse> {
   const clubRef = db.collection("clubs").doc();
-  await clubRef.create({name: ""});
+  await clubRef.set({name: "My Club"});
 
   return {
     customClaims: {clubId: clubRef.id},
