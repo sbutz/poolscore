@@ -7,7 +7,28 @@ on:
     branches:
       - master
 jobs:
+  firestore_deploy:
+    runs-on: ubuntu-latest
+    env: 
+      working-directory: ./firestore
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm run deploy
+        working-directory: ${{env.working-directory}}
+
+  functions_deploy:
+    needs: firestore_deploy
+    runs-on: ubuntu-latest
+    env: 
+      working-directory: ./functions
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci && npm run build
+        working-directory: ${{env.working-directory}}
+      - run: npm run deploy
+
   client_deploy:
+    needs: [firestore_deploy, functions_deploy]
     runs-on: ubuntu-latest
     env: 
       working-directory: ./client
@@ -21,3 +42,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_POOLSCORE_1973 }}'
           channelId: live
           projectId: poolscore-1973
+

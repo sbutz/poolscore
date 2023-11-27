@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import {
   CalendarMonth,
-  Close, Home, Logout, TableRestaurant,
+  Close, Home, Login, Logout, TableRestaurant,
 } from '@mui/icons-material';
 import { useAuth } from '../store/AuthProvider';
 import { footerText } from './Footer';
@@ -22,8 +22,11 @@ const drawerBoxSx = {
 
 export default memo((props: AppDrawerProps) => {
   const theme = useTheme();
-  const { userId, userIdLoading, signOut } = useAuth();
+  const {
+    userId, userIdLoading, signOut, admin,
+  } = useAuth();
   const isLoggedIn = userId && !userIdLoading;
+  const isAdmin = isLoggedIn && admin;
 
   const drawerList = (
     <List>
@@ -43,18 +46,7 @@ export default memo((props: AppDrawerProps) => {
         </ListItemButton>
       </ListItem>
       <Divider />
-      { /* isLoggedIn ? null
-        : (
-          <ListItem>
-            <ListItemButton component={Link} to="/login">
-              <ListItemIcon>
-                <Login />
-              </ListItemIcon>
-              <ListItemText primary="Login" />
-            </ListItemButton>
-          </ListItem>
-        ) */}
-      { isLoggedIn
+      { isAdmin
         ? (
           <>
             <ListItem>
@@ -74,17 +66,27 @@ export default memo((props: AppDrawerProps) => {
               </ListItemButton>
             </ListItem>
             <Divider />
-            <ListItem>
-              <ListItemButton onClick={signOut}>
-                <ListItemIcon>
-                  <Logout />
-                </ListItemIcon>
-                <ListItemText primary="Logout" />
-              </ListItemButton>
-            </ListItem>
           </>
-        )
-        : null}
+        ) : null }
+      { isLoggedIn ? (
+        <ListItem>
+          <ListItemButton onClick={signOut}>
+            <ListItemIcon>
+              <Logout />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
+        </ListItem>
+      ) : (
+        <ListItem>
+          <ListItemButton component={Link} to="/login">
+            <ListItemIcon>
+              <Login />
+            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItemButton>
+        </ListItem>
+      )}
       <ListItem disablePadding sx={{ position: 'fixed', bottom: 0 }}>
         <ListItemButton component={Link} to="/legal">
           <ListItemText primary={footerText} secondary="Legal" />

@@ -31,7 +31,7 @@ export default function ClubProvider({ children }: ClubProviderProps) {
   useEffect(() => { if (clubDataError) throw clubDataError; }, [clubDataError]);
 
   const setName = useCallback(async (name: string) => {
-    if (!clubId) throw Error("Club's id no given. Cannot update it's name.");
+    if (!clubId) throw Error("Club's id not given. Cannot update it's name.");
 
     await updateDoc(doc(db, 'clubs', clubId), { name });
   }, [clubId]);

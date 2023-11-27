@@ -24,4 +24,4 @@ if (isDevelopment()) { connectFirestoreEmulator(db, 'localhost', 8080); }
 const functions = getFunctions(app);
 if (isDevelopment()) { connectFunctionsEmulator(functions, 'localhost', 5001); }
 
-export { auth, db };
+export { auth, db, functions };

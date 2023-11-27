@@ -10,8 +10,11 @@ import { useAuth } from '../store/AuthProvider';
 import AppDrawer from './AppDrawer';
 
 export default function Header() {
-  const { userId, userIdLoading, signOut } = useAuth();
-  const loggedIn = userId && !userIdLoading;
+  const {
+    userId, userIdLoading, signOut, admin,
+  } = useAuth();
+  const isLoggedIn = userId && !userIdLoading;
+  const isAdmin = isLoggedIn && admin;
 
   const [open, setOpen] = useState(false);
   const closeDrawer = useCallback(() => { setOpen(false); }, []);
@@ -39,14 +42,15 @@ export default function Header() {
     <>
       <Button component={Link} to="/home">Poolscore</Button>
       <Box sx={{ flexGrow: 1 }} />
-      { loggedIn ? (
+      { isAdmin ? (
         <>
-          <Button component={Link} to="/matchdays">Spieltage</Button>
+          <Button component={Link} to="/matchday">Spieltage</Button>
           <Button component={Link} to="/tables">Tische</Button>
-          <Button onClick={signOut}>Logout</Button>
         </>
-      )
-        : null /* <Button component={Link} to="/login">Login</Button> */}
+      ) : null }
+      { isLoggedIn
+        ? <Button onClick={signOut}>Logout</Button>
+        : <Button component={Link} to="/login">Login</Button> }
     </>
   );
 

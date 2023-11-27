@@ -6,7 +6,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
+    "deploy": "npx firebase-tools deploy --only firestore:rules",
     "test": "npx firebase-tools emulators:exec --only firestore test/run.sh",
+    "export": "npx firebase-tools emulators:export ./emulator_data",
     "lint": "eslint test/"
   },
   "devDependencies": {
@@ -17,6 +19,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "firebase": "^9.18.0",
+    "firebase-tools": "^12.9.1",
     "firestore-tools": "^1.0.2",
     "jest": "^29.5.0",
     "ts-jest": "^29.0.5",

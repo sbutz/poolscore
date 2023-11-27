@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import {
-  Box, Button, Card, CardActions, CardContent, Chip, Container, Stack, Typography,
+  Box, Button, Card, CardActions, CardContent, Chip, Stack, Typography,
 } from '@mui/material';
 import {
   Add, Delete, Edit, Tv,
@@ -57,34 +57,32 @@ export default function Matchdays() {
 
   return (
     <Layout>
-      <Container>
-        <Stack spacing={3}>
-          <Box>
-            <Button
-              variant="contained"
-              startIcon={<Add />}
-              onClick={() => {
-                navigate(`/matchday/${generateId()}`);
-              }}
-            >
-              Neuer Spieltag
-            </Button>
-          </Box>
-          {state.matchdays.length === 0
-            ? (
-              <Typography>
-                Du hast noch keine Spieltage angelegt.
-              </Typography>
-            ) : null }
-          {state.matchdays.map((m) => (
-            <MatchdayCard
-              key={m.id}
+      <Stack spacing={3}>
+        <Box>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={() => {
+              navigate(`/matchday/${generateId()}`);
+            }}
+          >
+            Neuer Spieltag
+          </Button>
+        </Box>
+        {state.matchdays.length === 0
+          ? (
+            <Typography>
+              Du hast noch keine Spieltage angelegt.
+            </Typography>
+          ) : null }
+        {state.matchdays.map((m) => (
+          <MatchdayCard
+            key={m.id}
             // eslint-disable-next-line react/jsx-props-no-spreading
-              {...m}
-            />
-          ))}
-        </Stack>
-      </Container>
+            {...m}
+          />
+        ))}
+      </Stack>
     </Layout>
   );
 }

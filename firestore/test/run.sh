@@ -29,6 +29,4 @@ npx firebase-rules-coverage $JSON_REPORT --rules-file $RULES_FILE --output $REPO
 # Check coverage
 npx lcov-total $LCOV_REPORT --gte=100
 
-/bin/bash
-
-exit $?
+[ $? -eq 0 ] || error "Coverage <100%"

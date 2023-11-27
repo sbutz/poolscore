@@ -3,10 +3,15 @@ import {
   assertFails, assertSucceeds, initializeTestEnvironment, RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
 import {
-  setLogLevel, setDoc, doc, writeBatch, getDoc, updateDoc,
+  setLogLevel, setDoc, doc, getDoc, deleteDoc,
 } from 'firebase/firestore';
 
 let testEnv: RulesTestEnvironment;
+const clubId = 'bc73';
+const clubName = 'bc73';
+const clubPath = `clubs/${clubId}`;
+const tableId = 'Table 1';
+const tablePath = `clubs/${clubId}/tables/${tableId}`;
 
 beforeAll(async () => {
   // Silence expected rules rejections from Firestore SDK. Unexpected rejections
@@ -20,81 +25,84 @@ beforeAll(async () => {
   });
 });
 
+beforeEach(async () => {
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    const db = context.firestore();
+    await setDoc(doc(db, clubPath), { name: clubName });
+    await setDoc(doc(db, tablePath), { foo: 'bar' });
+  });
+});
+
+afterEach(async () => {
+  await testEnv.clearFirestore();
+});
+
 afterAll(async () => {
   await testEnv.cleanup();
 });
 
-it('should forbid write access', async () => {
-  await testEnv.withSecurityRulesDisabled(async (context) => {
-    await setDoc(doc(context.firestore(), 'users/alice'), { id: 1 });
-  });
-
+it('should forbid access to club for non club members', async () => {
   const aliceDb = testEnv.authenticatedContext('alice').firestore();
-  const aliceBatch = writeBatch(aliceDb);
-  const aliceClubRef = doc(aliceDb, 'clubs/bc73');
-  aliceBatch.set(aliceClubRef, {});
-  aliceBatch.set(doc(aliceDb, 'users/alice'), { club: aliceClubRef });
-  await assertFails(aliceBatch.commit());
+  await assertFails(getDoc(doc(aliceDb, clubPath)));
 
   const unauthenticatedDb = testEnv.unauthenticatedContext().firestore();
-  const unauthenticatedBatch = writeBatch(unauthenticatedDb);
-  const unauthenticatedClubRef = doc(unauthenticatedDb, 'clubs/bc73');
-  unauthenticatedBatch.set(unauthenticatedClubRef, {});
-  unauthenticatedBatch.set(doc(unauthenticatedDb, 'users/alice'), { club: unauthenticatedClubRef });
-  await assertFails(unauthenticatedBatch.commit());
+  await assertFails(getDoc(doc(unauthenticatedDb, 'clubs/bc73')));
 });
 
-it('should forbid creating club without user', async () => {
-  // Can't be testet, since the Firebase SDK bypasses all security rules
-  // and users cannot create user or club documents.
-  expect(true).toBeTruthy();
+it('should allow read club', async () => {
+  const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
+  const adminClubData = await getDoc(doc(adminDb, clubPath));
+  expect(adminClubData.data().name).toBe(clubName);
+
+  const nonAdminDb = testEnv.authenticatedContext('bob', { clubId }).firestore();
+  const nonAdminClubData = await getDoc(doc(nonAdminDb, clubPath));
+  expect(nonAdminClubData.data().name).toBe(clubName);
 });
 
-it('should forbid club delete', async () => {
-  // Can't be testet, since the Firebase SDK bypasses all security rules
-  // and users cannot delete club documents.
-  expect(true).toBeTruthy();
+it('should forbid arbitray updates on club', async () => {
+  const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
+  await assertFails(setDoc(doc(adminDb, clubPath), { foo: 'bar' }));
+
+  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
+  await assertFails(setDoc(doc(nonAdminDb, clubPath), { foo: 'bar' }));
 });
 
-it('user should only be able to read his club data', async () => {
-  await testEnv.withSecurityRulesDisabled(async (context) => {
-    const db = context.firestore();
-    const clubRef = doc(db, 'clubs/bc73');
-    await setDoc(clubRef, {});
-    await setDoc(doc(db, 'users/alice'), { club: clubRef });
-  });
+it('should allow update club name for admins', async () => {
+  const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
+  await assertSucceeds(setDoc(doc(adminDb, clubPath), { name: 'foo' }));
 
-  const aliceDb = testEnv.authenticatedContext('alice').firestore();
-  const aliceClubRef = doc(aliceDb, 'clubs/bc73');
-  await assertSucceeds(getDoc(aliceClubRef));
-
-  const bobDb = testEnv.authenticatedContext('bob').firestore();
-  const bobClubRef = doc(bobDb, 'clubs/bc73');
-  await assertFails(getDoc(bobClubRef));
-
-  const unauthenticatedDb = testEnv.unauthenticatedContext().firestore();
-  const unauthenticatedClubRef = doc(unauthenticatedDb, 'clubs/bc73');
-  await assertFails(getDoc(unauthenticatedClubRef));
+  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
+  await assertFails(setDoc(doc(nonAdminDb, clubPath), { name: 'foo' }));
 });
 
-it('user should only be able set his club\'s name', async () => {
-  await testEnv.withSecurityRulesDisabled(async (context) => {
-    const db = context.firestore();
-    const clubRef = doc(db, 'clubs/bc73');
-    await setDoc(clubRef, {});
-    await setDoc(doc(db, 'users/alice'), { club: clubRef });
-  });
+it('should allow read tables for admins ', async () => {
+  const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
+  await assertSucceeds(getDoc(doc(adminDb, tablePath)));
 
-  const aliceDb = testEnv.authenticatedContext('alice').firestore();
-  const aliceClubRef = doc(aliceDb, 'clubs/bc73');
-  await assertFails(updateDoc(aliceClubRef, { name: '' }));
-  await assertSucceeds(updateDoc(aliceClubRef, { name: 'bc73' }));
+  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
+  assertFails(getDoc(doc(nonAdminDb, tablePath)));
+});
 
-  const bobDb = testEnv.authenticatedContext('bob').firestore();
-  const bobClubRef = doc(bobDb, 'clubs/bc73');
-  await assertFails(updateDoc(bobClubRef, { name: 'bc73' }));
+it('should allow create tables for admins ', async () => {
+  const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
+  assertSucceeds(setDoc(doc(adminDb, tablePath), {}));
 
-  const unauthenticatedDb = testEnv.unauthenticatedContext().firestore();
-  const unauthenticatedClubRef = doc(unauthenticatedDb, 'clubs/bc73');
-  await assertFails(updateDoc(unauthenticatedClubRef, { name: 'bc73' }));
+  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
+  assertFails(setDoc(doc(nonAdminDb, tablePath), {}));
+});
+
+it('should allow delete tables for admins', async () => {
+  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
+  assertFails(deleteDoc(doc(nonAdminDb, tablePath)));
+
+  const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
+  assertSucceeds(deleteDoc(doc(adminDb, tablePath)));
+});
+
+it('should forbid write tables for admins', async () => {
+  const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
+  assertFails(setDoc(doc(adminDb, tablePath), { foo: 'bar' }));
+
+  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
+  assertFails(setDoc(doc(nonAdminDb, tablePath), { foo: 'bar' }));
 });
