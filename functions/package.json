@@ -10,7 +10,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "predeploy": "npm run build",
-    "deploy": "npx firebase-tools deploy --only functions",
+    "deploy": "npx firebase-tools deploy --force --only functions",
     "pretest": "npm run build",
     "test": "npx firebase-tools emulators:exec --only 'functions,firestore,auth' 'npx jest'",
     "test:watch": "concurrently --kill-others \"npm:build:watch\" \"npx firebase-tools emulators:exec 'npx jest --watch'\""
