@@ -11,21 +11,28 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       working-directory: ./firestore
+      GOOGLE_APPLICATION_CREDENTIALS: /opt/gcp_key.json
     steps:
       - uses: actions/checkout@v3
+      - name: Export service account credentials to file
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_POOLSCORE_1973 }}' > '${{ env.GOOGLE_APPLICATION_CREDENTIALS }}'
       - run: npm run deploy
-        working-directory: ${{env.working-directory}}
+        working-directory: ${{ env.working-directory }}
 
   functions_deploy:
     needs: firestore_deploy
     runs-on: ubuntu-latest
     env: 
       working-directory: ./functions
+      GOOGLE_APPLICATION_CREDENTIALS: /opt/gcp_key.json
     steps:
       - uses: actions/checkout@v3
+      - name: Export service account credentials to file
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_POOLSCORE_1973 }}' > '${{ env.GOOGLE_APPLICATION_CREDENTIALS }}'
       - run: npm ci && npm run build
-        working-directory: ${{env.working-directory}}
+        working-directory: ${{ env.working-directory }}
       - run: npm run deploy
+        working-directory: ${{ env.working-directory }}
 
   client_deploy:
     needs: [firestore_deploy, functions_deploy]
