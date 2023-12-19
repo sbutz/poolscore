@@ -18,7 +18,7 @@ RULES_FILE=firestore.rules
 
 
 # Execute Tests
-npx jest || error "Tests failed"
+npx jest --runInBand || error "Tests failed"
 
 # Fetch Coverage Report
 curl $COVERAGE_URL > $JSON_REPORT

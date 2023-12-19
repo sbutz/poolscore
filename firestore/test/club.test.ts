@@ -46,7 +46,7 @@ it('should forbid access to club for non club members', async () => {
   await assertFails(getDoc(doc(aliceDb, clubPath)));
 
   const unauthenticatedDb = testEnv.unauthenticatedContext().firestore();
-  await assertFails(getDoc(doc(unauthenticatedDb, 'clubs/bc73')));
+  await assertFails(getDoc(doc(unauthenticatedDb, clubPath)));
 });
 
 it('should allow read club', async () => {

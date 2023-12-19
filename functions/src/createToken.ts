@@ -84,7 +84,10 @@ export const createJWT = onCall({cors: true}, async (request) => {
   }
 
   const clubId = query.docs.at(0)?.ref.parent?.parent?.id;
-  const jwt = await auth.createCustomToken(nanoid(), {clubId});
+  const jwt = await auth.createCustomToken(nanoid(), {
+    clubId,
+    tableId: query.docs[0].id,
+  });
 
   return {jwt};
 });
