@@ -42,7 +42,7 @@ it("should create a game if a table is added", async function() {
   const gameData = (await gameRef.get()).data();
   expect(gameData?.club.path).toBe(clubPath);
   expect(gameData?.table.path).toBe(tablePath);
-  expect(gameData?.type).toBe("8_BALL");
+  expect(gameData?.mode).toBeUndefined();
   expect(gameData?.state).toStrictEqual({});
 });
 

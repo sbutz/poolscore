@@ -22,7 +22,7 @@ export const createGame = onDocumentCreated(
     batch.set(gameRef, {
       table: tableRef,
       club: clubRef,
-      type: "8_BALL",
+      mode: undefined,
       state: {},
     });
     batch.set(snapshot.ref, {game: gameRef}, {merge: true});
