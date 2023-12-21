@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import { initializeFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { initializeFirestore, connectFirestoreEmulator, enableMultiTabIndexedDbPersistence } from 'firebase/firestore';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 import isDevelopment from '../util/environment';
 
@@ -20,6 +20,7 @@ if (isDevelopment()) { connectAuthEmulator(auth, 'http://localhost:9099', { disa
 
 const db = initializeFirestore(app, { ignoreUndefinedProperties: true });
 if (isDevelopment()) { connectFirestoreEmulator(db, 'localhost', 8080); }
+enableMultiTabIndexedDbPersistence(db);
 
 const functions = getFunctions(app);
 if (isDevelopment()) { connectFunctionsEmulator(functions, 'localhost', 5001); }
