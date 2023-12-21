@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { initializeFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 import isDevelopment from '../util/environment';
 
@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 if (isDevelopment()) { connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true }); }
 
-const db = getFirestore(app);
+const db = initializeFirestore(app, { ignoreUndefinedProperties: true });
 if (isDevelopment()) { connectFirestoreEmulator(db, 'localhost', 8080); }
 
 const functions = getFunctions(app);

@@ -13,6 +13,10 @@ service cloud.firestore {
       return isClubMember(clubId) && request.auth.token.admin == true;
     }
 
+    function isTableAdmin(clubId, tableId) {
+      return isClubMember(clubId) && request.auth.token.tableId == tableId;
+    }
+
     match /clubs/{clubId} {
       allow read: if isClubMember(clubId);
       allow update: if isClubAdmin(clubId) &&
@@ -26,9 +30,6 @@ service cloud.firestore {
     }
 
     match /games/{gameId} {
-      function isTableAdmin(clubId, tableId) {
-        return isClubMember(clubId) && request.auth.token.tableId == tableId;
-      }
       function canReadGame() {
         let clubId = get(resource.data.club).id;
         let tableId = get(resource.data.table).id;
@@ -39,13 +40,12 @@ service cloud.firestore {
         let tableId = get(resource.data.table).id;
         return isTableAdmin(clubId, tableId);
       }
-      function isValidAction() {
-        //TODO: validate actions incrementally
-        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['state', 'type']);
+      function modifiesStateOrMode() {
+        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['state', 'mode']);
       }
 
       allow read: if canReadGame();
-      allow update: if canWriteGame() && isValidAction();
+      allow update: if canWriteGame() && modifiesStateOrMode();
     }
   }
 }

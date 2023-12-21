@@ -25,7 +25,7 @@ const initialPlayerState = {
   fouls: 0,
 };
 
-interface State {
+export interface State {
   actions: Action[];
   activePlayer: undefined | 'home' | 'guest';
   remainingBalls: number;
@@ -66,7 +66,7 @@ interface ResetAction {
   type: 'RESET';
 }
 
-type Action = SetActivePlayerAction
+export type Action = SetActivePlayerAction
 | SetRemainingBallsAction
 | BreakFoulAction
 | FoulAction
