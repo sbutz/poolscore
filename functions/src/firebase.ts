@@ -14,3 +14,4 @@ const config = isDevelopment() ? {
 const app = initializeApp(config);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+db.settings({ignoreUndefinedProperties: true});

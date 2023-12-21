@@ -3,7 +3,7 @@ import {
   assertFails, assertSucceeds, initializeTestEnvironment, RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
 import {
-  setLogLevel, setDoc, doc, getDoc, deleteDoc, updateDoc,
+  setLogLevel, setDoc, doc, getDoc, updateDoc,
 } from 'firebase/firestore';
 
 let testEnv: RulesTestEnvironment;
@@ -60,17 +60,17 @@ it('should allow read access to game for club and table admins', async () => {
   await assertFails(getDoc(doc(unauthenticatedDb, gamePath)));
 });
 
-it('should allow write access to state and type for table admins', async () => {
+it('should allow write access to state and mode for table admins', async () => {
   const clubAdminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
-  await assertFails(updateDoc(doc(clubAdminDb, gamePath), { type: '8' }));
+  await assertFails(updateDoc(doc(clubAdminDb, gamePath), { mode: '8' }));
 
   const tableAdminDb = testEnv.authenticatedContext('alice', { clubId, tableId }).firestore();
-  await assertSucceeds(updateDoc(doc(tableAdminDb, gamePath), { type: '8', state: {} }));
+  await assertSucceeds(updateDoc(doc(tableAdminDb, gamePath), { mode: '8', state: {} }));
   await assertFails(updateDoc(doc(tableAdminDb, gamePath), { table: 'foo' }));
 
   const aliceDb = testEnv.authenticatedContext('alice').firestore();
-  await assertFails(updateDoc(doc(aliceDb, gamePath), { type: '8' }));
+  await assertFails(updateDoc(doc(aliceDb, gamePath), { mode: '8' }));
 
   const unauthenticatedDb = testEnv.unauthenticatedContext().firestore();
-  await assertFails(updateDoc(doc(unauthenticatedDb, gamePath), { type: '8' }));
+  await assertFails(updateDoc(doc(unauthenticatedDb, gamePath), { foo: '8' }));
 });

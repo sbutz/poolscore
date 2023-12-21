@@ -25,12 +25,23 @@ beforeAll(async () => {
   });
 });
 
-beforeEach(async () => {
+const createClub = async () => {
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    const db = context.firestore();
+    await setDoc(doc(db, clubPath), { name: clubName });
+  });
+};
+
+const createTable = async () => {
   await testEnv.withSecurityRulesDisabled(async (context) => {
     const db = context.firestore();
     await setDoc(doc(db, clubPath), { name: clubName });
     await setDoc(doc(db, tablePath), { foo: 'bar' });
   });
+};
+
+beforeEach(async () => {
+  await createClub();
 });
 
 afterEach(async () => {
@@ -42,7 +53,7 @@ afterAll(async () => {
 });
 
 it('should forbid access to club for non club members', async () => {
-  const aliceDb = testEnv.authenticatedContext('alice').firestore();
+  const aliceDb = testEnv.authenticatedContext('bob').firestore();
   await assertFails(getDoc(doc(aliceDb, clubPath)));
 
   const unauthenticatedDb = testEnv.unauthenticatedContext().firestore();
@@ -63,7 +74,7 @@ it('should forbid arbitray updates on club', async () => {
   const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
   await assertFails(setDoc(doc(adminDb, clubPath), { foo: 'bar' }));
 
-  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
+  const nonAdminDb = testEnv.authenticatedContext('bob').firestore();
   await assertFails(setDoc(doc(nonAdminDb, clubPath), { foo: 'bar' }));
 });
 
@@ -71,38 +82,42 @@ it('should allow update club name for admins', async () => {
   const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
   await assertSucceeds(setDoc(doc(adminDb, clubPath), { name: 'foo' }));
 
-  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
+  const nonAdminDb = testEnv.authenticatedContext('bob').firestore();
   await assertFails(setDoc(doc(nonAdminDb, clubPath), { name: 'foo' }));
 });
 
 it('should allow read tables for admins ', async () => {
+  await createTable();
   const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
   await assertSucceeds(getDoc(doc(adminDb, tablePath)));
 
-  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
-  assertFails(getDoc(doc(nonAdminDb, tablePath)));
+  const nonAdminDb = testEnv.authenticatedContext('bob').firestore();
+  await assertFails(getDoc(doc(nonAdminDb, tablePath)));
 });
 
 it('should allow create tables for admins ', async () => {
   const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
-  assertSucceeds(setDoc(doc(adminDb, tablePath), {}));
+  await assertSucceeds(setDoc(doc(adminDb, tablePath), {}));
 
-  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
-  assertFails(setDoc(doc(nonAdminDb, tablePath), {}));
+  const nonAdminDb = testEnv.authenticatedContext('bob').firestore();
+  await assertFails(setDoc(doc(nonAdminDb, tablePath), {}));
 });
 
 it('should allow delete tables for admins', async () => {
-  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
-  assertFails(deleteDoc(doc(nonAdminDb, tablePath)));
-
+  await createTable();
   const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
-  assertSucceeds(deleteDoc(doc(adminDb, tablePath)));
+  await assertSucceeds(deleteDoc(doc(adminDb, tablePath)));
+
+  await createTable();
+  const nonAdminDb = testEnv.authenticatedContext('bob').firestore();
+  await assertFails(deleteDoc(doc(nonAdminDb, tablePath)));
 });
 
 it('should forbid write tables for admins', async () => {
+  await createTable();
   const adminDb = testEnv.authenticatedContext('alice', { clubId, admin: true }).firestore();
-  assertFails(setDoc(doc(adminDb, tablePath), { foo: 'bar' }));
+  await assertFails(setDoc(doc(adminDb, tablePath), { foo: 'bar' }));
 
-  const nonAdminDb = testEnv.authenticatedContext('alice', { clubId }).firestore();
-  assertFails(setDoc(doc(nonAdminDb, tablePath), { foo: 'bar' }));
+  const nonAdminDb = testEnv.authenticatedContext('bob').firestore();
+  await assertFails(setDoc(doc(nonAdminDb, tablePath), { foo: 'bar' }));
 });
