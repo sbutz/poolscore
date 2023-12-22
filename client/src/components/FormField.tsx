@@ -6,8 +6,9 @@ import {
 import { DesktopDatePicker, TimePicker } from '@mui/x-date-pickers';
 
 import { Validator, firstErrorMessage } from '../util/Validators';
+import ImageUpload from './ImageUpload';
 
-export type FormFieldType = 'text' | 'password' | 'number' | 'select' | 'date' | 'time';
+export type FormFieldType = 'text' | 'password' | 'number' | 'select' | 'date' | 'time' | 'image';
 
 interface FormFieldProps {
   label: string;
@@ -21,14 +22,14 @@ interface FormFieldProps {
 
 function FormFieldBuilder({
   label, type = 'text', value, options = [], onChange = undefined, validators = [], disabled = false,
-}: FormFieldProps) {
+} : FormFieldProps) {
   const [touched, setTouched] = useState(false);
   useEffect(() => {
-    if (value.length > 0) {
-      setTouched(true);
-    }
+    if (value.length > 0) setTouched(true);
   }, [value]);
+
   const errorMsg = touched ? firstErrorMessage(value, validators || []) : null;
+
   let field;
   switch (type) {
     case 'select':
@@ -101,6 +102,27 @@ function FormFieldBuilder({
         </Box>
       );
       break;
+    case 'image': {
+      field = (
+        <TextField
+          variant="outlined"
+          label={label}
+          value={value}
+          helperText={errorMsg || ' '}
+          error={errorMsg !== null}
+          multiline
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          InputProps={{
+            inputComponent: ImageUpload,
+            inputProps: {
+              onUpload: onChange,
+            },
+          }}
+        />
+      );
+      break;
+    }
     case 'text':
     case 'password':
     case 'number':
