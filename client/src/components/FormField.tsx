@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import {
   Box, FormControl, InputLabel, MenuItem, Select, TextField,
@@ -22,7 +22,13 @@ interface FormFieldProps {
 function FormFieldBuilder({
   label, type = 'text', value, options = [], onChange = undefined, validators = [], disabled = false,
 }: FormFieldProps) {
-  const errorMsg = firstErrorMessage(value, validators || []);
+  const [touched, setTouched] = useState(false);
+  useEffect(() => {
+    if (value.length > 0) {
+      setTouched(true);
+    }
+  }, [value]);
+  const errorMsg = touched ? firstErrorMessage(value, validators || []) : null;
   let field;
   switch (type) {
     case 'select':
