@@ -1,3 +1,7 @@
+/**
+ * @module @deprecated This component should be removed
+ */
+
 import React, {
   createContext, Dispatch, useReducer, useMemo, useCallback,
 } from 'react';

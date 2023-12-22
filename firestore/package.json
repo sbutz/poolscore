@@ -7,13 +7,12 @@
   "license": "ISC",
   "scripts": {
     "deploy": "npx firebase-tools deploy --only firestore:rules",
-    "test": "npx firebase-tools emulators:exec --only firestore test/run.sh",
+    "test": "npx firebase-tools emulators:exec --only firestore 'jest -i'",
     "export": "npx firebase-tools emulators:export ./emulator_data",
     "lint": "eslint test/"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^2.0.7",
-    "@simpleclub/firebase-rules-coverage": "^1.0.0",
     "@types/jest": "^29.5.0",
     "eslint": "^8.36.0",
     "eslint-config-airbnb": "^19.0.4",

@@ -23,8 +23,6 @@ const firebaseConfig = {
   apiKey: "test-key",
 };
 
-console.log(firebaseConfig);
-console.log(process.env);
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 connectAuthEmulator(auth, "http://127.0.0.1:9099", {disableWarnings: true});
@@ -213,6 +211,7 @@ it("should issue jwt with clubId", async function() {
 
   const result = await auth.currentUser?.getIdTokenResult();
   expect(result?.claims.clubId).toBeDefined();
+  expect(result?.claims.tableId).toBeDefined();
 });
 
 it("should issue jwt usable for multiple logins", async function() {

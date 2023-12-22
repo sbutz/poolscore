@@ -2,6 +2,7 @@ import {beforeUserCreated} from "firebase-functions/v2/identity";
 
 import createClub from "./createUser";
 import {createJWT, createToken} from "./createToken";
+import {createGame, deleteGame} from "./createGame";
 
 export const user = {
   /*
@@ -18,4 +19,6 @@ export const user = {
 export const table = {
   createtoken: createToken,
   createjwt: createJWT,
+  creategame: createGame,
+  deletegame: deleteGame,
 };

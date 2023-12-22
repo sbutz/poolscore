@@ -36,6 +36,8 @@ export function AuthValidator(error?: AuthError): Validator {
         return 'Die E-Mail-Adresse ist ungültig.';
       case 'auth/invalid-password':
         return 'Das Passwort muss mindestens 6 Zeichen lang sein.';
+      case 'auth/internal-error':
+        return 'Du scheinst offline zu sein. Bitte prüfe deine Internetverbindung.';
       case 'auth/user-not-found':
         return 'Es ist kein Nutzer mit dieser E-Mail-Adresse registriert.';
       case 'auth/wrong-password':

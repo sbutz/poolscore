@@ -4,7 +4,6 @@ import {
 
 import ErrorPage from './views/ErrorPage';
 import Game from './views/Game';
-import Game14 from './views/Game14';
 import Tables from './views/Tables';
 import Matchdays from './views/Matchdays';
 import Matchday from './views/Matchday';
@@ -21,7 +20,6 @@ export default function Router() {
         <Route path="/" element={<Navigate to="/game" replace />} />
         <Route path="/home" element={<Homepage />} />
         <Route path="/game" element={<Game />} />
-        <Route path="/game14" element={<Game14 />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/tables" element={<RequireLogin><Tables /></RequireLogin>} />

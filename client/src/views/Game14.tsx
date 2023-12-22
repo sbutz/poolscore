@@ -1,18 +1,10 @@
-import { useReducer, useState } from 'react';
 import {
   Button, Grid, Stack, Typography, useTheme,
 } from '@mui/material';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import {
-  ChevronLeft, ChevronRight, PlayCircleFilled, SportsEsports, Undo,
-} from '@mui/icons-material';
-
-import { Link } from 'react-router-dom';
-import {
-  reducer, initialState, BALLS, PlayerState, isBreakFoulPossible, isFoulPossible,
+  BALLS, PlayerState, isBreakFoulPossible, isFoulPossible, State, Action,
 } from '../store/GameState14';
-import Layout from '../components/GameLayout';
-import useCallbackPrompt from '../util/useCallbackPrompt';
-import AlertDialog from '../components/AlertDialog';
 import BorderBox from '../components/BorderBox';
 import Balls from '../assets/Balls';
 
@@ -192,39 +184,11 @@ function PlayerStatistics({ state }: PlayerStatisticsProps) {
   );
 }
 
-export default function Game() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [showReset, setShowReset] = useState(false);
-  const isBlocked = state.actions.length !== 0;
-  const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(isBlocked);
-
-  const toolbar = (
-    <>
-      <Button
-        color="inherit"
-        startIcon={<SportsEsports />}
-        component={Link}
-        to="/game"
-      >
-        8/9/10 Ball
-      </Button>
-      <Button
-        color="inherit"
-        startIcon={<PlayCircleFilled />}
-        onClick={() => { setShowReset(true); }}
-      >
-        Neues Spiel
-      </Button>
-      <Button
-        color="inherit"
-        startIcon={<Undo />}
-        onClick={() => { dispatch?.({ type: 'ROLLBACK' }); }}
-      >
-        Rückgängig
-      </Button>
-    </>
-  );
-
+interface Game14Props {
+  state: State,
+  dispatch: (action: Action) => void,
+}
+export default function Game14({ state, dispatch }:Game14Props) {
   const startingPlayerSelect = (
     <Grid container>
       <Grid item xs={5} textAlign="center">
@@ -354,31 +318,13 @@ export default function Game() {
   );
 
   return (
-    <Layout requireDesktop fullwidth toolbar={toolbar}>
-      <Stack height="100%" justifyContent="space-around">
-        <Players activePlayer={state.activePlayer} />
-        <Score
-          home={state.home.score}
-          guest={state.guest.score}
-        />
-        {state.activePlayer === undefined ? startingPlayerSelect : buttons}
-      </Stack>
-      <AlertDialog
-        open={showPrompt as boolean || showReset}
-        title={showPrompt ? 'Zurück zur Startseite?' : 'Neues Spiel starten'}
-        text="Der aktuelle Spielstand geht dabei verloren."
-        cancelText="Abbrechen"
-        onCancel={() => {
-          if (showPrompt) (cancelNavigation as (() => void))();
-          else setShowReset(false);
-        }}
-        acceptText="Ok"
-        onAccept={() => {
-          dispatch?.({ type: 'RESET' });
-          if (showPrompt) (confirmNavigation as (() => void))();
-          else setShowReset(false);
-        }}
+    <Stack height="100%" justifyContent="space-around">
+      <Players activePlayer={state.activePlayer} />
+      <Score
+        home={state.home.score}
+        guest={state.guest.score}
       />
-    </Layout>
+      {state.activePlayer === undefined ? startingPlayerSelect : buttons}
+    </Stack>
   );
 }

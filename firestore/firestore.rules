@@ -13,6 +13,10 @@ service cloud.firestore {
       return isClubMember(clubId) && request.auth.token.admin == true;
     }
 
+    function isTableAdmin(clubId, tableId) {
+      return isClubMember(clubId) && request.auth.token.tableId == tableId;
+    }
+
     match /clubs/{clubId} {
       allow read: if isClubMember(clubId);
       allow update: if isClubAdmin(clubId) &&
@@ -23,6 +27,25 @@ service cloud.firestore {
       match /tables/{tableId} {
         allow read, create, delete: if isClubAdmin(clubId);
       }
+    }
+
+    match /games/{gameId} {
+      function canReadGame() {
+        let clubId = get(resource.data.club).id;
+        let tableId = get(resource.data.table).id;
+        return isClubAdmin(clubId) || isTableAdmin(clubId, tableId);
+      }
+      function canWriteGame() {
+        let clubId = get(resource.data.club).id;
+        let tableId = get(resource.data.table).id;
+        return isTableAdmin(clubId, tableId);
+      }
+      function modifiesStateOrMode() {
+        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['state', 'mode']);
+      }
+
+      allow read: if canReadGame();
+      allow update: if canWriteGame() && modifiesStateOrMode();
     }
   }
 }

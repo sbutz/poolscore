@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { initializeFirestore, connectFirestoreEmulator, enableMultiTabIndexedDbPersistence } from 'firebase/firestore';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
-import isDevelopment from '../util/environment';
+import { isDevelopmentEnv, isTestEnv } from '../util/environment';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD4jUVmL7dUKi7l6fQqmxHqzVZR_sidLG8',
@@ -16,12 +16,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
-if (isDevelopment()) { connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true }); }
+if (isDevelopmentEnv()) { connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true }); }
 
-const db = getFirestore(app);
-if (isDevelopment()) { connectFirestoreEmulator(db, 'localhost', 8080); }
+const db = initializeFirestore(app, { ignoreUndefinedProperties: true });
+if (isDevelopmentEnv()) { connectFirestoreEmulator(db, 'localhost', 8080); }
+if (!isTestEnv()) { enableMultiTabIndexedDbPersistence(db); }
 
 const functions = getFunctions(app);
-if (isDevelopment()) { connectFunctionsEmulator(functions, 'localhost', 5001); }
+if (isDevelopmentEnv()) { connectFunctionsEmulator(functions, 'localhost', 5001); }
 
 export { auth, db, functions };

@@ -1,137 +1,71 @@
-import { useReducer, useState } from 'react';
-import {
-  Button, Grid, Stack, Typography,
-} from '@mui/material';
-import {
-  Add, PlayCircleFilled, Remove, SportsEsports, Undo,
-} from '@mui/icons-material';
-
-import { Link } from 'react-router-dom';
-import { reducer, initialState } from '../store/GameState';
+import { useEffect, useState } from 'react';
+import { useGame } from '../store/GameProvider';
+import { Mode } from '../store/GameModes';
+import Game14 from './Game14';
+import Game8 from './Game8';
+import GameToolbar from '../components/GameToolbar';
 import Layout from '../components/GameLayout';
-import useCallbackPrompt from '../util/useCallbackPrompt';
+import { State as State8 } from '../store/GameState';
+import { State as State14 } from '../store/GameState14';
 import AlertDialog from '../components/AlertDialog';
 
-const scoreSx = {
-  fontSize: '60vh',
-  fontWeight: 400,
-  lineHeight: 0.6,
-  userSelect: 'none',
-};
+export default function Game() {
+  const {
+    mode, state, startNewGame, updateState,
+  } = useGame();
 
-interface ButtonProps {
-  onClick: () => void;
-}
-function AddButton({ onClick }: ButtonProps) {
-  return (
-    <Button variant="contained" color="success" sx={{ mx: 3 }} onClick={onClick}>
-      <Add sx={{ fontSize: '5rem' }} />
-    </Button>
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [nextMode, setNextMode] = useState<Mode>(Mode.Ball8);
+
+  useEffect(() => {
+    if (mode == null) {
+      startNewGame(Mode.Ball8);
+    }
+  });
+
+  const toolbar = mode != null ? (
+    <GameToolbar
+      mode={mode}
+      onRestart={() => {
+        setNextMode(mode);
+        setShowPrompt(true);
+      }}
+      onChangeMode={() => {
+        setNextMode(mode === Mode.Ball8 ? Mode.Straight : Mode.Ball8);
+        setShowPrompt(true);
+      }}
+      onRollback={() => {
+        updateState({ type: 'ROLLBACK' });
+      }}
+    />
+  ) : null;
+
+  const dialog = (
+    <AlertDialog
+      open={showPrompt as boolean}
+      title={mode === nextMode ? 'Neues Spiel starten' : 'Disziplin wechseln'}
+      text="Der aktuelle Spielstand geht dabei verloren."
+      cancelText="Abbrechen"
+      onCancel={() => {
+        setShowPrompt(false);
+      }}
+      acceptText="Ok"
+      onAccept={() => {
+        startNewGame(nextMode);
+        setShowPrompt(false);
+      }}
+    />
   );
-}
-function RemoveButton({ onClick }: ButtonProps) {
-  return (
-    <Button variant="contained" color="error" sx={{ mx: 3 }} onClick={onClick}>
-      <Remove sx={{ fontSize: '5rem' }} />
-    </Button>
-  );
-}
 
-function Game() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [showReset, setShowReset] = useState(false);
-  const isBlocked = state.actions.length !== 0;
-  const [showPrompt, confirmNavigation, cancelNavigation] = useCallbackPrompt(isBlocked);
-
-  const homePlusOne = () => { dispatch?.({ type: 'HOME_PLUS_ONE' }); };
-  const homeMinusOne = () => { dispatch?.({ type: 'HOME_MINUS_ONE' }); };
-  const guestPlusOne = () => { dispatch?.({ type: 'GUEST_PLUS_ONE' }); };
-  const guestMinusOne = () => { dispatch?.({ type: 'GUEST_MINUS_ONE' }); };
-
-  const toolbar = (
-    <>
-      <Button
-        color="inherit"
-        startIcon={<SportsEsports />}
-        component={Link}
-        to="/game14"
-      >
-        14/1 endlos
-      </Button>
-      <Button
-        color="inherit"
-        startIcon={<PlayCircleFilled />}
-        onClick={() => { setShowReset(true); }}
-      >
-        Neues Spiel
-      </Button>
-      <Button
-        color="inherit"
-        startIcon={<Undo />}
-        onClick={() => { dispatch?.({ type: 'ROLLBACK' }); }}
-      >
-        Rückgängig
-      </Button>
-    </>
-  );
+  const game = mode === Mode.Ball8
+    ? (
+      <Game8 state={state as State8} dispatch={updateState} />
+    ) : <Game14 state={state as State14} dispatch={updateState} />;
 
   return (
     <Layout requireDesktop fullwidth toolbar={toolbar}>
-      <Stack height="100%" alignItems="center" justifyContent="space-around">
-        <Grid container justifyContent="space-evenly" mt="1em">
-          <Grid item xs={5} textAlign="center">
-            <Typography variant="h1">Heim</Typography>
-          </Grid>
-          <Grid item xs={2} />
-          <Grid item xs={5} textAlign="center">
-            <Typography variant="h1">Gast</Typography>
-          </Grid>
-        </Grid>
-        <Grid container justifyContent="center">
-          <Grid item xs={5} textAlign="center" onClick={homePlusOne}>
-            <Typography variant="h1" sx={scoreSx}>
-              {state.scoreHome}
-            </Typography>
-          </Grid>
-          <Grid item xs={2} textAlign="center">
-            <Typography variant="h1" sx={scoreSx}>:</Typography>
-          </Grid>
-          <Grid item xs={5} textAlign="center" onClick={guestPlusOne}>
-            <Typography variant="h1" sx={scoreSx}>
-              {state.scoreGuest}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container justifyContent="center" mb="2em">
-          <Grid item xs={5} textAlign="center">
-            <AddButton onClick={homePlusOne} />
-            <RemoveButton onClick={homeMinusOne} />
-          </Grid>
-          <Grid item xs={2} textAlign="center" />
-          <Grid item xs={5} textAlign="center">
-            <AddButton onClick={guestPlusOne} />
-            <RemoveButton onClick={guestMinusOne} />
-          </Grid>
-        </Grid>
-      </Stack>
-      <AlertDialog
-        open={showPrompt as boolean || showReset}
-        title={showPrompt ? 'Zurück zur Startseite?' : 'Neues Spiel starten'}
-        text="Der aktuelle Spielstand geht dabei verloren."
-        cancelText="Abbrechen"
-        onCancel={() => {
-          if (showPrompt) (cancelNavigation as (() => void))();
-          else setShowReset(false);
-        }}
-        acceptText="Ok"
-        onAccept={() => {
-          dispatch?.({ type: 'RESET' });
-          if (showPrompt) (confirmNavigation as (() => void))();
-          else setShowReset(false);
-        }}
-      />
+      {game}
+      {dialog}
     </Layout>
   );
 }
-
-export default Game;

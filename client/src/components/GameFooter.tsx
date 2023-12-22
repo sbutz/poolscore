@@ -2,14 +2,13 @@ import { Home } from '@mui/icons-material';
 import {
   AppBar, Toolbar, IconButton, Stack,
 } from '@mui/material';
-import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   children: React.ReactNode;
 }
 
-function Header({ children }: HeaderProps) {
+export default function GameFooter({ children }: HeaderProps) {
   return (
     <AppBar color="transparent" position="sticky">
       <Toolbar>
@@ -28,5 +27,3 @@ function Header({ children }: HeaderProps) {
     </AppBar>
   );
 }
-
-export default memo(Header);

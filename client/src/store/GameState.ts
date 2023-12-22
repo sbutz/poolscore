@@ -1,4 +1,4 @@
-interface State {
+export interface State {
   actions: Action[];
   scoreHome: number;
   scoreGuest: number;
@@ -9,7 +9,7 @@ const initialState = {
   scoreGuest: 0,
 };
 
-interface Action {
+export interface Action {
   type: 'HOME_PLUS_ONE'
   | 'HOME_MINUS_ONE'
   | 'GUEST_PLUS_ONE'
@@ -18,7 +18,6 @@ interface Action {
   | 'RESET';
 }
 
-// eslint-disable-next-line consistent-return
 function reducer(state: State, action: Action) : State {
   const actions = [...state.actions, action];
 

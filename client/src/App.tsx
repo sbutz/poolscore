@@ -6,6 +6,7 @@ import Router from './Router';
 import AuthProvider from './store/AuthProvider';
 import ClubProvider from './store/ClubProvider';
 import TableProvider from './store/TableProvider';
+import GameProvider from './store/GameProvider';
 import { Store } from './store/Store';
 
 const darkTheme = createTheme({
@@ -21,9 +22,11 @@ export default function App() {
         <AuthProvider>
           <ClubProvider>
             <TableProvider>
-              <Store>
-                <Router />
-              </Store>
+              <GameProvider>
+                <Store>
+                  <Router />
+                </Store>
+              </GameProvider>
             </TableProvider>
           </ClubProvider>
         </AuthProvider>

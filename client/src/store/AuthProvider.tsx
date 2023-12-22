@@ -14,6 +14,7 @@ interface AuthState {
   userId?: string;
   userIdLoading: boolean;
   clubId?: string;
+  tableId?: string;
   admin?: boolean;
   signUp: (email: string, password: string) => void;
   signUpError?: AuthError;
@@ -66,6 +67,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     userIdLoading: userLoading,
     clubId: tokenResult?.claims.clubId,
     admin: tokenResult?.claims.admin,
+    tableId: tokenResult?.claims.tableId,
     signUp,
     signUpError,
     signIn,

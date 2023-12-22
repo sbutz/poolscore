@@ -1,7 +1,7 @@
 import { Stack, Container } from '@mui/material';
 
 import RequireDesktop from './RequireDesktop';
-import GameBar from './GameBar';
+import GameBar from './GameFooter';
 
 interface LayoutProps {
   children: React.ReactNode;
