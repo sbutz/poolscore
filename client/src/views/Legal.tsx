@@ -21,7 +21,11 @@ export default function Legal() {
             <Typography><Link href="mailto:mail@butz.st">mail@butz.st</Link></Typography>
           </Stack>
           <Stack spacing={2}>
-            <Typography variant="h3">Third Party Lizenzen</Typography>
+            <Typography variant="h3">Datenschutzerklärung</Typography>
+            <Typography><Link href={`${process.env.PUBLIC_URL}/privacy_policy.html`} target="_blank" rel="noopener">Datenschutzerklärung</Link></Typography>
+          </Stack>
+          <Stack spacing={2}>
+            <Typography variant="h3">Drittanbieter Lizenzen</Typography>
             <Typography><Link href={`${process.env.PUBLIC_URL}/licenses.txt`} target="_blank" rel="noopener">Lizenzen</Link></Typography>
           </Stack>
         </Stack>
