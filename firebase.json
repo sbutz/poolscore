@@ -17,6 +17,9 @@
     "singleProjectMode": true,
     "functions": {
       "port": 5001
+    },
+    "storage": {
+      "port": 9199
     }
   },
   "functions": [
@@ -50,7 +53,18 @@
       }
     ],
     "headers": [
-      {"source": "/service-worker.js", "headers": [{"key": "Cache-Control", "value": "no-cache"}]}
+      {
+        "source": "/service-worker.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
     ]
+  },
+  "storage": {
+    "rules": "storage/storage.rules"
   }
 }
