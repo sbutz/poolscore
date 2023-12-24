@@ -1,15 +1,10 @@
-import { useState } from 'react';
 import { Stack } from '@mui/material';
 import { useClub } from '../store/ClubProvider';
 import FormField from '../components/FormField';
 import Layout from '../components/HomeLayout';
 
 export default function Club() {
-  const { name } = useClub();
-  const [image, setImage] = useState<string>('');
-  const onChange = async (newImage: string) => {
-    setImage(newImage);
-  };
+  const { name, logo, setLogo } = useClub();
 
   return (
     <Layout>
@@ -18,8 +13,8 @@ export default function Club() {
         <FormField
           label="Logo"
           type="image"
-          value={image}
-          onChange={onChange}
+          value={logo || ''}
+          onChange={setLogo}
         />
       </Stack>
     </Layout>

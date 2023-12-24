@@ -1,12 +1,30 @@
 rules_version = '2';
 
-// Craft rules based on data in your Firestore database
-// allow write: if firestore.get(
-//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+// TODO: create folder per club
+//        - logo_512x512.png
+// TODO: club delete -> delete folder
+// TODO: write tests for storage rules
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if false;
+     function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isClubMember(clubId) {
+      return isAuthenticated() && request.auth.token.clubId == clubId;
+    }
+
+    function isClubAdmin(clubId) {
+      return isClubMember(clubId) && request.auth.token.admin == true;
+    }
+
+    function isTableAdmin(clubId, tableId) {
+      return isClubMember(clubId) && request.auth.token.tableId == tableId;
+    }
+
+    match /{clubId}/logo.jpg {
+      allow get, list: if isClubMember(clubId);
+      allow create, update: if isClubAdmin(clubId);
     }
   }
 }

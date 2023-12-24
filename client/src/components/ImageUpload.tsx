@@ -1,5 +1,5 @@
 import {
-  ChangeEvent, forwardRef, useRef, useState,
+  ChangeEvent, forwardRef, useEffect, useRef, useState,
 } from 'react';
 import ReactCrop, { PixelCrop, type Crop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -32,7 +32,6 @@ function ImageUpload({ label, value, onUpload: onChange }: InputBaseComponentPro
   const [image, setImage] = useState<string>();
   const [saved, setSaved] = useState(false);
   const [crop, setCrop] = useState<Crop>(initialCrop);
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [error, setError] = useState<string>();
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -108,34 +107,41 @@ function ImageUpload({ label, value, onUpload: onChange }: InputBaseComponentPro
     onChange(image);
     setSaved(true);
   };
+  useEffect(() => {
+    if (value) setSaved(true);
+  }, [value]);
 
   const onCrop = async () => {
-    if (imageRef.current && completedCrop) {
-      const newImage = await cropImage(imageRef.current, completedCrop);
+    if (imageRef.current && crop) {
+      const newImage = await cropImage(imageRef.current, crop as PixelCrop);
       setImage(newImage);
     }
   };
   useKeyDown('Enter', onCrop);
 
-  const img = <img ref={imageRef} src={image} alt={label} style={{ maxHeight: '50vh', maxWidth: '100%' }} onChange={onImageLoad} onLoad={onImageLoad} />;
+  const onInputClick = (e: any) => {
+    const target = e.target as HTMLInputElement;
+    target.value = ''; // Reset input to allow upload of the same file
+  };
+
+  const getImg = (val: string) => <img ref={imageRef} src={val} alt={label} style={{ maxHeight: '50vh', maxWidth: '100%' }} onChange={onImageLoad} onLoad={onImageLoad} />;
   return (
     <Stack alignItems="start" spacing={1}>
       { !saved && image ? (
         <ReactCrop
           crop={crop}
           onChange={onCropChanage}
-          onComplete={setCompletedCrop}
           aspect={aspect}
         >
-          {img}
+          {getImg(image)}
         </ReactCrop>
       ) : null }
-      { saved && value ? img : null}
+      { saved && value ? getImg(value) : null}
       {error ? <Typography variant="caption" color="error">{error}</Typography> : null}
       <Stack direction="row">
         <Button component="label" startIcon={<CloudUpload />}>
           Upload
-          <input ref={ref} type="file" accept={acceptedTypes.join(',')} hidden onChange={onUpload} />
+          <input ref={ref} type="file" accept={acceptedTypes.join(',')} hidden onChange={onUpload} onClick={onInputClick} />
         </Button>
         <Button component="label" startIcon={<CropIcon />} onClick={onCrop} disabled={saved || !image}>Zuschneiden</Button>
         <Button component="label" startIcon={<Save />} onClick={onSave} disabled={saved || !image}>Speichern</Button>
