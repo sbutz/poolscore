@@ -14,3 +14,7 @@ export default async function createClub(): Promise<BeforeCreateResponse> {
     customClaims: {clubId: clubRef.id},
   };
 }
+
+// TODO: on club delete
+// delete log from storage
+// delete tables collection => should delete games

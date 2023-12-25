@@ -2,7 +2,7 @@
  * Blocking Auth Triggers are not called by emulators.
  * Therefore we test the executed function directly.
  */
-import createClub from "./createUser";
+import createClub from "./createClub";
 import {db} from "./firebase";
 
 it("should add create club", async function() {

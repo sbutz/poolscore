@@ -1,10 +1,10 @@
 import {beforeUserCreated} from "firebase-functions/v2/identity";
 
-import createClub from "./createUser";
+import createClub from "./createClub";
 import {createJWT, createToken} from "./createToken";
 import {createGame, deleteGame} from "./createGame";
 
-export const user = {
+export const club = {
   /*
    * Called before the creation of a user.
    * Exceptions:
