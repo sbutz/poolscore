@@ -25,6 +25,6 @@ export const deleteClub = onDocumentDeleted(
 
     const {clubId} = event.params;
     await db.recursiveDelete(db.collection(`clubs/${clubId}/tables`));
-    await storage.deleteFiles({prefix: `${clubId}/`});
+    await storage.deleteFiles({prefix: `clubs/${clubId}`});
   },
 );

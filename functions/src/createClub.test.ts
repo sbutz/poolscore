@@ -16,7 +16,7 @@ const sleep = (ms: number = defaultSleepTime) => {
 afterEach(async () => {
   await db.recursiveDelete(db.collection(`clubs/${clubId}/tables`));
   await db.recursiveDelete(db.collection("clubs"));
-  await storage.deleteFiles({prefix: ""});
+  await storage.deleteFiles({prefix: `clubs/${clubId}`});
 });
 
 /*

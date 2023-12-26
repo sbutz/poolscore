@@ -6,10 +6,10 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "deploy": "npx firebase-tools deploy --only firestore:rules",
-    "test": "npx firebase-tools emulators:exec --only firestore 'jest -i'",
+    "deploy": "npx firebase-tools deploy --only 'firestore:rules,storage:rules",
+    "test": "npx firebase-tools emulators:exec --only 'firestore,storage' 'jest -i'",
     "export": "npx firebase-tools emulators:export ./emulator_data",
-    "lint": "eslint test/"
+    "lint": "eslint src"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^2.0.7",

@@ -102,15 +102,6 @@ function ImageUpload({ label, value, onUpload: onChange }: InputBaseComponentPro
     }
   };
 
-  const onSave = () => {
-    // TODO: scale to minSizeLength
-    onChange(image);
-    setSaved(true);
-  };
-  useEffect(() => {
-    if (value) setSaved(true);
-  }, [value]);
-
   const onCrop = async () => {
     if (imageRef.current && crop) {
       const newImage = await cropImage(imageRef.current, crop as PixelCrop);
@@ -118,6 +109,18 @@ function ImageUpload({ label, value, onUpload: onChange }: InputBaseComponentPro
     }
   };
   useKeyDown('Enter', onCrop);
+
+  const onSave = async () => {
+    if (imageRef.current && crop) {
+      const newImage = await cropImage(imageRef.current, crop as PixelCrop);
+      setImage(newImage);
+      onChange(newImage);
+      setSaved(true);
+    }
+  };
+  useEffect(() => {
+    if (value) setSaved(true);
+  }, [value]);
 
   const onInputClick = (e: any) => {
     const target = e.target as HTMLInputElement;
