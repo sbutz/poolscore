@@ -1,7 +1,8 @@
 import {DocumentReference} from "firebase-admin/firestore";
 import {db as adminDb} from "./firebase";
 
-const sleep = (ms: number) => {
+const defaultSleepTime = 2000;
+const sleep = (ms: number = defaultSleepTime) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
@@ -35,7 +36,7 @@ afterEach(async () => {
 
 it("should create a game if a table is added", async function() {
   const tableRef = await createTable();
-  await sleep(1000); // wait for cloud trigger
+  await sleep(); // wait for cloud trigger
   const gameRef = await getGameRef(tableRef);
   expect(gameRef.path).toBeDefined();
 
@@ -48,12 +49,12 @@ it("should create a game if a table is added", async function() {
 
 it("should delete game if corresponding table is removed", async function() {
   const tableRef = await createTable();
-  await sleep(1000); // wait for cloud trigger
+  await sleep(); // wait for cloud trigger
   const gameRef = await getGameRef(tableRef);
   expect(gameRef.path).toBeDefined();
 
   await tableRef.delete();
-  await sleep(1000); // wait for cloud trigger
+  await sleep(); // wait for cloud trigger
   const gameSnapshot = await gameRef.get();
   expect(gameSnapshot.exists).toBeFalsy();
 });

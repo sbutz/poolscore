@@ -1,6 +1,6 @@
 import {beforeUserCreated} from "firebase-functions/v2/identity";
 
-import createClub from "./createClub";
+import {createClub, deleteClub} from "./createClub";
 import {createJWT, createToken} from "./createToken";
 import {createGame, deleteGame} from "./createGame";
 
@@ -14,6 +14,7 @@ export const club = {
   beforecreate: beforeUserCreated(async () => {
     return await createClub();
   }),
+  deleteclub: deleteClub,
 };
 
 export const table = {

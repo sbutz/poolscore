@@ -12,8 +12,8 @@
     "predeploy": "npm run build",
     "deploy": "npx firebase-tools deploy --force --only functions",
     "pretest": "npm run build",
-    "test": "npx firebase-tools emulators:exec --only 'functions,firestore,auth' 'npx jest --runInBand'",
-    "test:watch": "concurrently --kill-others \"npm:build:watch\" \"npx firebase-tools emulators:exec --only 'functions,firestore,auth' 'npx jest --watch --runInBand'\""
+    "test": "npx firebase-tools emulators:exec 'npx jest --runInBand'",
+    "test:watch": "concurrently --kill-others \"npm:build:watch\" \"npx firebase-tools emulators:exec 'npx jest --watch --runInBand'\""
   },
   "engines": {
     "node": "16"
