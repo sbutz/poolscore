@@ -1,4 +1,4 @@
-name: Firestore
+name: Firebase
 
 on:
   pull_request:
@@ -8,10 +8,10 @@ on:
       - reopend
 
 jobs:
-  firestore_test:
+  firebase_test:
     runs-on: ubuntu-latest
     env: 
-      working-directory: ./firestore
+      working-directory: ./firebase
     steps:
       - uses: actions/checkout@v2
       - name: Install Dependencies
