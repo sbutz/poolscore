@@ -62,7 +62,7 @@ export async function cropImage(image: HTMLImageElement, completedCrop: PixelCro
   );
 
   const blob = await offscreen.convertToBlob({
-    type: 'image/png',
+    type: 'image/jpeg',
   });
   return encodeData(blob);
 }

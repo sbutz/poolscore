@@ -39,8 +39,9 @@ export default function ClubProvider({ children }: ClubProviderProps) {
     await updateDoc(doc(db, 'clubs', clubId), { name });
   }, [clubId]);
 
-  const logoRef = clubId ? ref(storage, `${clubId}/logo.jpg`) : null;
-  const [logo, ,logoError] = useDownloadURL(logoRef);
+  const downloadRef = clubId ? ref(storage, `clubs/${clubId}/logo_512x512.jpeg`) : null;
+  const uploadRef = clubId ? ref(storage, `clubs/${clubId}/logo.jpeg`) : null;
+  const [logo, ,logoError] = useDownloadURL(downloadRef);
   useEffect(() => { if (logoError && logoError.code !== 'storage/object-not-found') throw logoError; }, [logoError]);
 
   const [localLogo, setLocalLogo] = useState<string>();
@@ -49,11 +50,11 @@ export default function ClubProvider({ children }: ClubProviderProps) {
   useEffect(() => { if (errorUploadLogo) throw errorUploadLogo; }, [errorUploadLogo]);
 
   const setLogo = useCallback(async (image: string) => {
-    if (!clubId || !logoRef) throw Error("Club's id not given. Cannot update it's logo.");
+    if (!clubId || !uploadRef) throw Error("Club's id not given. Cannot update it's logo.");
     const blob = await (await fetch(image)).blob();
-    await uploadLogo(logoRef, blob, { contentType: 'image/png' });
+    await uploadLogo(uploadRef, blob, { contentType: 'image/jpeg' });
     setLocalLogo(image); // browser won't refresh logo since url does not change, show local version
-  }, [clubId, logoRef, uploadLogo]);
+  }, [clubId, uploadRef, uploadLogo]);
 
   const value = useMemo(() => ({
     name: clubData?.name, setName, logo: localLogo, setLogo,

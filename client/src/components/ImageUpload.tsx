@@ -18,6 +18,7 @@ const maxFileSize = 1 * mb;
 
 const minSideLength = 512;
 const maxSideLength = 4096;
+const uploadSideLength = 1024;
 const aspect = 1;
 
 const initialCrop : Crop = {
@@ -112,6 +113,12 @@ function ImageUpload({ label, value, onUpload: onChange }: InputBaseComponentPro
 
   const onSave = async () => {
     if (imageRef.current && crop) {
+      // limit upload resolution
+      const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
+      const scaleY = imageRef.current.naturalHeight / imageRef.current.height;
+      crop.width = Math.min(crop.width, uploadSideLength / scaleX);
+      crop.height = Math.min(crop.height, uploadSideLength / scaleY);
+
       const newImage = await cropImage(imageRef.current, crop as PixelCrop);
       setImage(newImage);
       onChange(newImage);

@@ -19,7 +19,6 @@ export async function createClub(): Promise<BeforeCreateResponse> {
 export const deleteClub = onDocumentDeleted(
   "clubs/{clubId}",
   async (event) => {
-    // todo:
     const snapshot = event.data;
     if (!snapshot) return;
 
