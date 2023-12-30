@@ -6,7 +6,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "deploy": "npx firebase-tools deploy --only 'firestore:rules,storage:rules",
+    "deploy": "npx firebase-tools deploy --only 'firestore:rules,storage:rules'",
     "test": "npx firebase-tools emulators:exec --only 'firestore,storage' 'jest -i'",
     "export": "npx firebase-tools emulators:export ./emulator_data",
     "lint": "eslint src"
