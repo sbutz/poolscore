@@ -14,10 +14,6 @@ service firebase.storage {
       return isClubMember(clubId) && request.auth.token.admin == true;
     }
 
-    function isTableAdmin(clubId, tableId) {
-      return isClubMember(clubId) && request.auth.token.tableId == tableId;
-    }
-
     match /clubs/{clubId}/{image} {
       function canUpdate() {
         return image in ['logo.jpeg'].toSet()
