@@ -46,6 +46,7 @@ export default function Header() {
         <>
           <Button component={Link} to="/matchday">Spieltage</Button>
           <Button component={Link} to="/tables">Tische</Button>
+          <Button component={Link} to="/club">Verein</Button>
         </>
       ) : null }
       { isLoggedIn
@@ -55,7 +56,7 @@ export default function Header() {
   );
 
   return (
-    <AppBar color="transparent" position="sticky">
+    <AppBar color="inherit" position="sticky">
       <Container>
         <Toolbar disableGutters>
           {isMobile ? mobileToolbar : desktopToolbar}

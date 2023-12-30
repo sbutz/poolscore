@@ -7,10 +7,10 @@ on:
     branches:
       - master
 jobs:
-  firestore_deploy:
+  rules_deploy:
     runs-on: ubuntu-latest
     env: 
-      working-directory: ./firestore
+      working-directory: ./firebase
       GOOGLE_APPLICATION_CREDENTIALS: /opt/gcp_key.json
     steps:
       - uses: actions/checkout@v3
@@ -20,7 +20,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
 
   functions_deploy:
-    needs: firestore_deploy
+    needs: rules_deploy
     runs-on: ubuntu-latest
     env: 
       working-directory: ./functions
@@ -35,7 +35,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
 
   client_deploy:
-    needs: [firestore_deploy, functions_deploy]
+    needs: [rules_deploy, functions_deploy]
     runs-on: ubuntu-latest
     env: 
       working-directory: ./client

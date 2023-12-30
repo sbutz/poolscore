@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+     function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isClubMember(clubId) {
+      return isAuthenticated() && request.auth.token.clubId == clubId;
+    }
+
+    function isClubAdmin(clubId) {
+      return isClubMember(clubId) && request.auth.token.admin == true;
+    }
+
+    function isTableAdmin(clubId, tableId) {
+      return isClubMember(clubId) && request.auth.token.tableId == tableId;
+    }
+
+    match /clubs/{clubId}/{image} {
+      function canUpdate() {
+        return image in ['logo.jpeg'].toSet()
+            && request.resource.size <= 1*1024*1024
+            && request.resource.contentType in ['image/jpeg'].toSet();
+      }
+
+      allow get: if isClubMember(clubId);
+      allow create, update: if isClubAdmin(clubId) && canUpdate();
+    }
+  }
+}

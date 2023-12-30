@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import {
   CalendarMonth,
-  Close, Home, Login, Logout, TableRestaurant,
+  Close, Home, Login, Logout, ManageAccounts, TableRestaurant,
 } from '@mui/icons-material';
 import { useAuth } from '../store/AuthProvider';
 import { footerText } from './Footer';
@@ -49,6 +49,14 @@ export default memo((props: AppDrawerProps) => {
       { isAdmin
         ? (
           <>
+            <ListItem>
+              <ListItemButton component={Link} to="/club">
+                <ListItemIcon>
+                  <ManageAccounts />
+                </ListItemIcon>
+                <ListItemText primary="Verein" />
+              </ListItemButton>
+            </ListItem>
             <ListItem>
               <ListItemButton component={Link} to="/tables">
                 <ListItemIcon>

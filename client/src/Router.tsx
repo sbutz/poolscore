@@ -12,6 +12,7 @@ import Register from './views/Register';
 import RequireLogin from './components/RequireLogin';
 import Homepage from './views/Homepage';
 import Legal from './views/Legal';
+import Club from './views/Club';
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -22,6 +23,7 @@ export default function Router() {
         <Route path="/game" element={<Game />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/club" element={<RequireLogin><Club /></RequireLogin>} />
         <Route path="/tables" element={<RequireLogin><Tables /></RequireLogin>} />
         <Route path="/matchday" element={<RequireLogin><Matchdays /></RequireLogin>} />
         <Route path="/matchday/:id" element={<RequireLogin><Matchday /></RequireLogin>} />
