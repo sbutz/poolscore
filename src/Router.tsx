@@ -4,6 +4,7 @@ import {
 
 import ErrorPage from './views/ErrorPage';
 import Game from './views/Game';
+import RequireLogin from './components/RequireLogin';
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -11,6 +12,7 @@ export default function Router() {
       <>
         <Route path="/" element={<Navigate to="/game" replace />} />
         <Route path="/game" element={<Game />} />
+        <Route path="/matchdays" element={<RequireLogin><p>123</p></RequireLogin>} />
         <Route path="*" element={<ErrorPage />} />
       </>,
     ),
