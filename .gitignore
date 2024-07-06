@@ -8,6 +8,7 @@
 
 # firebase emulator
 firebase-debug.log
+ui-debug.log
 
 # production
 /build

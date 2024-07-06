@@ -19,7 +19,6 @@ export default function GameFooter({ children }: HeaderProps) {
             component={Link}
             to="/matchdays"
             sx={{ ml: 4, position: 'fixed', left: 0 }}
-            disabled
           >
             Spieltage
           </Button>
