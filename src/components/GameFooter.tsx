@@ -17,7 +17,7 @@ export default function GameFooter({ children }: HeaderProps) {
             color="inherit"
             startIcon={<EmojiEvents />}
             component={Link}
-            to="/matchdays"
+            to="/games"
             sx={{ ml: 4, position: 'fixed', left: 0 }}
           >
             Spieltage
