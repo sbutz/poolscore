@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useGame } from '../store/GameProvider';
-import { Mode } from '../store/GameModes';
+import { Mode } from '../lib/GameModes';
 import Game14 from './Game14';
 import Game8 from './Game8';
 import GameToolbar from '../components/GameToolbar';
 import Layout from '../components/GameLayout';
-import { State as State8 } from '../store/GameState';
-import { State as State14 } from '../store/GameState14';
+import { State as State8 } from '../lib/GameState';
+import { State as State14 } from '../lib/GameState14';
 import AlertDialog from '../components/AlertDialog';
 
 export default function Game() {

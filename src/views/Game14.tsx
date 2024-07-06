@@ -4,7 +4,7 @@ import {
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import {
   BALLS, PlayerState, isBreakFoulPossible, isFoulPossible, State, Action,
-} from '../store/GameState14';
+} from '../lib/GameState14';
 import BorderBox from '../components/BorderBox';
 import Balls from '../assets/Balls';
 

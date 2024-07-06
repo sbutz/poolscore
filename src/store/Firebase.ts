@@ -19,4 +19,5 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 if (isDevelopmentEnv()) { connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true }); }
 
+// eslint-disable-next-line import/prefer-default-export
 export { auth };

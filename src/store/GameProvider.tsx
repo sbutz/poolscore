@@ -3,7 +3,7 @@ import {
 } from 'react';
 import {
   Mode, State, Action, getInitialState, reducer,
-} from './GameModes';
+} from '../lib/GameModes';
 
 interface GameState {
   mode?: Mode;
