@@ -15,17 +15,17 @@ export type State = State8 | State14;
 export type Action = Action8 | Action14;
 
 export const getInitialState = (mode: Mode) => {
-  switch (mode) {
-    case Mode.Ball8: return initial8State;
-    case Mode.Straight: return initial14state;
-    default: throw Error(`Unkown Mode '${mode}'`);
-  }
+  const initialStates = {
+    [Mode.Ball8]: initial8State,
+    [Mode.Straight]: initial14state,
+  };
+  return initialStates[mode];
 };
 
 export const reducer = (mode: Mode, state: State, action: Action) => {
-  switch (mode) {
-    case Mode.Ball8: return reducer8(state as State8, action as Action8);
-    case Mode.Straight: return reducer14(state as State14, action as Action14);
-    default: throw Error(`Unkown Mode '${mode}'`);
-  }
+  const nextState = {
+    [Mode.Ball8]: () => reducer8(state as State8, action as Action8),
+    [Mode.Straight]: () => reducer14(state as State14, action as Action14),
+  };
+  return nextState[mode]();
 };
