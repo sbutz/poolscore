@@ -1,6 +1,6 @@
 import { PlayArrow, PlaylistPlay } from '@mui/icons-material';
 import {
-  BottomNavigation, BottomNavigationAction, Paper, Stack,
+  BottomNavigation, BottomNavigationAction, Container, Paper, Stack,
 } from '@mui/material';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
@@ -31,7 +31,9 @@ function NavBar() {
 export default function MainLayout() {
   return (
     <Stack height="100vh">
-      <Outlet />
+      <Container maxWidth="md">
+        <Outlet />
+      </Container>
       <NavBar />
     </Stack>
   );

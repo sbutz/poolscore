@@ -1,5 +1,5 @@
 import {
-  Button, Card, CardActions, CardContent, Container, Stack, Typography,
+  Button, Card, CardActions, CardContent, Stack, Typography,
 } from '@mui/material';
 import { PlayArrow } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -35,7 +35,6 @@ function GameCard({
             </Stack>
           </Grid>
         </Grid>
-
       </CardContent>
       <CardActions>
         <Button
@@ -72,13 +71,11 @@ const games = [
 
 export default function Games() {
   return (
-    <Container maxWidth="md">
-      <Stack spacing={3}>
-        {games.map((game: Game) => (
-        // eslint-disable-next-line react/jsx-props-no-spreading
-          <GameCard key={game.id} {...game} />
-        ))}
-      </Stack>
-    </Container>
+    <Stack spacing={3}>
+      {games.map((game: Game) => (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+        <GameCard key={game.id} {...game} />
+      ))}
+    </Stack>
   );
 }
