@@ -1,12 +1,18 @@
+interface PlayerState {
+  score: number;
+}
+
+const initialPlayerState = { score: 0 };
+
 export interface State {
   actions: Action[];
-  scoreHome: number;
-  scoreGuest: number;
+  home: PlayerState;
+  guest: PlayerState;
 }
 const initialState = {
   actions: [] as Action[],
-  scoreHome: 0,
-  scoreGuest: 0,
+  home: { ...initialPlayerState },
+  guest: { ...initialPlayerState },
 };
 
 export interface Action {
@@ -23,13 +29,13 @@ function reducer(state: State, action: Action) : State {
 
   switch (action.type) {
     case 'HOME_PLUS_ONE':
-      return { ...state, actions, scoreHome: state.scoreHome + 1 };
+      return { ...state, actions, home: { score: state.home.score + 1 } };
     case 'HOME_MINUS_ONE':
-      return { ...state, actions, scoreHome: Math.max(0, state.scoreHome - 1) };
+      return { ...state, actions, home: { score: Math.max(0, state.home.score - 1) } };
     case 'GUEST_PLUS_ONE':
-      return { ...state, actions, scoreGuest: state.scoreGuest + 1 };
+      return { ...state, actions, guest: { score: state.guest.score + 1 } };
     case 'GUEST_MINUS_ONE':
-      return { ...state, actions, scoreGuest: Math.max(0, state.scoreGuest - 1) };
+      return { ...state, actions, guest: { score: Math.max(0, state.guest.score - 1) } };
     case 'ROLLBACK':
       return state.actions.slice(0, -1).reduce((acc, a) => reducer(acc, a), initialState);
     case 'RESET':

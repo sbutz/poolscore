@@ -52,7 +52,7 @@ export default function Game8({ state, dispatch } : Game8Props) {
       <Grid container justifyContent="center">
         <Grid item xs={5} textAlign="center" onClick={homePlusOne}>
           <Typography variant="h1" sx={scoreSx}>
-            {state.scoreHome}
+            {state.home.score}
           </Typography>
         </Grid>
         <Grid item xs={2} textAlign="center">
@@ -60,7 +60,7 @@ export default function Game8({ state, dispatch } : Game8Props) {
         </Grid>
         <Grid item xs={5} textAlign="center" onClick={guestPlusOne}>
           <Typography variant="h1" sx={scoreSx}>
-            {state.scoreGuest}
+            {state.guest.score}
           </Typography>
         </Grid>
       </Grid>
