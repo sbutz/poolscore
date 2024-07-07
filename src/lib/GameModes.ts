@@ -10,6 +10,16 @@ export enum Mode {
   Straight = 'STRAIGHT',
 }
 
+export namespace Mode {
+  export function toString(mode: Mode) {
+    const names = {
+      [Mode.Ball8]: '8-Ball',
+      [Mode.Straight]: '14/1 endlos',
+    };
+    return names[mode];
+  }
+}
+
 export type State = State8 | State14;
 
 export type Action = Action8 | Action14;
