@@ -50,22 +50,22 @@ function GameCard({
 
 const games = [
   {
-    id: '1', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames,
+    id: '1', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
   },
   {
-    id: '2', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames,
+    id: '2', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
   },
   {
-    id: '3', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames,
+    id: '3', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
   },
   {
-    id: '4', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames,
+    id: '4', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
   },
   {
-    id: '5', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames,
+    id: '5', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
   },
   {
-    id: '6', mode: Mode.Straight, state: getInitialState(Mode.Straight), names: defaultPlayerNames,
+    id: '6', mode: Mode.Straight, state: getInitialState(Mode.Straight), names: defaultPlayerNames, raceTo: 125,
   },
 ];
 

@@ -7,6 +7,8 @@ import {
 
 export enum Mode {
   Ball8 = 'BALL8',
+  Ball9 = 'BALL9',
+  Ball10 = 'BALL10',
   Straight = 'STRAIGHT',
 }
 
@@ -14,6 +16,8 @@ export namespace Mode {
   export function toString(mode: Mode) {
     const names = {
       [Mode.Ball8]: '8-Ball',
+      [Mode.Ball9]: '9-Ball',
+      [Mode.Ball10]: '10-Ball',
       [Mode.Straight]: '14/1 endlos',
     };
     return names[mode];
@@ -27,6 +31,8 @@ export type Action = Action8 | Action14;
 export const getInitialState = (mode: Mode) => {
   const initialStates = {
     [Mode.Ball8]: initial8State,
+    [Mode.Ball9]: initial8State,
+    [Mode.Ball10]: initial8State,
     [Mode.Straight]: initial14state,
   };
   return initialStates[mode];
@@ -35,6 +41,8 @@ export const getInitialState = (mode: Mode) => {
 export const reducer = (mode: Mode, state: State, action: Action) => {
   const nextState = {
     [Mode.Ball8]: () => reducer8(state as State8, action as Action8),
+    [Mode.Ball9]: () => reducer8(state as State8, action as Action8),
+    [Mode.Ball10]: () => reducer8(state as State8, action as Action8),
     [Mode.Straight]: () => reducer14(state as State14, action as Action14),
   };
   return nextState[mode]();
