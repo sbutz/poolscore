@@ -9,6 +9,7 @@ import Login from './views/Login';
 import Matchdays from './views/Matchdays';
 import Games from './views/Games';
 import MainLayout from './views/MainLayout';
+import StreamOverlay from './views/StreamOverlay';
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -21,6 +22,8 @@ export default function Router() {
           <Route path="/games" element={<RequireLogin><Games /></RequireLogin>} />
           <Route path="/matchdays" element={<RequireLogin><Matchdays /></RequireLogin>} />
         </Route>
+        {/* Needs game id etc. */ }
+        <Route path="/overlay" element={<StreamOverlay />} />
         <Route path="*" element={<ErrorPage />} />
       </>,
     ),
