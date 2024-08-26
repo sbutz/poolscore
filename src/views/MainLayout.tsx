@@ -1,40 +1,90 @@
-import { PlayArrow, PlaylistPlay } from '@mui/icons-material';
+import { EmojiEvents, Menu, PlayArrow } from '@mui/icons-material';
 import {
-  BottomNavigation, BottomNavigationAction, Container, Paper, Stack,
+  AppBar, IconButton, Toolbar, Typography, Container, Drawer, Box, List, ListItem, ListItemButton,
+  ListItemIcon, ListItemText, useTheme, useMediaQuery,
+  Button,
 } from '@mui/material';
+import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
-const routes : { [path: string]: number } = {
-  '/games': 0,
-  '/matchdays': 1,
-};
-
-function NavBar() {
+function DrawerListItem(text: string, icon: React.ReactNode, link: string) {
   const location = useLocation();
-  const value = routes[location.pathname] || 0;
+  return (
+    <ListItem key={text} disablePadding>
+      <ListItemButton component={Link} to={link} selected={location.pathname === link}>
+        <ListItemIcon>
+          {icon}
+        </ListItemIcon>
+        <ListItemText primary={text} />
+      </ListItemButton>
+    </ListItem>
+  );
+}
+
+interface MainDrawerProps {
+  open: boolean;
+  toggleDrawer: (open: boolean) => void;
+}
+function MainDrawer({ open, toggleDrawer } : MainDrawerProps) {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
-    <Paper
+    <Drawer
+      open={open}
+      onClose={() => { toggleDrawer(false); }}
+      variant={isDesktop ? 'permanent' : 'temporary'}
       sx={{
-        position: 'fixed', bottom: 0, left: 0, right: 0,
+        width: 250,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: 250,
+          boxSizing: 'border-box',
+        },
       }}
-      elevation={3}
     >
-      <BottomNavigation showLabels value={value}>
-        <BottomNavigationAction label="Partien" icon={<PlayArrow />} component={Link} to="/games" />
-        <BottomNavigationAction label="Spieltage" icon={<PlaylistPlay />} component={Link} to="/matchdays" />
-      </BottomNavigation>
-    </Paper>
+      <Toolbar />
+      <List>
+        {DrawerListItem('Partien', <PlayArrow />, '/games')}
+        {DrawerListItem('Spieltage', <EmojiEvents />, '/matchdays')}
+      </List>
+    </Drawer>
   );
 }
 
 export default function MainLayout() {
+  const theme = useTheme();
+  const [openDrawer, setDrawerOpen] = useState(false);
+
   return (
-    <Stack height="100vh">
+    <Box sx={{ display: 'flex' }}>
+      <AppBar
+        position="fixed"
+        color="transparent"
+        sx={{ zIndex: theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            sx={{ mr: 2 }}
+            onClick={() => { setDrawerOpen(!openDrawer); }}
+          >
+            <Menu />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Poolscore
+          </Typography>
+          <Button disabled>
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <MainDrawer open={openDrawer} toggleDrawer={setDrawerOpen} />
       <Container maxWidth="md">
+        <Toolbar sx={{ mb: 5 }} />
         <Outlet />
       </Container>
-      <NavBar />
-    </Stack>
+    </Box>
   );
 }
