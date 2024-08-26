@@ -27,6 +27,8 @@ const dummyGame: Game = {
   state: getInitialState(Mode.Ball9),
 };
 
+const fontSize = 24;
+
 function MatchScore(matchday: Matchday) {
   const { games, names } = matchday;
   const firstTo = games.length / 2 + 1;
@@ -35,32 +37,34 @@ function MatchScore(matchday: Matchday) {
     <Stack direction="row" spacing={1} sx={{ backgroundImage }}>
       <Stack direction="row" sx={{ color: 'white' }}>
         <Typography
+          fontSize={fontSize}
           variant="button"
           sx={{
             backgroundColor: 'blue', borderTopLeftRadius: borderRadius, borderBottomLeftRadius: borderRadius, backgroundImage,
           }}
-          width="4rem"
+          width="6rem"
           textAlign="center"
         >
           {names.home}
         </Typography>
-        <Typography sx={{ backgroundColor: 'rgb(20, 20, 20)', backgroundImage }} width="3rem" textAlign="center" variant="button">
+        <Typography fontSize={fontSize} sx={{ backgroundColor: 'rgb(20, 20, 20)', backgroundImage }} width="5rem" textAlign="center" variant="button">
           {Matchday.getScore(matchday, 'home')}
           {' - '}
           {Matchday.getScore(matchday, 'guest')}
         </Typography>
         <Typography
+          fontSize={fontSize}
           variant="button"
           sx={{
             backgroundColor: 'red', borderTopRightRadius: borderRadius, borderBottomRightRadius: borderRadius, backgroundImage,
           }}
-          width="4rem"
+          width="6rem"
           textAlign="center"
         >
           {names.guest}
         </Typography>
       </Stack>
-      <Typography sx={{ color: 'black', backgroundColor: 'white', borderRadius }} width="8rem" textAlign="center">
+      <Typography variant="button" fontSize={fontSize} sx={{ color: 'black', backgroundColor: 'white', borderRadius }} width="15rem" textAlign="center">
         {`First to ${firstTo} points`}
       </Typography>
     </Stack>
@@ -72,6 +76,7 @@ function GameScore({ names, raceTo, state }: Game) {
     <Stack direction="row" spacing={0} sx={{ backgroundImage, color: 'white' }}>
       <Typography
         variant="button"
+        fontSize={fontSize}
         sx={{
           backgroundColor: 'blue', backgroundImage, borderTopLeftRadius: borderRadius, borderBottomLeftRadius: borderRadius,
         }}
@@ -81,6 +86,7 @@ function GameScore({ names, raceTo, state }: Game) {
         {names.home}
       </Typography>
       <Typography
+        fontSize={fontSize}
         variant="button"
         sx={{ backgroundColor: 'blue', backgroundImage }}
         width="4rem"
@@ -88,10 +94,11 @@ function GameScore({ names, raceTo, state }: Game) {
       >
         {state.home.score}
       </Typography>
-      <Typography sx={{ backgroundColor: 'rgb(20, 20, 20)', backgroundImage }} width="6rem" textAlign="center" variant="button">
+      <Typography fontSize={fontSize} sx={{ backgroundColor: 'rgb(20, 20, 20)', backgroundImage }} width="10rem" textAlign="center" variant="button">
         {`Race to ${raceTo}`}
       </Typography>
       <Typography
+        fontSize={fontSize}
         variant="button"
         sx={{ backgroundColor: 'red', backgroundImage }}
         width="4rem"
@@ -100,6 +107,7 @@ function GameScore({ names, raceTo, state }: Game) {
         {state.guest.score}
       </Typography>
       <Typography
+        fontSize={fontSize}
         variant="button"
         sx={{
           backgroundColor: 'red', backgroundImage, borderTopRightRadius: borderRadius, borderBottomRightRadius: borderRadius,
@@ -133,7 +141,7 @@ export default function StreamOverlay() {
         }}
       >
         {/* TODO: Use club's logo */}
-        <BC73 fill="0xffffff" stroke="white" width="5rem" height="5rem" opacity={0.7} />
+        <BC73 fill="0xffffff" stroke="white" width="7rem" height="7rem" opacity={0.7} />
       </Box>
       <Stack
         alignItems="center"
