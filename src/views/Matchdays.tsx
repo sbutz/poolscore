@@ -1,6 +1,5 @@
 import {
-  Button, Card, CardActions, CardContent, Grid, Stack,
-  Typography,
+  Box, Button, Card, CardActions, CardContent, Fab, Stack, Typography, Grid,
 } from '@mui/material';
 import { Add, Edit, Share } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -52,26 +51,31 @@ function MatchdayCard(m: Matchday) {
 }
 
 const matchdays : Matchday[] = [
-  { id: '1', names: { home: 'BC 73 Pfeffenhausen II', guest: 'BC Olimpia München' }, games: [] },
+  { id: '1', names: { home: 'Team Niederbayern', guest: 'Team Tirol' }, games: [] },
+  { id: '2', names: { home: 'BC73 Pfeffenhausen 2', guest: 'BSV Münschen 1' }, games: [] },
+  { id: '3', names: { home: 'Team Niederbayern', guest: 'Team Tirol' }, games: [] },
 ];
 
 export default function Matchdays() {
   return (
     <Stack spacing={3}>
-      <div>
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          component={Link}
-          to="/matchdays/new"
-        >
-          Neuer Spieltag
-        </Button>
-      </div>
       {matchdays.map((matchday: Matchday) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
         <MatchdayCard key={matchday.id} {...matchday} />
       ))}
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          right: 0,
+          padding: '1rem',
+        }}
+      >
+        <Fab variant="extended" color="secondary" aria-label="add" component={Link} to="/matchdays/new">
+          <Add />
+          Neuer Spieltag
+        </Fab>
+      </Box>
     </Stack>
   );
 }
