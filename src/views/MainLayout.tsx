@@ -82,7 +82,7 @@ export default function MainLayout() {
       </AppBar>
       <MainDrawer open={openDrawer} toggleDrawer={setDrawerOpen} />
       <Container maxWidth="md">
-        <Toolbar sx={{ mb: 5 }} />
+        <Toolbar sx={{ mb: 4 }} />
         <Outlet />
       </Container>
     </Box>

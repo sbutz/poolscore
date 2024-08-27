@@ -35,7 +35,8 @@ function MatchdayCard(m: Matchday) {
       <CardActions>
         <Button
           startIcon={<Edit />}
-          onClick={() => { console.log(id); }}
+          component={Link}
+          to={`/matchdays/${id}`}
         >
           Bearbeiten
         </Button>
