@@ -26,9 +26,9 @@
     "workbox-strategies": "^6.5.4"
   },
   "scripts": {
-    "start": "npx firebase-tools emulators:exec --ui --only=\"auth\" \"react-scripts start\" --import ./emulator_data",
+    "start": "npx firebase-tools emulators:exec --ui --only=\"auth,firestore\" \"react-scripts start\" --import ./emulator_data",
     "build": "react-scripts build",
-    "udpate-emulator-data": "npx firebase-tools emulators:export --only auth ./emulator_data",
+    "udpate-emulator-data": "npx firebase-tools emulators:export --only \"auth,firestore\" ./emulator_data",
     "test": "react-scripts test",
     "lint": "eslint src/",
     "eject": "react-scripts eject"
