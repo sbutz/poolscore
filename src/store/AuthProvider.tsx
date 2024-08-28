@@ -3,9 +3,11 @@ import {
 } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './Firebase';
+import useIdTokenResult from '../util/useIdTokenResult';
 
 interface AuthState {
   userId?: string;
+  clubId?: string;
   loading: boolean;
 }
 
@@ -22,12 +24,15 @@ interface AuthProviderProps {
 }
 export default function AuthProvider({ children }: AuthProviderProps) {
   const [user, loading, error] = useAuthState(auth, {});
+  const tokenResult = useIdTokenResult(user);
+
   useEffect(() => { if (error) throw error; }, [error]);
 
   const value = useMemo(() => ({
     userId: user?.uid,
+    clubId: tokenResult?.claims.clubId as string | undefined,
     loading,
-  }), [user, loading]);
+  }), [user, loading, tokenResult]);
 
   return (
     <AuthContext.Provider value={value}>

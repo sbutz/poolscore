@@ -6,11 +6,11 @@ import {
   AddCircleOutline, Delete, Edit, EmojiEvents, Group, SportsSoccer,
 } from '@mui/icons-material';
 import { ElementType, useState } from 'react';
-import { dummyGame, dummyMatchday } from '../lib/Fixture';
-import { Mode } from '../lib/GameModes';
-import { Game } from '../lib/Game';
-import AlertDialog from '../components/AlertDialog';
-import { Matchday } from '../lib/Matchday';
+import { dummyGame, dummyMatchday } from '../../lib/Fixture';
+import { Mode } from '../../lib/GameModes';
+import { Game } from '../../lib/Game';
+import AlertDialog from '../../components/AlertDialog';
+import { Matchday } from '../../lib/Matchday';
 
 const matchday = dummyMatchday;
 

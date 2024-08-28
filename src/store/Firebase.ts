@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 
 function isDevelopmentEnv() {
   return process.env.NODE_ENV === 'development';
@@ -19,5 +20,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 if (isDevelopmentEnv()) { connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true }); }
 
-// eslint-disable-next-line import/prefer-default-export
-export { auth };
+const db = getFirestore(app);
+if (isDevelopmentEnv()) { connectFirestoreEmulator(db, 'localhost', 8080); }
+
+export { auth, db };

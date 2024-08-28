@@ -1,26 +1,22 @@
-import { Box, Fab, Stack } from '@mui/material';
-import { Add } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Stack } from '@mui/material';
 import { Matchday } from '../../lib/Matchday';
-import { dummyMatchday } from '../../lib/Fixture';
 import MatchdayCard from './MatchdayCard';
-
-const matchdays = [dummyMatchday, dummyMatchday, dummyMatchday];
+import NewMatchdayButton from './NewMatchdayButton';
+import { useMatchdays } from '../../store/Matchday';
 
 export default function Matchdays() {
+  const [values, loading, error] = useMatchdays();
+
   return (
     <Stack spacing={3}>
-      {matchdays.map((matchday: Matchday) => (
-        <MatchdayCard key={matchday.id} matchday={matchday} />))}
-      <Box sx={{
-        position: 'fixed', bottom: 0, right: 0, padding: '1rem',
-      }}
-      >
-        <Fab variant="extended" color="secondary" aria-label="add" component={Link} to="/matchdays/new">
-          <Add />
-          Neuer Spieltag
-        </Fab>
-      </Box>
+      {error ? <p>Fehler beim Laden der Spieltage.</p> : null}
+      {!error && loading ? <p>Spieltage werden geladen ...</p> : null}
+      {values
+        ? values.map((matchday: Matchday) => <MatchdayCard key={matchday.id} matchday={matchday} />)
+        : null}
+      {!error && !loading && values?.length === 0
+        ? <p>Bisher sind keine Spieltage angelegt.</p> : null}
+      <NewMatchdayButton />
     </Stack>
   );
 }
