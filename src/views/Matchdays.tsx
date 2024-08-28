@@ -1,12 +1,14 @@
 import {
-  Box, Button, Card, CardActions, CardContent, Fab, Stack, Typography, Grid,
+  Box, Button, Card, CardActions, CardContent, Fab, Stack, Typography,
 } from '@mui/material';
-import { Add, Edit, Share } from '@mui/icons-material';
+import Grid from '@mui/material/Unstable_Grid2';
+import { Add, Edit, PictureInPicture } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { Matchday } from '../lib/Matchday';
+import { dummyMatchday } from '../lib/Fixture';
 
-function MatchdayCard(m: Matchday) {
-  const { id, names } = m;
+function MatchdayCard({ matchday }: { matchday: Matchday }) {
+  const { id, names } = matchday;
   return (
     <Card>
       <CardContent>
@@ -18,7 +20,7 @@ function MatchdayCard(m: Matchday) {
           <Grid xs={5.5}>
             <Stack direction={{ xs: 'column-reverse', md: 'column-reverse' }} spacing={{ xs: 0, md: 0 }} justifyContent="center" textAlign="center">
               <Typography variant="overline" fontSize="0.85rem">{names.home}</Typography>
-              <Typography variant="h4">{Matchday.getScore(m, 'home')}</Typography>
+              <Typography variant="h4">{Matchday.getScore(matchday, 'home')}</Typography>
             </Stack>
           </Grid>
           <Grid xs={1} textAlign="center">
@@ -26,7 +28,7 @@ function MatchdayCard(m: Matchday) {
           </Grid>
           <Grid xs={5.5}>
             <Stack direction={{ xs: 'column', md: 'column' }} spacing={{ xs: 0, md: 0 }} justifyContent="center" textAlign="center">
-              <Typography variant="h4">{Matchday.getScore(m, 'guest')}</Typography>
+              <Typography variant="h4">{Matchday.getScore(matchday, 'guest')}</Typography>
               <Typography variant="overline" fontSize="0.85rem">{names.guest}</Typography>
             </Stack>
           </Grid>
@@ -41,36 +43,27 @@ function MatchdayCard(m: Matchday) {
           Bearbeiten
         </Button>
         <Button
-          startIcon={<Share />}
-          onClick={() => { console.log(id); }}
+          startIcon={<PictureInPicture />}
+          component={Link}
+          to="/overlay"
         >
-          Livescore
+          Stream Overlay
         </Button>
       </CardActions>
     </Card>
   );
 }
 
-const matchdays : Matchday[] = [
-  { id: '1', names: { home: 'Team Niederbayern', guest: 'Team Tirol' }, games: [] },
-  { id: '2', names: { home: 'BC73 Pfeffenhausen 2', guest: 'BSV Münschen 1' }, games: [] },
-  { id: '3', names: { home: 'Team Niederbayern', guest: 'Team Tirol' }, games: [] },
-];
+const matchdays = [dummyMatchday, dummyMatchday, dummyMatchday];
 
 export default function Matchdays() {
   return (
     <Stack spacing={3}>
       {matchdays.map((matchday: Matchday) => (
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        <MatchdayCard key={matchday.id} {...matchday} />
-      ))}
-      <Box
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          right: 0,
-          padding: '1rem',
-        }}
+        <MatchdayCard key={matchday.id} matchday={matchday} />))}
+      <Box sx={{
+        position: 'fixed', bottom: 0, right: 0, padding: '1rem',
+      }}
       >
         <Fab variant="extended" color="secondary" aria-label="add" component={Link} to="/matchdays/new">
           <Add />

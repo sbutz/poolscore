@@ -1,31 +1,11 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { Game } from '../lib/Game';
-import { getInitialState, Mode } from '../lib/GameModes';
 import { Matchday } from '../lib/Matchday';
 import { ReactComponent as BC73 } from '../assets/bc73_transparent.svg';
+import { dummyGame, dummyMatchday } from '../lib/Fixture';
 
 const borderRadius = '0.25rem';
 const backgroundImage = 'linear-gradient(180deg, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.15) 50%)';
-
-const dummyMatchday : Matchday = {
-  id: '1',
-  names: {
-    home: 'NBay',
-    guest: 'Tirol',
-  },
-  games: [],
-};
-
-const dummyGame: Game = {
-  id: '1',
-  names: {
-    home: 'Stefan Wimmer',
-    guest: 'Manuel Plattner',
-  },
-  mode: Mode.Ball9,
-  raceTo: 3,
-  state: getInitialState(Mode.Ball9),
-};
 
 const fontSize = 24;
 

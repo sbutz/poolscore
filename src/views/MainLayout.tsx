@@ -60,7 +60,6 @@ export default function MainLayout() {
     <Box sx={{ display: 'flex' }}>
       <AppBar
         position="fixed"
-        color="transparent"
         sx={{ zIndex: theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
