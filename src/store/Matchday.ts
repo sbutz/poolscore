@@ -1,9 +1,9 @@
 import {
   collection, doc, DocumentData, FirestoreDataConverter, query, QueryDocumentSnapshot, setDoc,
-  SnapshotOptions, where, WithFieldValue,
+  SnapshotOptions, updateDoc, where, WithFieldValue,
 } from 'firebase/firestore';
 import { useEffect, useMemo } from 'react';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { initialMatchday, Matchday } from '../lib/Matchday';
 import { db } from './Firebase';
 import { useAuth } from './AuthProvider';
@@ -30,20 +30,42 @@ function useMatchdayConverter() {
 export function useMatchdays() {
   const { clubId } = useAuth();
   const matchdayConverter = useMatchdayConverter();
-  const q = matchdayConverter ? query(collection(db, 'matchdays'), where('clubId', '==', clubId)).withConverter(matchdayConverter) : null;
-  const [values, loading, error] = useCollectionData<Matchday>(q, {});
+  const ref = matchdayConverter ? query(collection(db, 'matchdays'), where('clubId', '==', clubId)).withConverter(matchdayConverter) : null;
+  const [values, loading, error] = useCollectionData<Matchday>(ref, {});
   useEffect(() => { if (error) throw error; }, [error]);
 
-  return [values, loading, error] as [Matchday[], boolean, Error];
+  return [values, loading, error] as [Matchday[] | undefined, boolean, Error];
 }
+
+export function useMatchday(id?: string) {
+  const matchdayConverter = useMatchdayConverter();
+  const ref = id && matchdayConverter ? doc(db, 'matchdays', id).withConverter(matchdayConverter) : null;
+  const [values, loading, error] = useDocumentData<Matchday>(ref, {});
+  useEffect(() => { if (error) throw error; }, [error]);
+
+  return [values, loading, error] as [Matchday | undefined, boolean, Error];
+}
+
 export function useCreateMatchday() {
   const matchdayConverter = useMatchdayConverter();
 
   const fn = useMemo(() => async () => {
     if (!matchdayConverter) throw new Error('No converter');
-    const d = doc(collection(db, 'matchdays')).withConverter(matchdayConverter);
-    await setDoc<Matchday, DocumentData>(d, initialMatchday);
-    return d.id;
+    const ref = doc(collection(db, 'matchdays')).withConverter(matchdayConverter);
+    await setDoc<Matchday, DocumentData>(ref, initialMatchday);
+    return ref.id;
+  }, [matchdayConverter]);
+
+  return fn;
+}
+
+export function useUpdateMatchday() {
+  const matchdayConverter = useMatchdayConverter();
+
+  const fn = useMemo(() => async (matchday: Matchday) => {
+    if (!matchdayConverter) throw new Error('No converter');
+    const ref = doc(db, 'matchdays', matchday.id).withConverter(matchdayConverter);
+    await updateDoc<Matchday, DocumentData>(ref, matchday);
   }, [matchdayConverter]);
 
   return fn;

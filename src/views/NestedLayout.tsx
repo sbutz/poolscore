@@ -25,7 +25,7 @@ export default function NestedLayout() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="md">
+      <Container maxWidth="md" sx={{ pb: 4 }}>
         <Toolbar sx={{ mb: 4 }} />
         <Outlet />
       </Container>
