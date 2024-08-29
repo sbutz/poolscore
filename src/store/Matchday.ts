@@ -125,3 +125,16 @@ export function useCreateGame() {
 
   return fn;
 }
+
+export function useUpdateGame() {
+  const converter = useGameConverter();
+
+  const fn = useMemo(() => async (game: Game) => {
+    if (!converter) throw new Error('No converter');
+    const gameRef = doc(db, 'games', game.id).withConverter(converter);
+
+    await setDoc(gameRef, game, { merge: true });
+  }, [converter]);
+
+  return fn;
+}

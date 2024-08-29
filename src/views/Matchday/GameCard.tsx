@@ -18,10 +18,17 @@ function gameToValue(game: Game) {
 
 interface GameCardProps {
   game: Game;
+  onEdit: (game: Game) => Promise<void>;
 }
-export default function GameCard({ game }: GameCardProps) {
+export default function GameCard({ game, onEdit }: GameCardProps) {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+
+  const onAccept = async (g: Game) => {
+    await onEdit(g);
+    setOpenEdit(false);
+  };
+
   return (
     <>
       <FormCard
@@ -35,7 +42,7 @@ export default function GameCard({ game }: GameCardProps) {
         title="Partie bearbeiten"
         open={openEdit}
         onCancel={() => setOpenEdit(false)}
-        onAccept={async (g: Game) => setOpenEdit(false)}
+        onAccept={onAccept}
         game={game}
       />
       <AlertDialog

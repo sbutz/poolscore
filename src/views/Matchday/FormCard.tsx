@@ -24,7 +24,7 @@ export default function FormCard({
         </Stack>
         <Typography component="div" sx={{ flexGrow: 1 }}>{value}</Typography>
         {onEdit ? <IconButton onClick={onEdit}><Edit /></IconButton> : null}
-        {onDelete ? <IconButton onClick={onDelete}><Delete /></IconButton> : null}
+        {onDelete ? <IconButton disabled onClick={onDelete}><Delete /></IconButton> : null}
       </Stack>
     </Card>
   );
