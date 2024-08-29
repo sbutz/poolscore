@@ -2,7 +2,7 @@ import {
   Button, Grid, Stack, Typography,
 } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { State, Action } from '../lib/GameState';
+import { State, Action } from '../../lib/GameState';
 
 const scoreSx = {
   fontSize: '60vh',

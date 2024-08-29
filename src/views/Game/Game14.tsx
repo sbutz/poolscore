@@ -4,9 +4,9 @@ import {
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import {
   BALLS, PlayerState, isBreakFoulPossible, isFoulPossible, State, Action,
-} from '../lib/GameState14';
-import BorderBox from '../components/BorderBox';
-import Balls from '../assets/Balls';
+} from '../../lib/GameState14';
+import BorderBox from '../../components/BorderBox';
+import Balls from '../../assets/Balls';
 
 interface PlayersProps {
   activePlayer: 'home' | 'guest' | undefined;
