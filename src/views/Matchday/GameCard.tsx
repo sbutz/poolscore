@@ -31,7 +31,13 @@ export default function GameCard({ game }: GameCardProps) {
         onEdit={() => setOpenEdit(true)}
         onDelete={() => setOpenDelete(true)}
       />
-      <GameDialog title="Partie bearbeiten" open={openEdit} onClose={() => setOpenEdit(false)} game={game} />
+      <GameDialog
+        title="Partie bearbeiten"
+        open={openEdit}
+        onCancel={() => setOpenEdit(false)}
+        onAccept={async (g: Game) => setOpenEdit(false)}
+        game={game}
+      />
       <AlertDialog
         open={openDelete}
         title="Partie löschen"

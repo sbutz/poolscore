@@ -1,15 +1,17 @@
 import { Divider, Stack } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { useMatchday, useUpdateMatchday } from '../../store/Matchday';
+import { useCreateGame, useMatchday, useUpdateMatchday } from '../../store/Matchday';
 import NameCard from './NameCard';
 import GameCard from './GameCard';
 import ScoreCard from './ScoreCard';
-import AddCard from './AddCard';
+import NewGameCard from './NewGameCard';
+import { Game } from '../../lib/Game';
 
 export default function Matchdays() {
   const { id } = useParams();
   const [matchday] = useMatchday(id);
   const updateMatchday = useUpdateMatchday();
+  const createGame = useCreateGame();
 
   const onNameHomeChange = async (newValue: string) => {
     if (!matchday) return;
@@ -23,6 +25,10 @@ export default function Matchdays() {
     await updateMatchday(newMatchday);
   };
 
+  const onGameAdd = async (game: Game) => {
+    if (matchday) await createGame(game, matchday);
+  };
+
   if (!matchday) { return <p>Lade Spieltag ...</p>; }
   return (
     <Stack spacing={2}>
@@ -31,7 +37,7 @@ export default function Matchdays() {
       <NameCard label="Gastmannschaft" value={matchday.names.guest} onChange={onNameGuestChange} />
       <Divider sx={{ color: 'text.secondary' }}>Partien</Divider>
       {[matchday.games.map((game) => <GameCard key={game.id} game={game} />)]}
-      <AddCard />
+      <NewGameCard createGame={onGameAdd} />
       <Divider sx={{ color: 'text.secondary' }}>Spielstand</Divider>
       <ScoreCard matchday={matchday} />
     </Stack>

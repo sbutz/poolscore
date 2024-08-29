@@ -1,18 +1,21 @@
 import {
-  collection, doc, DocumentData, FirestoreDataConverter, query, QueryDocumentSnapshot, setDoc,
-  SnapshotOptions, updateDoc, where, WithFieldValue,
+  collection, doc, DocumentData, documentId, FirestoreDataConverter, query, QueryDocumentSnapshot,
+  setDoc, SnapshotOptions, where, WithFieldValue,
+  writeBatch,
 } from 'firebase/firestore';
 import { useEffect, useMemo } from 'react';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { initialMatchday, Matchday } from '../lib/Matchday';
 import { db } from './Firebase';
 import { useAuth } from './AuthProvider';
+import { Game } from '../lib/Game';
 
 function MatchdayConverter(clubId: string) : FirestoreDataConverter<Matchday> {
   return {
     toFirestore(matchday: WithFieldValue<Matchday>): DocumentData {
+      const gameRefs = (matchday.games as Game[]).map((g) => doc(db, 'games', g.id));
       const { id, ...data } = matchday;
-      return { clubId, ...data };
+      return { ...data, game: gameRefs, clubId };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Matchday {
       const { clubId: cId, ...data } = snapshot.data(options);
@@ -23,27 +26,60 @@ function MatchdayConverter(clubId: string) : FirestoreDataConverter<Matchday> {
 
 function useMatchdayConverter() {
   const { clubId } = useAuth();
-  const matchdayConverter = useMemo(() => (clubId ? MatchdayConverter(clubId) : null), [clubId]);
-  return matchdayConverter;
+  const converter = useMemo(() => (clubId ? MatchdayConverter(clubId) : null), [clubId]);
+  return converter;
+}
+
+function GameConverter(clubId: string) : FirestoreDataConverter<Game> {
+  return {
+    toFirestore(game: WithFieldValue<Game>): DocumentData {
+      const { id, ...data } = game;
+      return { clubId, ...data };
+    },
+    fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Game {
+      const { clubId: cId, ...data } = snapshot.data(options);
+      return { id: snapshot.id, ...data } as Game;
+    },
+  };
+}
+
+function useGameConverter() {
+  const { clubId } = useAuth();
+  const converter = useMemo(() => (clubId ? GameConverter(clubId) : null), [clubId]);
+  return converter;
 }
 
 export function useMatchdays() {
   const { clubId } = useAuth();
   const matchdayConverter = useMatchdayConverter();
-  const ref = matchdayConverter ? query(collection(db, 'matchdays'), where('clubId', '==', clubId)).withConverter(matchdayConverter) : null;
-  const [values, loading, error] = useCollectionData<Matchday>(ref, {});
+  const matchdayRef = matchdayConverter ? query(collection(db, 'matchdays'), where('clubId', '==', clubId)).withConverter(matchdayConverter) : null;
+  const [values, loading, error] = useCollectionData<Matchday>(matchdayRef, {});
   useEffect(() => { if (error) throw error; }, [error]);
 
-  return [values, loading, error] as [Matchday[] | undefined, boolean, Error];
+  const matchdays = values?.map((matchday) => ({ ...matchday, games: [] }));
+  return [matchdays, loading, error] as [Matchday[] | undefined, boolean, Error];
 }
 
 export function useMatchday(id?: string) {
   const matchdayConverter = useMatchdayConverter();
-  const ref = id && matchdayConverter ? doc(db, 'matchdays', id).withConverter(matchdayConverter) : null;
-  const [values, loading, error] = useDocumentData<Matchday>(ref, {});
-  useEffect(() => { if (error) throw error; }, [error]);
+  const matchdayRef = id && matchdayConverter ? doc(db, 'matchdays', id).withConverter(matchdayConverter) : null;
+  const [matchdayValue, matchdayLoading, matchdayError] = useDocumentData<Matchday>(matchdayRef);
+  useEffect(() => { if (matchdayError) throw matchdayError; }, [matchdayError]);
 
-  return [values, loading, error] as [Matchday | undefined, boolean, Error];
+  const gameConverter = useGameConverter();
+  const gameIds = matchdayValue?.games.map((game) => doc(db, 'games', game.id));
+  const gameRefs = gameConverter && gameIds && gameIds.length > 0 ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter) : null;
+  const [gamesValue, gamesLoading, gamesError] = useCollectionData<Game>(gameRefs);
+
+  const sortedGames = gameIds && gamesValue
+    ? gameIds.map((ref) => gamesValue.find((game) => game.id === ref.id)) : [];
+
+  const loading = matchdayLoading || gamesLoading;
+  const error = matchdayError || gamesError;
+  const value = !error && !loading && matchdayValue
+    ? { ...matchdayValue, games: sortedGames } : undefined;
+
+  return [value, loading, error] as [Matchday | undefined, boolean, Error];
 }
 
 export function useCreateMatchday() {
@@ -65,8 +101,27 @@ export function useUpdateMatchday() {
   const fn = useMemo(() => async (matchday: Matchday) => {
     if (!matchdayConverter) throw new Error('No converter');
     const ref = doc(db, 'matchdays', matchday.id).withConverter(matchdayConverter);
-    await updateDoc<Matchday, DocumentData>(ref, matchday);
+    await setDoc<Matchday, DocumentData>(ref, matchday, { merge: true });
   }, [matchdayConverter]);
+
+  return fn;
+}
+
+export function useCreateGame() {
+  const matchdayConverter = useMatchdayConverter();
+  const gameConverter = useGameConverter();
+
+  const fn = useMemo(() => async (game: Game, matchday: Matchday) => {
+    if (!matchdayConverter || !gameConverter) throw new Error('No converter');
+    const matchdayRef = doc(db, 'matchdays', matchday.id).withConverter(matchdayConverter);
+    const gameRef = doc(collection(db, 'games')).withConverter(gameConverter);
+    const newGame = { ...game, id: gameRef.id };
+
+    const batch = writeBatch(db);
+    batch.set(gameRef, game);
+    batch.set(matchdayRef, { games: [...matchday.games, newGame] }, { merge: true });
+    await batch.commit();
+  }, [matchdayConverter, gameConverter]);
 
   return fn;
 }

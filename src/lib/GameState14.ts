@@ -27,7 +27,7 @@ const initialPlayerState = {
 
 export interface State {
   actions: Action[];
-  activePlayer: undefined | 'home' | 'guest';
+  activePlayer?: 'home' | 'guest';
   remainingBalls: number;
   home: PlayerState,
   guest: PlayerState,

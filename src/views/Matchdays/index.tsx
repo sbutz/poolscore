@@ -14,8 +14,7 @@ export default function Matchdays() {
       {values
         ? values.map((matchday: Matchday) => <MatchdayCard key={matchday.id} matchday={matchday} />)
         : null}
-      {!error && !loading && values?.length === 0
-        ? <p>Bisher sind keine Spieltage angelegt.</p> : null}
+      {!error && !loading && !values ? <p>Bisher sind keine Spieltage angelegt.</p> : null}
       <NewMatchdayButton />
     </Stack>
   );

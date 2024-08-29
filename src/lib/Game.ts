@@ -1,14 +1,13 @@
-import { Mode, State } from './GameModes';
+import { getInitialState, Mode, State } from './GameModes';
 
-export const defaultPlayerNames : PlayerNames = {
-  home: 'Heim',
-  guest: 'Gast',
-};
-
-export interface PlayerNames {
+interface PlayerNames {
   home: string;
   guest: string;
 }
+export const initialPlayerNames : PlayerNames = {
+  home: 'Heim',
+  guest: 'Gast',
+};
 
 export interface Game {
   id: string;
@@ -17,6 +16,13 @@ export interface Game {
   raceTo: number;
   state: State
 }
+export const initialGame: Game = {
+  id: '',
+  names: initialPlayerNames,
+  mode: Mode.Ball8,
+  raceTo: 5,
+  state: getInitialState(Mode.Ball8),
+};
 
 export namespace Game {
   export function isFinished(game: Game): boolean {

@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import { PlayArrow } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Game, defaultPlayerNames } from '../lib/Game';
+import { Game, initialPlayerNames } from '../lib/Game';
 import { Mode, getInitialState } from '../lib/GameModes';
 
 function GameCard({
@@ -50,22 +50,22 @@ function GameCard({
 
 const games = [
   {
-    id: '1', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
+    id: '1', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
   },
   {
-    id: '2', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
+    id: '2', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
   },
   {
-    id: '3', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
+    id: '3', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
   },
   {
-    id: '4', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
+    id: '4', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
   },
   {
-    id: '5', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: defaultPlayerNames, raceTo: 3,
+    id: '5', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
   },
   {
-    id: '6', mode: Mode.Straight, state: getInitialState(Mode.Straight), names: defaultPlayerNames, raceTo: 125,
+    id: '6', mode: Mode.Straight, state: getInitialState(Mode.Straight), names: initialPlayerNames, raceTo: 125,
   },
 ];
 
