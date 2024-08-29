@@ -28,6 +28,8 @@
   "scripts": {
     "start": "npx firebase-tools emulators:exec --ui --only=\"auth,firestore\" \"react-scripts start\" --import ./emulator_data",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "npx firebase-tools deploy --only 'auth,hosting,firestore'",
     "update-emulator-data": "npx firebase-tools emulators:export --only \"auth,firestore\" ./emulator_data",
     "test": "react-scripts test",
     "lint": "eslint src/",
