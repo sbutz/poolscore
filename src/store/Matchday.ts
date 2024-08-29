@@ -138,3 +138,13 @@ export function useUpdateGame() {
 
   return fn;
 }
+
+export function useGames() {
+  const { clubId } = useAuth();
+  const converter = useGameConverter();
+  const ref = converter ? query(collection(db, 'games'), where('clubId', '==', clubId)).withConverter(converter) : null;
+  const [values, loading, error] = useCollectionData<Game>(ref, {});
+  useEffect(() => { if (error) throw error; }, [error]);
+
+  return [values, loading, error] as [Game[] | undefined, boolean, Error];
+}

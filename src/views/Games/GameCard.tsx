@@ -1,14 +1,19 @@
 import {
   Button, Card, CardActions, CardContent, Stack, Typography,
 } from '@mui/material';
-import { PlayArrow } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Game, initialPlayerNames } from '../lib/Game';
-import { Mode, getInitialState } from '../lib/GameModes';
+import { PlayArrow } from '@mui/icons-material';
+import { Mode } from '../../lib/GameModes';
+import { Game } from '../../lib/Game';
 
-function GameCard({
-  id, names, mode, state,
-}: Game) {
+interface GameCardProps {
+  game: Game;
+}
+
+export default function GameCard({ game }: GameCardProps) {
+  const {
+    id, names, mode, state,
+  } = game;
   return (
     <Card>
       <CardContent>
@@ -45,37 +50,5 @@ function GameCard({
         </Button>
       </CardActions>
     </Card>
-  );
-}
-
-const games = [
-  {
-    id: '1', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
-  },
-  {
-    id: '2', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
-  },
-  {
-    id: '3', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
-  },
-  {
-    id: '4', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
-  },
-  {
-    id: '5', mode: Mode.Ball8, state: getInitialState(Mode.Ball8), names: initialPlayerNames, raceTo: 3,
-  },
-  {
-    id: '6', mode: Mode.Straight, state: getInitialState(Mode.Straight), names: initialPlayerNames, raceTo: 125,
-  },
-];
-
-export default function Games() {
-  return (
-    <Stack spacing={3}>
-      {games.map((game: Game) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-        <GameCard key={game.id} {...game} />
-      ))}
-    </Stack>
   );
 }
