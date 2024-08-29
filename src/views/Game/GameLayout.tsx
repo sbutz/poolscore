@@ -1,6 +1,6 @@
 import { Stack, Container } from '@mui/material';
 
-import RequireDesktop from './RequireDesktop';
+import RequireDesktop from '../../components/RequireDesktop';
 import GameBar from './GameFooter';
 
 interface LayoutProps {

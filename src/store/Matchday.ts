@@ -15,7 +15,7 @@ function MatchdayConverter(clubId: string) : FirestoreDataConverter<Matchday> {
     toFirestore(matchday: WithFieldValue<Matchday>): DocumentData {
       const gameRefs = (matchday.games as Game[]).map((g) => doc(db, 'games', g.id));
       const { id, ...data } = matchday;
-      return { ...data, game: gameRefs, clubId };
+      return { ...data, games: gameRefs, clubId };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Matchday {
       const { clubId: cId, ...data } = snapshot.data(options);
@@ -53,7 +53,7 @@ export function useMatchdays() {
   const { clubId } = useAuth();
   const matchdayConverter = useMatchdayConverter();
   const matchdayRef = matchdayConverter ? query(collection(db, 'matchdays'), where('clubId', '==', clubId)).withConverter(matchdayConverter) : null;
-  const [values, loading, error] = useCollectionData<Matchday>(matchdayRef, {});
+  const [values, loading, error] = useCollectionData<Matchday>(matchdayRef);
   useEffect(() => { if (error) throw error; }, [error]);
 
   const matchdays = values?.map((matchday) => ({ ...matchday, games: [] }));
@@ -72,7 +72,8 @@ export function useMatchday(id?: string) {
   const [gamesValue, gamesLoading, gamesError] = useCollectionData<Game>(gameRefs);
 
   const sortedGames = gameIds && gamesValue
-    ? gameIds.map((ref) => gamesValue.find((game) => game.id === ref.id)) : [];
+    ? gameIds.map((ref) => gamesValue.find((g) => g.id === ref.id)).filter((g) => g !== undefined)
+    : [];
 
   const loading = matchdayLoading || gamesLoading;
   const error = matchdayError || gamesError;
@@ -143,8 +144,17 @@ export function useGames() {
   const { clubId } = useAuth();
   const converter = useGameConverter();
   const ref = converter ? query(collection(db, 'games'), where('clubId', '==', clubId)).withConverter(converter) : null;
-  const [values, loading, error] = useCollectionData<Game>(ref, {});
+  const [values, loading, error] = useCollectionData<Game>(ref);
   useEffect(() => { if (error) throw error; }, [error]);
 
   return [values, loading, error] as [Game[] | undefined, boolean, Error];
+}
+
+export function useGame(id?: string) {
+  const converter = useGameConverter();
+  const ref = id && converter ? doc(db, 'games', id).withConverter(converter) : null;
+  const [value, loading, error] = useDocumentData<Game>(ref);
+  useEffect(() => { if (error) throw error; }, [error]);
+
+  return [value, loading, error] as [Game | undefined, boolean, Error];
 }

@@ -3,6 +3,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { PlayArrow } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 import { Mode } from '../../lib/GameModes';
 import { Game } from '../../lib/Game';
 
@@ -42,10 +43,7 @@ export default function GameCard({ game }: GameCardProps) {
         </Grid>
       </CardContent>
       <CardActions>
-        <Button
-          startIcon={<PlayArrow />}
-          onClick={() => { console.log(id); }}
-        >
+        <Button startIcon={<PlayArrow />} component={Link} to={`/games/${id}`}>
           Spiel starten
         </Button>
       </CardActions>

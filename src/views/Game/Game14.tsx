@@ -7,11 +7,13 @@ import {
 } from '../../lib/GameState14';
 import BorderBox from '../../components/BorderBox';
 import Balls from '../../assets/Balls';
+import { PlayerNames } from '../../lib/Game';
 
 interface PlayersProps {
   activePlayer: 'home' | 'guest' | undefined;
+  names: PlayerNames;
 }
-function Players({ activePlayer }: PlayersProps) {
+function Players({ names, activePlayer }: PlayersProps) {
   const theme = useTheme();
 
   return (
@@ -26,13 +28,13 @@ function Players({ activePlayer }: PlayersProps) {
               fontSize: theme.typography.h1.fontSize,
             }}
           />
-          <Typography variant="h1">Heim</Typography>
+          <Typography variant="h1">{names.home}</Typography>
         </Stack>
       </Grid>
       <Grid item xs={2} />
       <Grid item xs={5} textAlign="center">
         <Stack direction="row" alignItems="center" justifyContent="center">
-          <Typography variant="h1">Gast</Typography>
+          <Typography variant="h1">{names.guest}</Typography>
           <ChevronLeft
             sx={{
               marginRight: `-${theme.typography.h1.fontSize}`,
@@ -185,10 +187,11 @@ function PlayerStatistics({ state }: PlayerStatisticsProps) {
 }
 
 interface Game14Props {
+  names: PlayerNames,
   state: State,
   dispatch: (action: Action) => void,
 }
-export default function Game14({ state, dispatch }:Game14Props) {
+export default function Game14({ names, state, dispatch }:Game14Props) {
   const startingPlayerSelect = (
     <Grid container>
       <Grid item xs={5} textAlign="center">
@@ -319,7 +322,7 @@ export default function Game14({ state, dispatch }:Game14Props) {
 
   return (
     <Stack height="100%" justifyContent="space-around">
-      <Players activePlayer={state.activePlayer} />
+      <Players names={names} activePlayer={state.activePlayer} />
       <Score
         home={state.home.score}
         guest={state.guest.score}

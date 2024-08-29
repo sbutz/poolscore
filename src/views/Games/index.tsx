@@ -13,7 +13,8 @@ export default function Games() {
       {values
         ? values.map((game: Game) => <GameCard key={game.id} game={game} />)
         : null}
-      {!error && !loading && !values ? <p>Bisher sind keine Partien angelegt.</p> : null}
+      {!error && !loading && values && values.length === 0
+        ? <p>Bisher sind keine Partien angelegt.</p> : null}
     </Stack>
   );
 }

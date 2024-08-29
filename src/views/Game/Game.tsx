@@ -3,11 +3,12 @@ import { useGame } from '../../store/GameProvider';
 import { Mode } from '../../lib/GameModes';
 import Game14 from './Game14';
 import Game8 from './Game8';
-import GameToolbar from '../../components/GameToolbar';
-import Layout from '../../components/GameLayout';
+import GameToolbar from './GameToolbar';
+import Layout from './GameLayout';
 import { State as State8 } from '../../lib/GameState';
 import { State as State14 } from '../../lib/GameState14';
 import AlertDialog from '../../components/AlertDialog';
+import { initialPlayerNames } from '../../lib/Game';
 
 export default function Game() {
   const {
@@ -59,8 +60,8 @@ export default function Game() {
 
   const game = mode === Mode.Ball8
     ? (
-      <Game8 state={state as State8} dispatch={updateState} />
-    ) : <Game14 state={state as State14} dispatch={updateState} />;
+      <Game8 names={initialPlayerNames} state={state as State8} dispatch={updateState} />
+    ) : <Game14 names={initialPlayerNames} state={state as State14} dispatch={updateState} />;
 
   return (
     <Layout requireDesktop fullwidth toolbar={toolbar}>

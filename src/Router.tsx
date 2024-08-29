@@ -3,7 +3,7 @@ import {
 } from 'react-router-dom';
 
 import ErrorPage from './views/ErrorPage';
-import Game from './views/Game';
+import { Game, MatchdayGame } from './views/Game';
 import RequireLogin from './components/RequireLogin';
 import Login from './views/Login';
 import Matchdays from './views/Matchdays';
@@ -27,6 +27,7 @@ export default function Router() {
         <Route element={<RequireLogin><NestedLayout /></RequireLogin>}>
           <Route path="/matchdays/:id" element={<Matchday />} />
         </Route>
+        <Route path="/games/:id" element={<RequireLogin><MatchdayGame /></RequireLogin>} />
         {/* Needs game id etc. */ }
         <Route path="/overlay" element={<StreamOverlay />} />
         <Route path="*" element={<ErrorPage />} />

@@ -3,6 +3,7 @@ import {
 } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { State, Action } from '../../lib/GameState';
+import { PlayerNames } from '../../lib/Game';
 
 const scoreSx = {
   fontSize: '60vh',
@@ -29,10 +30,11 @@ function RemoveButton({ onClick }: ButtonProps) {
   );
 }
 interface Game8Props {
+  names: PlayerNames,
   state: State,
   dispatch: (action: Action) => void,
 }
-export default function Game8({ state, dispatch } : Game8Props) {
+export default function Game8({ names, state, dispatch } : Game8Props) {
   const homePlusOne = () => { dispatch({ type: 'HOME_PLUS_ONE' }); };
   const homeMinusOne = () => { dispatch({ type: 'HOME_MINUS_ONE' }); };
   const guestPlusOne = () => { dispatch({ type: 'GUEST_PLUS_ONE' }); };
@@ -42,11 +44,11 @@ export default function Game8({ state, dispatch } : Game8Props) {
     <Stack height="100%" alignItems="center" justifyContent="space-around">
       <Grid container justifyContent="space-evenly" mt="1em">
         <Grid item xs={5} textAlign="center">
-          <Typography variant="h1">Heim</Typography>
+          <Typography variant="h1">{names.home}</Typography>
         </Grid>
         <Grid item xs={2} />
         <Grid item xs={5} textAlign="center">
-          <Typography variant="h1">Gast</Typography>
+          <Typography variant="h1">{names.guest}</Typography>
         </Grid>
       </Grid>
       <Grid container justifyContent="center">

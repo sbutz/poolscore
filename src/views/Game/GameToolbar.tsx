@@ -2,7 +2,7 @@ import {
   SportsEsports, PlayCircleFilled, Undo,
 } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { Mode } from '../lib/GameModes';
+import { Mode } from '../../lib/GameModes';
 
 interface GameToolbarProps {
   mode: Mode,

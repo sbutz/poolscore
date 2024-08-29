@@ -1,6 +1,6 @@
 import { getInitialState, Mode, State } from './GameModes';
 
-interface PlayerNames {
+export interface PlayerNames {
   home: string;
   guest: string;
 }
