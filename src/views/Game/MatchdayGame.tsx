@@ -35,9 +35,9 @@ export default function MatchdayGame() {
     if (Game.isFinished(g)) {
       return <GameFinished game={g} />;
     }
-    return mode === Mode.Ball8
-      ? <Game8 names={names} state={state as State8} dispatch={updateState} />
-      : <Game14 names={names} state={state as State14} dispatch={updateState} />;
+    return mode === Mode.Straight
+      ? <Game14 names={names} state={state as State14} dispatch={updateState} />
+      : <Game8 names={names} state={state as State8} dispatch={updateState} />;
   };
 
   const toolbar = (

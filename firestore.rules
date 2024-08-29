@@ -21,8 +21,8 @@ service cloud.firestore {
     }
 
     match /games/{gameId} {
-      allow get: if true;
-      allow read, update: if IsClubOwner(resource.data.clubId);
+      allow get, list: if true;
+      allow update: if IsClubOwner(resource.data.clubId);
       allow create: if IsClubOwner(request.resource.data.clubId);
     }
   }

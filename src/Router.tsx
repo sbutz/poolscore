@@ -9,7 +9,7 @@ import Login from './views/Login';
 import Matchdays from './views/Matchdays';
 import Games from './views/Games';
 import MainLayout from './views/MainLayout';
-import StreamOverlay from './views/StreamOverlay';
+import StreamOverlay from './views/Overlay/StreamOverlay';
 import Matchday from './views/Matchday';
 import NestedLayout from './views/NestedLayout';
 
@@ -28,8 +28,8 @@ export default function Router() {
           <Route path="/matchdays/:id" element={<Matchday />} />
         </Route>
         <Route path="/games/:id" element={<RequireLogin><MatchdayGame /></RequireLogin>} />
+        <Route path="/matchdays/:id/overlay" element={<StreamOverlay />} />
         {/* Needs game id etc. */ }
-        <Route path="/overlay" element={<StreamOverlay />} />
         <Route path="*" element={<ErrorPage />} />
       </>,
     ),

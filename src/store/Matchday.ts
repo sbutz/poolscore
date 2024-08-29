@@ -34,7 +34,7 @@ function GameConverter(clubId: string) : FirestoreDataConverter<Game> {
   return {
     toFirestore(game: WithFieldValue<Game>): DocumentData {
       const { id, ...data } = game;
-      return { clubId, ...data };
+      return { ...data, clubId };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Game {
       const { clubId: cId, ...data } = snapshot.data(options);
@@ -119,7 +119,7 @@ export function useCreateGame() {
     const newGame = { ...game, id: gameRef.id };
 
     const batch = writeBatch(db);
-    batch.set(gameRef, game);
+    batch.set(gameRef, newGame);
     batch.set(matchdayRef, { games: [...matchday.games, newGame] }, { merge: true });
     await batch.commit();
   }, [matchdayConverter, gameConverter]);

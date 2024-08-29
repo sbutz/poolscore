@@ -44,7 +44,7 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
         <Button
           startIcon={<PictureInPicture />}
           component={Link}
-          to="/overlay"
+          to={`/matchdays/${id}/overlay`}
         >
           Stream Overlay
         </Button>
