@@ -1,7 +1,6 @@
 import {
-  collection, doc, DocumentData, documentId, FirestoreDataConverter, query, QueryDocumentSnapshot,
-  setDoc, SnapshotOptions, where, WithFieldValue,
-  writeBatch,
+  collection, doc, DocumentData, documentId, DocumentReference, FirestoreDataConverter,
+  query, QueryDocumentSnapshot, setDoc, SnapshotOptions, where, WithFieldValue, writeBatch,
 } from 'firebase/firestore';
 import { useEffect, useMemo } from 'react';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
@@ -53,11 +52,24 @@ export function useMatchdays() {
   const { clubId } = useAuth();
   const matchdayConverter = useMatchdayConverter();
   const matchdayRef = matchdayConverter ? query(collection(db, 'matchdays'), where('clubId', '==', clubId)).withConverter(matchdayConverter) : null;
-  const [values, loading, error] = useCollectionData<Matchday>(matchdayRef);
-  useEffect(() => { if (error) throw error; }, [error]);
+  const [matchdayValues, matchdayLoading, matchdayError] = useCollectionData<Matchday>(matchdayRef);
+  useEffect(() => { if (matchdayError) throw matchdayError; }, [matchdayError]);
 
-  const matchdays = values?.map((matchday) => ({ ...matchday, games: [] }));
-  return [matchdays, loading, error] as [Matchday[] | undefined, boolean, Error];
+  const gameConverter = useGameConverter();
+  const gameIds = matchdayValues ? matchdayValues.reduce((acc, m) => acc.concat(m.games.map((g) => doc(db, 'games', g.id))), [] as DocumentReference<DocumentData, DocumentData>[]) : undefined;
+  const gameRefs = gameConverter && gameIds && gameIds.length > 0 ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter) : null;
+  const [gameValues, gameLoading, gameError] = useCollectionData<Game>(gameRefs);
+
+  const loading = matchdayLoading || gameLoading;
+  const error = matchdayError || gameError;
+  const value = !error && !loading && matchdayValues ? matchdayValues.map((m) => {
+    const sortedGames = m.games
+      .map((game) => gameValues?.find((g) => g.id === game.id))
+      .filter((g) => g !== undefined);
+    return { ...m, games: sortedGames } as Matchday;
+  }) : undefined;
+
+  return [value, loading, error] as [Matchday[] | undefined, boolean, Error];
 }
 
 export function useMatchday(id?: string) {
@@ -141,13 +153,14 @@ export function useUpdateGame() {
 }
 
 export function useGames() {
-  const { clubId } = useAuth();
-  const converter = useGameConverter();
-  const ref = converter ? query(collection(db, 'games'), where('clubId', '==', clubId)).withConverter(converter) : null;
-  const [values, loading, error] = useCollectionData<Game>(ref);
-  useEffect(() => { if (error) throw error; }, [error]);
+  const [values, loading, error] = useMatchdays();
 
-  return [values, loading, error] as [Game[] | undefined, boolean, Error];
+  const value = values ? values.reduce((acc, m) => {
+    const unfinishedGames = m.games.filter((g) => !Game.isFinished(g));
+    return acc.concat(unfinishedGames);
+  }, [] as Game[]) : undefined;
+
+  return [value, loading, error] as [Game[] | undefined, boolean, Error];
 }
 
 export function useGame(id?: string) {
