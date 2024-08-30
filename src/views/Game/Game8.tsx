@@ -6,7 +6,7 @@ import { State, Action } from '../../lib/GameState';
 import { PlayerNames } from '../../lib/Game';
 
 const scoreSx = {
-  fontSize: '60vh',
+  fontSize: '55vh',
   fontWeight: 400,
   lineHeight: 0.6,
   userSelect: 'none',
@@ -66,7 +66,7 @@ export default function Game8({ names, state, dispatch } : Game8Props) {
           </Typography>
         </Grid>
       </Grid>
-      <Grid container justifyContent="center" mb="2em">
+      <Grid container justifyContent="center">
         <Grid item xs={5} textAlign="center">
           <AddButton onClick={homePlusOne} />
           <RemoveButton onClick={homeMinusOne} />
