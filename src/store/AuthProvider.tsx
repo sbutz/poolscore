@@ -3,7 +3,6 @@ import {
 } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './Firebase';
-import useIdTokenResult from '../util/useIdTokenResult';
 
 interface AuthState {
   userId?: string;
@@ -24,15 +23,17 @@ interface AuthProviderProps {
 }
 export default function AuthProvider({ children }: AuthProviderProps) {
   const [user, loading, error] = useAuthState(auth, {});
-  const tokenResult = useIdTokenResult(user);
+  // const tokenResult = useIdTokenResult(user);
 
   useEffect(() => { if (error) throw error; }, [error]);
 
   const value = useMemo(() => ({
     userId: user?.uid,
-    clubId: tokenResult?.claims.clubId as string | undefined,
+    // TODO: revert back to clubId or switch to uid
+    // clubId: tokenResult?.claims.clubId as string | undefined,
+    clubId: user?.uid,
     loading,
-  }), [user, loading, tokenResult]);
+  }), [user, loading]);
 
   return (
     <AuthContext.Provider value={value}>

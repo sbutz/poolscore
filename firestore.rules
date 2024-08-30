@@ -6,7 +6,8 @@ service cloud.firestore {
     }
 
     function IsClubOwner(clubId) {
-      return IsAuthenticated() && request.auth.token.clubId == clubId;
+      //return IsAuthenticated() && request.auth.token.clubId == clubId;
+      return IsAuthenticated() && request.auth.uid == clubId;
     }
 
     match /clubs/{clubId} {
