@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function IsAuthenticated() {
+      return request.auth != null;
+    }
+
+    function IsClubOwner(clubId) {
+      //return IsAuthenticated() && request.auth.token.clubId == clubId;
+      return IsAuthenticated() && request.auth.uid == clubId;
+    }
+
+    match /clubs/{clubId} {
+      allow get: if IsClubOwner(clubId);
+      allow write: if false;
+    }
+
+    match /matchdays/{matchdayId} {
+      allow get: if true;
+      allow read, update: if IsClubOwner(resource.data.clubId);
+      allow create: if IsClubOwner(request.resource.data.clubId);
+    }
+
+    match /games/{gameId} {
+      allow get, list: if true;
+      allow update: if IsClubOwner(resource.data.clubId);
+      allow create: if IsClubOwner(request.resource.data.clubId);
+    }
+  }
+}
