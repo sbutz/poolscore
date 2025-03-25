@@ -79,7 +79,9 @@ export default function GameDialog({
             type="number"
             value={newGame.raceTo}
             onChange={(e) => onRaceToChange(parseInt(e.target.value, 10))}
-            InputProps={{ inputProps: { min: 0 } }}
+            slotProps={{
+              input: { inputProps: { min: 0 } },
+            }}
           />
           <TextField
             variant="standard"

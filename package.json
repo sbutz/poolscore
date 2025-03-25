@@ -5,25 +5,25 @@
   "homepage": "https://poolscore.butz.st",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.8.4",
-    "@types/react": "^18.0.14",
-    "@types/react-dom": "^18.0.5",
-    "firebase": "^10.12.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.8",
+    "@mui/material": "^6.4.8",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "firebase": "^11.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-firebase-hooks": "^5.1.1",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^7.4.0",
     "react-scripts": "5.0.1",
-    "typescript": "^4.7.4",
-    "web-vitals": "^2.1.4",
-    "workbox-core": "^6.5.4",
-    "workbox-expiration": "^6.5.4",
-    "workbox-precaching": "^6.5.4",
-    "workbox-routing": "^6.5.4",
-    "workbox-strategies": "^6.5.4"
+    "typescript": "^4.9.5",
+    "web-vitals": "^4.2.4",
+    "workbox-core": "^7.3.0",
+    "workbox-expiration": "^7.3.0",
+    "workbox-precaching": "^7.3.0",
+    "workbox-routing": "^7.3.0",
+    "workbox-strategies": "^7.3.0"
   },
   "scripts": {
     "start": "npx firebase-tools emulators:exec --ui --only=\"auth,firestore\" \"react-scripts start\" --import ./emulator_data",
@@ -48,9 +48,9 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "firebase-tools": "^13.13.0"
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "firebase-tools": "^13.35.1"
   }
 }
