@@ -1,4 +1,6 @@
-import { EmojiEvents, Menu, PlayArrow } from '@mui/icons-material';
+import {
+  EmojiEvents, Menu, PlayArrow, SportsEsports,
+} from '@mui/icons-material';
 import {
   AppBar, IconButton, Toolbar, Typography, Container, Drawer, Box, List, ListItem, ListItemButton,
   ListItemIcon, ListItemText, useTheme, useMediaQuery,
@@ -45,6 +47,7 @@ function MainDrawer({ open, toggleDrawer } : MainDrawerProps) {
     >
       <Toolbar />
       <List>
+        {DrawerListItem('Freies Spiel', <SportsEsports />, '/')}
         {DrawerListItem('Partien', <PlayArrow />, '/games')}
         {DrawerListItem('Spieltage', <EmojiEvents />, '/matchdays')}
       </List>
