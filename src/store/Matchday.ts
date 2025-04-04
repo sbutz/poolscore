@@ -1,5 +1,6 @@
 import {
   collection, doc, DocumentData, documentId, DocumentReference, FirestoreDataConverter,
+  orderBy,
   PartialWithFieldValue, query, QueryDocumentSnapshot, setDoc, SnapshotOptions, Timestamp,
   where, writeBatch,
 } from 'firebase/firestore';
@@ -66,13 +67,28 @@ function useGameConverter() {
 export function useMatchdays() {
   const { clubId } = useAuth();
   const matchdayConverter = useMatchdayConverter();
-  const matchdayRef = matchdayConverter ? query(collection(db, 'matchdays'), where('clubId', '==', clubId)).withConverter(matchdayConverter) : null;
+  const matchdayRef = matchdayConverter
+    ? query(
+      collection(db, 'matchdays'),
+      where('clubId', '==', clubId),
+      orderBy('date', 'desc'),
+    ).withConverter(matchdayConverter)
+    : null;
   const [matchdayValues, matchdayLoading, matchdayError] = useCollectionData<Matchday>(matchdayRef);
   useEffect(() => { if (matchdayError) throw matchdayError; }, [matchdayError]);
 
   const gameConverter = useGameConverter();
-  const gameIds = matchdayValues ? matchdayValues.reduce((acc, m) => acc.concat(m.games.map((g) => doc(db, 'games', g.id))), [] as DocumentReference<DocumentData, DocumentData>[]) : undefined;
-  const gameRefs = gameConverter && gameIds && gameIds.length > 0 ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter) : null;
+  const gameIds = matchdayValues
+    ? matchdayValues.reduce(
+      (acc, m) => acc.concat(
+        m.games.map((g) => doc(db, 'games', g.id)),
+      ),
+      [] as DocumentReference<DocumentData, DocumentData>[],
+    )
+    : undefined;
+  const gameRefs = gameConverter && gameIds && gameIds.length > 0
+    ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter)
+    : null;
   const [gameValues, gameLoading, gameError] = useCollectionData<Game>(gameRefs);
 
   const loading = matchdayLoading || gameLoading;
@@ -95,7 +111,9 @@ export function useMatchday(id?: string) {
 
   const gameConverter = useGameConverter();
   const gameIds = matchdayValue?.games.map((game) => doc(db, 'games', game.id));
-  const gameRefs = gameConverter && gameIds && gameIds.length > 0 ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter) : null;
+  const gameRefs = gameConverter && gameIds && gameIds.length > 0
+    ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter)
+    : null;
   const [gamesValue, gamesLoading, gamesError] = useCollectionData<Game>(gameRefs);
 
   const sortedGames = gameIds && gamesValue

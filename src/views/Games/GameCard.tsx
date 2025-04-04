@@ -26,7 +26,12 @@ export default function GameCard({ game }: GameCardProps) {
 
         <Grid container spacing={2}>
           <Grid size={5.5}>
-            <Stack direction={{ xs: 'column-reverse', md: 'column-reverse' }} spacing={{ xs: 0, md: 0 }} justifyContent="center" textAlign="center">
+            <Stack
+              direction={{ xs: 'column-reverse', md: 'column-reverse' }}
+              spacing={{ xs: 0, md: 0 }}
+              justifyContent="center"
+              textAlign="center"
+            >
               <Typography variant="overline" fontSize="0.85rem">{names.home}</Typography>
               <Typography variant="h4">{state.home.score}</Typography>
             </Stack>
@@ -35,7 +40,12 @@ export default function GameCard({ game }: GameCardProps) {
             <Typography variant="h4" color="text.secondary">-</Typography>
           </Grid>
           <Grid size={5.5}>
-            <Stack direction={{ xs: 'column', md: 'column' }} spacing={{ xs: 0, md: 0 }} justifyContent="center" textAlign="center">
+            <Stack
+              direction={{ xs: 'column', md: 'column' }}
+              spacing={{ xs: 0, md: 0 }}
+              justifyContent="center"
+              textAlign="center"
+            >
               <Typography variant="h4">{state.guest.score}</Typography>
               <Typography variant="overline" fontSize="0.85rem">{names.guest}</Typography>
             </Stack>

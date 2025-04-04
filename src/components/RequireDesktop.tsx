@@ -14,7 +14,9 @@ export default function RequireDesktop({ children } : RequireProps) {
   return (
     <ErrorPage
       message="Dieses Funktion ist nur für breite Bildschirme verfügbar."
-      hint={isPortrait ? 'Tipp: Dein Gerät befindet sich im Porträt-Modus (Hochformat). Probiere es mal mit kippen!' : undefined}
+      hint={isPortrait
+        ? 'Tipp: Dein Gerät befindet sich im Porträt-Modus (Hochformat). Probiere es mal mit kippen!'
+        : undefined}
     />
   );
 }

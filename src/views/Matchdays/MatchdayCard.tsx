@@ -18,7 +18,12 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
 
         <Grid container spacing={2}>
           <Grid size={5.5}>
-            <Stack direction={{ xs: 'column-reverse', md: 'column-reverse' }} spacing={{ xs: 0, md: 0 }} justifyContent="center" textAlign="center">
+            <Stack
+              direction={{ xs: 'column-reverse', md: 'column-reverse' }}
+              spacing={{ xs: 0, md: 0 }}
+              justifyContent="center"
+              textAlign="center"
+            >
               <Typography variant="overline" fontSize="0.85rem">{names.home}</Typography>
               <Typography variant="h4">{Matchday.getScore(matchday, 'home')}</Typography>
             </Stack>
@@ -27,7 +32,12 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
             <Typography variant="h4" color="text.secondary">-</Typography>
           </Grid>
           <Grid size={5.5}>
-            <Stack direction={{ xs: 'column', md: 'column' }} spacing={{ xs: 0, md: 0 }} justifyContent="center" textAlign="center">
+            <Stack
+              direction={{ xs: 'column', md: 'column' }}
+              spacing={{ xs: 0, md: 0 }}
+              justifyContent="center"
+              textAlign="center"
+            >
               <Typography variant="h4">{Matchday.getScore(matchday, 'guest')}</Typography>
               <Typography variant="overline" fontSize="0.85rem">{names.guest}</Typography>
             </Stack>

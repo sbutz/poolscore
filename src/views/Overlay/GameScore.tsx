@@ -17,7 +17,10 @@ export default function GameScore({ game }: GameScoreProps) {
         variant="button"
         fontSize={fontSize}
         sx={{
-          backgroundColor: 'blue', backgroundImage, borderTopLeftRadius: borderRadius, borderBottomLeftRadius: borderRadius,
+          backgroundColor: 'blue',
+          backgroundImage,
+          borderTopLeftRadius: borderRadius,
+          borderBottomLeftRadius: borderRadius,
         }}
         width="18rem"
         textAlign="center"
@@ -33,7 +36,13 @@ export default function GameScore({ game }: GameScoreProps) {
       >
         {state.home.score}
       </Typography>
-      <Typography fontSize={fontSize} sx={{ backgroundColor: 'rgb(20, 20, 20)', backgroundImage }} width="10rem" textAlign="center" variant="button">
+      <Typography
+        fontSize={fontSize}
+        sx={{ backgroundColor: 'rgb(20, 20, 20)', backgroundImage }}
+        width="10rem"
+        textAlign="center"
+        variant="button"
+      >
         {`Race to ${raceTo}`}
       </Typography>
       <Typography
@@ -49,7 +58,10 @@ export default function GameScore({ game }: GameScoreProps) {
         fontSize={fontSize}
         variant="button"
         sx={{
-          backgroundColor: 'red', backgroundImage, borderTopRightRadius: borderRadius, borderBottomRightRadius: borderRadius,
+          backgroundColor: 'red',
+          backgroundImage,
+          borderTopRightRadius: borderRadius,
+          borderBottomRightRadius: borderRadius,
         }}
         width="18rem"
         textAlign="center"
