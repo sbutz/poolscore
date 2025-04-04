@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { PlayArrow } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Mode } from '../../lib/GameModes';
 import { Game } from '../../lib/Game';
 

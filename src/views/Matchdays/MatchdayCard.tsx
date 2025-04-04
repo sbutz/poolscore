@@ -3,15 +3,18 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { Edit, PictureInPicture } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
+import dayjs from 'dayjs';
 import { Matchday } from '../../lib/Matchday';
 
 export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
-  const { id, names } = matchday;
+  const { id, names, date } = matchday;
   return (
     <Card>
       <CardContent>
-        <Stack direction="row" spacing={1} sx={{ mb: 3 }} />
+        <Stack direction="row-reverse" spacing={1} sx={{ mb: 3 }}>
+          <Typography fontSize="0.85rem">{dayjs(date).format('DD.MM.YYYY')}</Typography>
+        </Stack>
 
         <Grid container spacing={2}>
           <Grid size={5.5}>

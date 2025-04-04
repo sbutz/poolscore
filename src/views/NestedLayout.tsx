@@ -2,7 +2,7 @@ import { ArrowBack } from '@mui/icons-material';
 import {
   AppBar, IconButton, Toolbar, Typography, Container, Box,
 } from '@mui/material';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router';
 
 export default function NestedLayout() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { Box, Stack } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { ReactComponent as BC73 } from '../../assets/bc73_transparent.svg';
 import MatchScore from './MatchScore';
 import GameScore from './GameScore';

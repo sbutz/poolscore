@@ -7,7 +7,7 @@ import {
   Button,
 } from '@mui/material';
 import { useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router';
 
 function DrawerListItem(text: string, icon: React.ReactNode, link: string) {
   const location = useLocation();

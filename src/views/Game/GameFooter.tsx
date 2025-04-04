@@ -3,7 +3,7 @@ import {
   AppBar, Toolbar, Stack, Button,
   useTheme,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 interface HeaderProps {
   children: React.ReactNode;

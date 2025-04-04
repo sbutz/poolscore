@@ -1,24 +1,39 @@
 import {
   collection, doc, DocumentData, documentId, DocumentReference, FirestoreDataConverter,
-  query, QueryDocumentSnapshot, setDoc, SnapshotOptions, where, WithFieldValue, writeBatch,
+  PartialWithFieldValue, query, QueryDocumentSnapshot, setDoc, SnapshotOptions, Timestamp,
+  where, writeBatch,
 } from 'firebase/firestore';
 import { useEffect, useMemo } from 'react';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
-import { initialMatchday, Matchday } from '../lib/Matchday';
+import { Matchday } from '../lib/Matchday';
 import { db } from './Firebase';
 import { useAuth } from './AuthProvider';
 import { Game } from '../lib/Game';
 
 function MatchdayConverter(clubId: string) : FirestoreDataConverter<Matchday> {
   return {
-    toFirestore(matchday: WithFieldValue<Matchday>): DocumentData {
-      const gameRefs = (matchday.games as Game[]).map((g) => doc(db, 'games', g.id));
-      const { id, ...data } = matchday;
-      return { ...data, games: gameRefs, clubId };
+    toFirestore(matchday: PartialWithFieldValue<Matchday>): DocumentData {
+      const {
+        id, date, games, ...data
+      } = matchday;
+      let d : DocumentData = { ...data, clubId };
+      if (games) {
+        const gameRefs = (matchday.games as Game[]).map((g) => doc(db, 'games', g.id));
+        d = { ...d, games: gameRefs };
+      }
+      if (date) {
+        d = { ...d, date: Timestamp.fromDate(new Date(date as Date)) };
+      }
+
+      return d;
     },
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Matchday {
-      const { clubId: cId, ...data } = snapshot.data(options);
-      return { id: snapshot.id, ...data } as Matchday;
+      const { clubId: cId, date, ...data } = snapshot.data(options);
+      return {
+        id: snapshot.id,
+        date: (date as Timestamp).toDate(),
+        ...data,
+      } as Matchday;
     },
   };
 }
@@ -31,7 +46,7 @@ function useMatchdayConverter() {
 
 function GameConverter(clubId: string) : FirestoreDataConverter<Game> {
   return {
-    toFirestore(game: WithFieldValue<Game>): DocumentData {
+    toFirestore(game: PartialWithFieldValue<Game>): DocumentData {
       const { id, ...data } = game;
       return { ...data, clubId };
     },
@@ -101,7 +116,7 @@ export function useCreateMatchday() {
   const fn = useMemo(() => async () => {
     if (!matchdayConverter) throw new Error('No converter');
     const ref = doc(collection(db, 'matchdays')).withConverter(matchdayConverter);
-    await setDoc<Matchday, DocumentData>(ref, initialMatchday);
+    await setDoc<Matchday, DocumentData>(ref, Matchday.create());
     return ref.id;
   }, [matchdayConverter]);
 
