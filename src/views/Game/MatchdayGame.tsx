@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { Undo } from '@mui/icons-material';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useState } from 'react';
 import { Action, Mode, reducer } from '../../lib/GameModes';
 import Game14 from './Game14';

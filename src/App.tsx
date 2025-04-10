@@ -1,5 +1,7 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Router from './Router';
 import AuthProvider from './store/AuthProvider';
 import GameProvider from './store/GameProvider';
@@ -16,7 +18,9 @@ export default function App() {
       <CssBaseline />
       <AuthProvider>
         <GameProvider>
-          <Router />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Router />
+          </LocalizationProvider>
         </GameProvider>
       </AuthProvider>
     </ThemeProvider>

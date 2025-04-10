@@ -1,11 +1,13 @@
-import { EmojiEvents, Menu, PlayArrow } from '@mui/icons-material';
+import {
+  EmojiEvents, Menu, PlayArrow, SportsEsports,
+} from '@mui/icons-material';
 import {
   AppBar, IconButton, Toolbar, Typography, Container, Drawer, Box, List, ListItem, ListItemButton,
   ListItemIcon, ListItemText, useTheme, useMediaQuery,
   Button,
 } from '@mui/material';
 import { useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router';
 
 function DrawerListItem(text: string, icon: React.ReactNode, link: string) {
   const location = useLocation();
@@ -45,6 +47,7 @@ function MainDrawer({ open, toggleDrawer } : MainDrawerProps) {
     >
       <Toolbar />
       <List>
+        {DrawerListItem('Freies Spiel', <SportsEsports />, '/')}
         {DrawerListItem('Partien', <PlayArrow />, '/games')}
         {DrawerListItem('Spieltage', <EmojiEvents />, '/matchdays')}
       </List>

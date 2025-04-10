@@ -11,16 +11,23 @@ const initialClubNames: ClubNames = {
 
 export interface Matchday {
   id: string;
+  date: Date;
   names: ClubNames;
   games: Game[];
 }
-export const initialMatchday: Matchday = {
-  id: '',
-  names: initialClubNames,
-  games: [],
-};
 
 export namespace Matchday {
+  export function create(): Matchday {
+    const today = new Date(new Date().setHours(0, 0, 0, 0));
+
+    return {
+      id: '',
+      date: today,
+      names: initialClubNames,
+      games: [],
+    };
+  }
+
   export function getScore(matchday: Matchday, team: 'home' | 'guest'): number {
     return matchday.games.reduce((acc, game) => {
       if (Game.isFinished(game) && Game.getWinner(game) === team) {

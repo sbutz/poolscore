@@ -19,5 +19,6 @@ module.exports = {
                 functions: "defaultArguments",
             },
         ],
+        "max-len": ["error", { "code": 120 }], // Set maximum line length to 120
     },
 };

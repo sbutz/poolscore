@@ -1,4 +1,5 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { JSX } from 'react';
+import { Navigate, useLocation } from 'react-router';
 import { useAuth } from '../store/AuthProvider';
 
 interface RequireProps {

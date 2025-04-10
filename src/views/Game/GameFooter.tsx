@@ -1,14 +1,17 @@
 import { EmojiEvents } from '@mui/icons-material';
 import {
   AppBar, Toolbar, Stack, Button,
+  useTheme,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 interface HeaderProps {
   children: React.ReactNode;
 }
 
 export default function GameFooter({ children }: HeaderProps) {
+  const theme = useTheme();
+
   return (
     <AppBar color="transparent" position="sticky">
       <Toolbar>
@@ -18,7 +21,10 @@ export default function GameFooter({ children }: HeaderProps) {
             startIcon={<EmojiEvents />}
             component={Link}
             to="/games"
-            sx={{ ml: 4, position: 'fixed', left: 0 }}
+            sx={{
+              position: 'fixed',
+              left: theme.spacing(4),
+            }}
           >
             Spieltage
           </Button>

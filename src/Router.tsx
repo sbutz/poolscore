@@ -1,6 +1,6 @@
 import {
   createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider,
-} from 'react-router-dom';
+} from 'react-router';
 
 import ErrorPage from './views/ErrorPage';
 import { Game, MatchdayGame } from './views/Game';

@@ -20,14 +20,23 @@ export default function MatchScore({ matchday } : MatchScoreProps) {
           fontSize={fontSize}
           variant="button"
           sx={{
-            backgroundColor: 'blue', borderTopLeftRadius: borderRadius, borderBottomLeftRadius: borderRadius, backgroundImage,
+            backgroundColor: 'blue',
+            borderTopLeftRadius: borderRadius,
+            borderBottomLeftRadius: borderRadius,
+            backgroundImage,
           }}
           width="6rem"
           textAlign="center"
         >
           {names.home}
         </Typography>
-        <Typography fontSize={fontSize} sx={{ backgroundColor: 'rgb(20, 20, 20)', backgroundImage }} width="5rem" textAlign="center" variant="button">
+        <Typography
+          fontSize={fontSize}
+          sx={{ backgroundColor: 'rgb(20, 20, 20)', backgroundImage }}
+          width="5rem"
+          textAlign="center"
+          variant="button"
+        >
           {Matchday.getScore(matchday, 'home')}
           {' - '}
           {Matchday.getScore(matchday, 'guest')}
@@ -36,7 +45,10 @@ export default function MatchScore({ matchday } : MatchScoreProps) {
           fontSize={fontSize}
           variant="button"
           sx={{
-            backgroundColor: 'red', borderTopRightRadius: borderRadius, borderBottomRightRadius: borderRadius, backgroundImage,
+            backgroundColor: 'red',
+            borderTopRightRadius: borderRadius,
+            borderBottomRightRadius: borderRadius,
+            backgroundImage,
           }}
           width="6rem"
           textAlign="center"
@@ -44,7 +56,13 @@ export default function MatchScore({ matchday } : MatchScoreProps) {
           {names.guest}
         </Typography>
       </Stack>
-      <Typography variant="button" fontSize={fontSize} sx={{ color: 'black', backgroundColor: 'white', borderRadius }} width="15rem" textAlign="center">
+      <Typography
+        variant="button"
+        fontSize={fontSize}
+        sx={{ color: 'black', backgroundColor: 'white', borderRadius }}
+        width="15rem"
+        textAlign="center"
+      >
         {`First to ${firstTo} points`}
       </Typography>
     </Stack>
