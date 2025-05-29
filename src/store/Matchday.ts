@@ -6,7 +6,7 @@ import {
 } from 'firebase/firestore';
 import { useEffect, useMemo } from 'react';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
-import { Matchday } from '../lib/Matchday';
+import { League, Matchday } from '../lib/Matchday';
 import { db } from './Firebase';
 import { useAuth } from './AuthProvider';
 import { Game } from '../lib/Game';
@@ -130,13 +130,25 @@ export function useMatchday(id?: string) {
 
 export function useCreateMatchday() {
   const matchdayConverter = useMatchdayConverter();
+  const gameConverter = useGameConverter();
 
-  const fn = useMemo(() => async () => {
-    if (!matchdayConverter) throw new Error('No converter');
-    const ref = doc(collection(db, 'matchdays')).withConverter(matchdayConverter);
-    await setDoc<Matchday, DocumentData>(ref, Matchday.create());
-    return ref.id;
-  }, [matchdayConverter]);
+  const fn = useMemo(() => async (league: League) => {
+    if (!matchdayConverter || !gameConverter) throw new Error('No converter');
+    const matchdayRef = doc(collection(db, 'matchdays')).withConverter(matchdayConverter);
+    const matchday = { ...Matchday.create(league), id: matchdayRef.id } as Matchday;
+
+    const batch = writeBatch(db);
+    matchday.games = matchday.games.map((game) => {
+      const gameRef = doc(collection(db, 'games')).withConverter(gameConverter);
+      const newGame = { ...game, id: gameRef.id };
+      batch.set(gameRef, newGame);
+      return newGame;
+    });
+    batch.set(matchdayRef, matchday);
+    await batch.commit();
+
+    return matchdayRef.id;
+  }, [gameConverter, matchdayConverter]);
 
   return fn;
 }
