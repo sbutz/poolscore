@@ -9,8 +9,9 @@ import ScoreCard from './ScoreCard';
 import NewGameCard from './NewGameCard';
 import { Game } from '../../lib/Game';
 import DateCard from './DateCard';
+import LeagueCard from './LeagueCard';
 
-export default function Matchdays() {
+export default function Matchday() {
   const { id } = useParams();
   const [matchday] = useMatchday(id);
   const updateMatchday = useUpdateMatchday();
@@ -43,6 +44,7 @@ export default function Matchdays() {
   return (
     <Stack spacing={2}>
       <Divider sx={{ color: 'text.secondary' }}>Allgemein</Divider>
+      <LeagueCard label="Liga" value={matchday.league} />
       <DateCard label="Datum" value={matchday.date} onChange={onDateChange} />
       <NameCard label="Heimmannschaft" value={matchday.names.home} onChange={onNameHomeChange} />
       <NameCard label="Gastmannschaft" value={matchday.names.guest} onChange={onNameGuestChange} />

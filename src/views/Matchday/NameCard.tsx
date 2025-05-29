@@ -1,7 +1,7 @@
 import { Group } from '@mui/icons-material';
 import { useState } from 'react';
 import FormCard from './FormCard';
-import FormDialog from './FormDialog';
+import TextFormDialog from './TextFormDialog';
 
 interface NameCardProps {
   label: string;
@@ -20,7 +20,7 @@ export default function NameCard({ label, value, onChange }: NameCardProps) {
   return (
     <>
       <FormCard Icon={Group} label={label} value={value} onEdit={() => setOpen(true)} />
-      <FormDialog open={open} title={label} value={value} onCancel={onCancel} onAccept={onAccept} />
+      <TextFormDialog open={open} title={label} value={value} onCancel={onCancel} onAccept={onAccept} />
     </>
   );
 }

@@ -8,11 +8,14 @@ import dayjs from 'dayjs';
 import { Matchday } from '../../lib/Matchday';
 
 export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
-  const { id, names, date } = matchday;
+  const {
+    id, names, date, league,
+  } = matchday;
   return (
     <Card>
       <CardContent>
-        <Stack direction="row-reverse" spacing={1} sx={{ mb: 3 }}>
+        <Stack direction="row" justifyContent="space-between" spacing={1} sx={{ mb: 3 }}>
+          <Typography fontSize="0.85rem">{league}</Typography>
           <Typography fontSize="0.85rem">{dayjs(date).format('DD.MM.YYYY')}</Typography>
         </Stack>
 
