@@ -16,7 +16,7 @@ import NestedLayout from './views/NestedLayout';
 export default function Router() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <>
+      <Route errorElement={<ErrorPage />}>
         <Route path="/" element={<Navigate to="/game" replace />} />
         <Route path="/game" element={<Game />} />
         <Route path="/login" element={<Login />} />
@@ -31,7 +31,7 @@ export default function Router() {
         <Route path="/matchdays/:id/overlay" element={<StreamOverlay />} />
         {/* Needs game id etc. */ }
         <Route path="*" element={<ErrorPage />} />
-      </>,
+      </Route>,
     ),
     {
       basename: process.env.PUBLIC_URL,

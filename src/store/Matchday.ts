@@ -90,6 +90,7 @@ export function useMatchdays() {
     ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter)
     : null;
   const [gameValues, gameLoading, gameError] = useCollectionData<Game>(gameRefs);
+  useEffect(() => { if (gameError) throw gameError; }, [gameError]);
 
   const loading = matchdayLoading || gameLoading;
   const error = matchdayError || gameError;
@@ -115,6 +116,7 @@ export function useMatchday(id?: string) {
     ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter)
     : null;
   const [gamesValue, gamesLoading, gamesError] = useCollectionData<Game>(gameRefs);
+  useEffect(() => { if (gamesError) throw gamesError; }, [gamesError]);
 
   const sortedGames = gameIds && gamesValue
     ? gameIds.map((ref) => gamesValue.find((g) => g.id === ref.id)).filter((g) => g !== undefined)
