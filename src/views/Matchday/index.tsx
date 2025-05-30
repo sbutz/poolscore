@@ -1,13 +1,11 @@
 import { Divider, Stack } from '@mui/material';
 import { useParams } from 'react-router';
 import {
-  useCreateGame, useMatchday, useUpdateGame, useUpdateMatchday,
+  useMatchday, useUpdateGame, useUpdateMatchday,
 } from '../../store/Matchday';
 import NameCard from './NameCard';
 import GameCard from './GameCard';
 import ScoreCard from './ScoreCard';
-import NewGameCard from './NewGameCard';
-import { Game } from '../../lib/Game';
 import DateCard from './DateCard';
 import LeagueCard from './LeagueCard';
 
@@ -15,7 +13,6 @@ export default function Matchday() {
   const { id } = useParams();
   const [matchday] = useMatchday(id);
   const updateMatchday = useUpdateMatchday();
-  const createGame = useCreateGame();
   const updateGame = useUpdateGame();
 
   const onDateChange = async (newValue: Date) => {
@@ -36,10 +33,6 @@ export default function Matchday() {
     await updateMatchday(newMatchday);
   };
 
-  const onGameAdd = async (game: Game) => {
-    if (matchday) await createGame(game, matchday);
-  };
-
   if (!matchday) { return <p>Lade Spieltag ...</p>; }
   return (
     <Stack spacing={2}>
@@ -48,11 +41,18 @@ export default function Matchday() {
       <DateCard label="Datum" value={matchday.date} onChange={onDateChange} />
       <NameCard label="Heimmannschaft" value={matchday.names.home} onChange={onNameHomeChange} />
       <NameCard label="Gastmannschaft" value={matchday.names.guest} onChange={onNameGuestChange} />
-      <Divider sx={{ color: 'text.secondary' }}>Partien</Divider>
-      {[matchday.games.map((game) => (
+      <Divider sx={{ color: 'text.secondary' }}>1. Runde</Divider>
+      {[matchday.games.slice(0, 4).map((game) => (
         <GameCard key={game.id} game={game} onEdit={updateGame} />
       ))]}
-      <NewGameCard createGame={onGameAdd} />
+      <Divider sx={{ color: 'text.secondary' }}>2. Runde</Divider>
+      {[matchday.games.slice(4, 6).map((game) => (
+        <GameCard key={game.id} game={game} onEdit={updateGame} />
+      ))]}
+      <Divider sx={{ color: 'text.secondary' }}>3. Runde</Divider>
+      {[matchday.games.slice(6, 10).map((game) => (
+        <GameCard key={game.id} game={game} onEdit={updateGame} />
+      ))]}
       <Divider sx={{ color: 'text.secondary' }}>Spielstand</Divider>
       <ScoreCard matchday={matchday} />
     </Stack>
