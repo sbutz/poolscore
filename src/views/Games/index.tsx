@@ -4,16 +4,15 @@ import { useGames } from '../../store/Matchday';
 import GameCard from './GameCard';
 
 export default function Games() {
-  const [values, loading, error] = useGames();
+  const [values, loading] = useGames();
 
   return (
     <Stack spacing={3}>
-      {error ? <p>Fehler beim Laden der Partien.</p> : null}
-      {!error && loading ? <p>Partien werden geladen ...</p> : null}
+      {loading ? <p>Partien werden geladen ...</p> : null}
       {values
         ? values.map((game: Game) => <GameCard key={game.id} game={game} />)
         : null}
-      {!error && !loading && values && values.length === 0
+      {!loading && values && values.length === 0
         ? <p>Bisher sind keine Partien angelegt.</p> : null}
     </Stack>
   );

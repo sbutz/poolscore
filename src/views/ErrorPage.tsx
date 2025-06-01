@@ -13,6 +13,7 @@ export default function ErrorPage({ message = defaultErrorMessage, hint = '' }:E
   const error = useRouteError();
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.error('ErrorPage:', error);
   }, [error]);
 
