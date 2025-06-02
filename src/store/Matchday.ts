@@ -1,6 +1,5 @@
 import {
   DocumentData,
-  DocumentReference,
   FirestoreDataConverter,
   PartialWithFieldValue,
   QueryDocumentSnapshot,
@@ -91,16 +90,11 @@ export function useMatchdays() {
   const [matchdayValues, matchdayLoading] = useFirestoreCollection<Matchday>(matchdayRef);
 
   const gameConverter = useGameConverter();
-  const gameIds = matchdayValues
-    ? matchdayValues.reduce(
-      (acc, m) => acc.concat(
-        m.games.map((g) => doc(db, 'games', g.id)),
-      ),
-      [] as DocumentReference<DocumentData, DocumentData>[],
-    )
-    : undefined;
-  const gameRefs = gameConverter && gameIds && gameIds.length > 0
-    ? query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter)
+  const gameRefs = gameConverter && matchdayValues
+    ? matchdayValues.map((m) => {
+      const gameIds = m.games.map((g) => g.id);
+      return query(collection(db, 'games'), where(documentId(), 'in', gameIds)).withConverter(gameConverter);
+    })
     : null;
   const [gameValues, gameLoading] = useFirestoreCollection<Game>(gameRefs);
 
