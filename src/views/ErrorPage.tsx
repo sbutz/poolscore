@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { Link } from 'react-router';
+import { useEffect } from 'react';
+import { Link, useRouteError } from 'react-router';
 
 const defaultErrorMessage = 'Ups, es ist ein Fehler aufgetreten.';
 
@@ -9,6 +10,13 @@ interface ErrorProps {
 }
 
 export default function ErrorPage({ message = defaultErrorMessage, hint = '' }:ErrorProps) {
+  const error = useRouteError();
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.error('ErrorPage:', error);
+  }, [error]);
+
   return (
     <Stack textAlign="center" height="100vh" justifyContent="center" sx={{ p: 5 }} spacing={2}>
       <Typography variant="h4">{message}</Typography>

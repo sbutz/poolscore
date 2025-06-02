@@ -45,18 +45,18 @@ export namespace Matchday {
 
     const games : Game[] = [
       // first round
+      { ...initialGame, mode: Mode.Straight, raceTo: raceTo[league][Mode.Straight] },
       { ...initialGame, mode: Mode.Ball8, raceTo: raceTo[league][Mode.Ball8] },
       { ...initialGame, mode: Mode.Ball9, raceTo: raceTo[league][Mode.Ball9] },
       { ...initialGame, mode: Mode.Ball10, raceTo: raceTo[league][Mode.Ball10] },
-      { ...initialGame, mode: Mode.Straight, raceTo: raceTo[league][Mode.Straight] },
       // second round
       { ...initialGame, mode: Mode.Ball9, raceTo: raceTo[league][Mode.Ball9] - 1 },
       { ...initialGame, mode: Mode.Ball10, raceTo: raceTo[league][Mode.Ball10] - 1 },
       // third round
+      { ...initialGame, mode: Mode.Straight, raceTo: raceTo[league][Mode.Straight] },
       { ...initialGame, mode: Mode.Ball8, raceTo: raceTo[league][Mode.Ball8] },
       { ...initialGame, mode: Mode.Ball9, raceTo: raceTo[league][Mode.Ball9] },
       { ...initialGame, mode: Mode.Ball10, raceTo: raceTo[league][Mode.Ball10] },
-      { ...initialGame, mode: Mode.Straight, raceTo: raceTo[league][Mode.Straight] },
     ];
 
     return {

@@ -15,7 +15,7 @@ import AlertDialog from '../../components/AlertDialog';
 
 export default function MatchdayGame() {
   const { id } = useParams();
-  const [game, loading, error] = useGame(id);
+  const [game, loading] = useGame(id);
   const updateGame = useUpdateGame();
   const [lastAction, setLastAction] = useState<Action | undefined>(undefined);
 
@@ -52,8 +52,7 @@ export default function MatchdayGame() {
 
   return (
     <Layout requireDesktop fullwidth toolbar={toolbar}>
-      {error ? <p>Fehler beim Laden der Partie.</p> : null}
-      {!error && loading ? <p>Partie wird geladen ...</p> : null}
+      {loading ? <p>Partie wird geladen ...</p> : null}
       {game ? renderGame(game) : null}
       <AlertDialog
         open={lastAction !== undefined}
