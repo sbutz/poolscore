@@ -10,7 +10,9 @@ export default function Games() {
     <Stack spacing={3}>
       {loading ? <p>Partien werden geladen ...</p> : null}
       {values
-        ? values.map((game: Game) => <GameCard key={game.id} game={game} />)
+        ? values
+          .filter((game: Game) => Game.isReady(game) || Game.isRunning(game))
+          .map((game: Game) => <GameCard key={game.id} game={game} />)
         : null}
       {!loading && values && values.length === 0
         ? <p>Bisher sind keine Partien angelegt.</p> : null}

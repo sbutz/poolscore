@@ -25,6 +25,16 @@ export const initialGame: Game = {
 };
 
 export namespace Game {
+  export function isReady(game: Game): boolean {
+    return game.state.actions.length === 0 && !Game.isFinished(game)
+      && game.names.home !== '' && game.names.home !== initialPlayerNames.home
+      && game.names.guest !== '' && game.names.guest !== initialPlayerNames.guest;
+  }
+
+  export function isRunning(game: Game): boolean {
+    return game.state.actions.length > 0 && !Game.isFinished(game);
+  }
+
   export function isFinished(game: Game): boolean {
     return Game.getWinner(game) !== undefined;
   }
