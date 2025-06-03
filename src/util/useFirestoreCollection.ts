@@ -36,7 +36,7 @@ const areQueriesEqual = <T extends Query<any>[]>(
 export default function useFirestoreCollection<T>(q: Query<T>[] | Query<T> | null) {
   const refs = useStableValue(Array.isArray(q) || q == null ? q : [q], areQueriesEqual);
   // TODO: combine into one state to avoid re-renders
-  const [value, setValue] = useState<QueryDocumentSnapshot<T>[]>([]);
+  const [value, setValue] = useState<QueryDocumentSnapshot<T>[][]>([]);
   const [loading, setLoading] = useState(0);
 
   const subscribe = useCallback(
@@ -47,13 +47,10 @@ export default function useFirestoreCollection<T>(q: Query<T>[] | Query<T> | nul
         return () => {};
       }
       setLoading(refs.length);
-      const unsubscribes = refs.map((ref) => onSnapshot(
+      const unsubscribes = refs.map((ref, i) => onSnapshot(
         ref,
         (snapshot: QuerySnapshot<T>) => {
-          setValue((v) => {
-            const prev = v.filter((d) => !snapshot.docs.some((s) => s.id === d.id));
-            return [...prev, ...snapshot.docs];
-          });
+          setValue((prev) => [...prev.slice(0, i), snapshot.docs, ...prev.slice(i + 1)]);
           setLoading((l) => l - 1);
         },
         (error: FirestoreError) => { throw error; },
@@ -65,7 +62,7 @@ export default function useFirestoreCollection<T>(q: Query<T>[] | Query<T> | nul
     [refs],
   );
   const getSnapshot = useMemo(() => {
-    const cache = [value.map((d) => d.data()), loading > 0] as [T[], boolean];
+    const cache = [value.flat().map((d) => d.data()), loading > 0] as [T[], boolean];
     return () => cache;
   }, [value, loading]);
   return useSyncExternalStore(subscribe, getSnapshot);

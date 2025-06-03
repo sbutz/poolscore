@@ -2,15 +2,22 @@ import {
   Button, Card, CardActions, CardContent, Stack, Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { Edit, PictureInPicture } from '@mui/icons-material';
+import { Delete, Edit, PictureInPicture } from '@mui/icons-material';
 import { Link } from 'react-router';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import { Matchday } from '../../lib/Matchday';
+import { useDeleteMatchday } from '../../store/Matchday';
+import AlertDialog from '../../components/AlertDialog';
 
 export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
   const {
     id, names, date, league,
   } = matchday;
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const deleteMatchday = useDeleteMatchday();
+
   return (
     <Card>
       <CardContent>
@@ -62,6 +69,21 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
         >
           Stream Overlay
         </Button>
+        <Button
+          startIcon={<Delete />}
+          onClick={() => setOpenDeleteDialog(true)}
+        >
+          Löschen
+        </Button>
+        <AlertDialog
+          open={openDeleteDialog}
+          title="Spieltag löschen"
+          text="Möchtest du diesen Spieltag wirklich löschen? Laufende Spiele werden abgebrochen."
+          cancelText="Abbrechen"
+          onCancel={() => setOpenDeleteDialog(false)}
+          acceptText="Löschen"
+          onAccept={async () => deleteMatchday(matchday)}
+        />
       </CardActions>
     </Card>
   );
