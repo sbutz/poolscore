@@ -17,13 +17,13 @@ service cloud.firestore {
 
     match /matchdays/{matchdayId} {
       allow get: if true;
-      allow read, update: if IsClubOwner(resource.data.clubId);
+      allow read, update, delete: if IsClubOwner(resource.data.clubId);
       allow create: if IsClubOwner(request.resource.data.clubId);
     }
 
     match /games/{gameId} {
       allow get, list: if true;
-      allow update: if IsClubOwner(resource.data.clubId);
+      allow update, delete: if IsClubOwner(resource.data.clubId);
       allow create: if IsClubOwner(request.resource.data.clubId);
     }
   }

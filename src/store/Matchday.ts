@@ -169,6 +169,19 @@ export function useUpdateMatchday() {
   return fn;
 }
 
+export function useDeleteMatchday() {
+  const fn = useMemo(() => async (matchday: Matchday) => {
+    const batch = writeBatch(db);
+    batch.delete(doc(db, 'matchdays', matchday.id));
+    matchday.games.forEach((game) => {
+      batch.delete(doc(db, 'games', game.id));
+    });
+    await batch.commit();
+  }, []);
+
+  return fn;
+}
+
 export function useCreateGame() {
   const matchdayConverter = useMatchdayConverter();
   const gameConverter = useGameConverter();
