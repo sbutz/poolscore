@@ -2,7 +2,9 @@ import {
   Button, Card, CardActions, CardContent, Stack, Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { Delete, Edit, PictureInPicture } from '@mui/icons-material';
+import {
+  Delete, Edit, Tv,
+} from '@mui/icons-material';
 import { Link } from 'react-router';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -63,12 +65,23 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
           Bearbeiten
         </Button>
         <Button
+          hidden
+          startIcon={<Tv />}
+          component={Link}
+          target="_blank"
+          rel="noopener noreferrer"
+          to={`/matchdays/${id}/livescore`}
+        >
+          Live Score
+        </Button>
+        {/* <Button
+          hidden
           startIcon={<PictureInPicture />}
           component={Link}
           to={`/matchdays/${id}/overlay`}
         >
           Stream Overlay
-        </Button>
+        </Button> */}
         <Button
           startIcon={<Delete />}
           onClick={() => setOpenDeleteDialog(true)}
