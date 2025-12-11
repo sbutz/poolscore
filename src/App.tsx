@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Router from './Router';
 import AuthProvider from './store/AuthProvider';
 import GameProvider from './store/GameProvider';
+import DevelopmentWarning from './DevelopmentWarning';
 
 const darkTheme = createTheme({
   palette: {
@@ -16,6 +17,7 @@ export default function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
+      <DevelopmentWarning />
       <AuthProvider>
         <GameProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
