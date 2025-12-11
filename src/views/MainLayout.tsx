@@ -4,10 +4,12 @@ import {
 import {
   AppBar, IconButton, Toolbar, Typography, Container, Drawer, Box, List, ListItem, ListItemButton,
   ListItemIcon, ListItemText, useTheme, useMediaQuery,
-  Button,
+  Button, Divider,
 } from '@mui/material';
+import { signOut } from 'firebase/auth';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
+import { auth } from '../store/Firebase';
 
 function DrawerListItem(text: string, icon: React.ReactNode, link: string) {
   const location = useLocation();
@@ -47,9 +49,10 @@ function MainDrawer({ open, toggleDrawer } : MainDrawerProps) {
     >
       <Toolbar />
       <List>
-        {DrawerListItem('Freies Spiel', <SportsEsports />, '/')}
         {DrawerListItem('Partien', <PlayArrow />, '/games')}
         {DrawerListItem('Spieltage', <EmojiEvents />, '/matchdays')}
+        <Divider />
+        {DrawerListItem('Freies Spiel', <SportsEsports />, '/')}
       </List>
     </Drawer>
   );
@@ -77,7 +80,10 @@ export default function MainLayout() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Poolscore
           </Typography>
-          <Button disabled>
+          <Button onClick={() => {
+            signOut(auth);
+          }}
+          >
             Logout
           </Button>
         </Toolbar>
