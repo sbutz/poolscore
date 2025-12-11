@@ -86,6 +86,7 @@ interface GameCardProps {
 }
 function GameCard({ game } : GameCardProps) {
   const label = `${Mode.toString(game.mode)} (Race to ${game.raceTo})`;
+  const color = Game.isFinished(game) ? 'text.secondary' : 'text.primary';
   return (
     <Card>
       <Grid container spacing={1} padding={2} alignItems="center">
@@ -93,17 +94,17 @@ function GameCard({ game } : GameCardProps) {
           <ExplainText>{label}</ExplainText>
         </Grid>
         <Grid size={{ xs: 5, md: 3 }} textAlign={{ xs: 'center', md: 'end' }}>
-          <ScoreText>{game.names.home}</ScoreText>
+          <ScoreText color={color}>{game.names.home}</ScoreText>
         </Grid>
         <Grid size={{ xs: 2, md: 2 }} textAlign="center">
-          <ScoreText>
+          <ScoreText color={color}>
             {game.state.home.score}
             {' - '}
             {game.state.guest.score}
           </ScoreText>
         </Grid>
         <Grid size={{ xs: 5, md: 3 }} textAlign={{ xs: 'center', md: 'start' }}>
-          <ScoreText>{game.names.guest}</ScoreText>
+          <ScoreText color={color}>{game.names.guest}</ScoreText>
         </Grid>
       </Grid>
     </Card>

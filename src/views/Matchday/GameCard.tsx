@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { SportsSoccer } from '@mui/icons-material';
 import { Game } from '../../lib/Game';
 import { Mode } from '../../lib/GameModes';
 import AlertDialog from '../../components/AlertDialog';
