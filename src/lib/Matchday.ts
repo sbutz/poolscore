@@ -1,4 +1,4 @@
-import { Game, initialGame } from './Game';
+import { Game } from './Game';
 import { Mode } from './GameModes';
 import { dummyGuestTeam, dummyHomeTeam, Team } from './Team';
 
@@ -40,18 +40,18 @@ export namespace Matchday {
 
     const games : Game[] = [
       // first round
-      { ...initialGame, mode: Mode.Straight, raceTo: raceTo[league][Mode.Straight] },
-      { ...initialGame, mode: Mode.Ball8, raceTo: raceTo[league][Mode.Ball8] },
-      { ...initialGame, mode: Mode.Ball9, raceTo: raceTo[league][Mode.Ball9] },
-      { ...initialGame, mode: Mode.Ball10, raceTo: raceTo[league][Mode.Ball10] },
+      Game.create(Mode.Straight, raceTo[league][Mode.Straight]),
+      Game.create(Mode.Ball8, raceTo[league][Mode.Ball8]),
+      Game.create(Mode.Ball9, raceTo[league][Mode.Ball9]),
+      Game.create(Mode.Ball10, raceTo[league][Mode.Ball10]),
       // second round
-      { ...initialGame, mode: Mode.Ball9, raceTo: raceTo[league][Mode.Ball9] - 1 },
-      { ...initialGame, mode: Mode.Ball10, raceTo: raceTo[league][Mode.Ball10] - 1 },
+      Game.create(Mode.Ball9, raceTo[league][Mode.Ball9] - 1),
+      Game.create(Mode.Ball10, raceTo[league][Mode.Ball10] - 1),
       // third round
-      { ...initialGame, mode: Mode.Straight, raceTo: raceTo[league][Mode.Straight] },
-      { ...initialGame, mode: Mode.Ball8, raceTo: raceTo[league][Mode.Ball8] },
-      { ...initialGame, mode: Mode.Ball9, raceTo: raceTo[league][Mode.Ball9] },
-      { ...initialGame, mode: Mode.Ball10, raceTo: raceTo[league][Mode.Ball10] },
+      Game.create(Mode.Straight, raceTo[league][Mode.Straight]),
+      Game.create(Mode.Ball8, raceTo[league][Mode.Ball8]),
+      Game.create(Mode.Ball9, raceTo[league][Mode.Ball9]),
+      Game.create(Mode.Ball10, raceTo[league][Mode.Ball10]),
     ];
 
     return {

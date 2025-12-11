@@ -16,15 +16,18 @@ export interface Game {
   raceTo: number;
   state: State
 }
-export const initialGame: Game = {
-  id: '',
-  names: initialPlayerNames,
-  mode: Mode.Ball8,
-  raceTo: 5,
-  state: getInitialState(Mode.Ball8),
-};
 
 export namespace Game {
+  export function create(mode: Mode, raceTo: number): Game {
+    return {
+      id: '',
+      names: initialPlayerNames,
+      mode,
+      raceTo,
+      state: getInitialState(mode),
+    };
+  }
+
   export function isReady(game: Game): boolean {
     return game.state.actions.length === 0 && !Game.isFinished(game)
       && game.names.home !== '' && game.names.home !== initialPlayerNames.home
