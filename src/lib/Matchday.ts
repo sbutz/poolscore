@@ -1,14 +1,6 @@
 import { Game, initialGame } from './Game';
 import { Mode } from './GameModes';
-
-interface ClubNames {
-  home: string;
-  guest: string;
-}
-const initialClubNames: ClubNames = {
-  home: 'Heim',
-  guest: 'Gast',
-};
+import { dummyGuestTeam, dummyHomeTeam, Team } from './Team';
 
 // TODO: add more leagues
 export enum League {
@@ -20,7 +12,10 @@ export interface Matchday {
   id: string;
   date: Date;
   league: League;
-  names: ClubNames;
+  teams: {
+    home: Team;
+    guest: Team;
+  };
   games: Game[];
 }
 
@@ -63,7 +58,10 @@ export namespace Matchday {
       id: '',
       date: today,
       league,
-      names: initialClubNames,
+      teams: {
+        home: dummyHomeTeam,
+        guest: dummyGuestTeam,
+      },
       games,
     };
   }

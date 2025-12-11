@@ -3,11 +3,12 @@ import { useParams } from 'react-router';
 import {
   useMatchday, useUpdateGame, useUpdateMatchday,
 } from '../../store/Matchday';
-import NameCard from './NameCard';
+import TeamCard from './TeamCard';
 import GameCard from './GameCard';
 import ScoreCard from './ScoreCard';
 import DateCard from './DateCard';
 import LeagueCard from './LeagueCard';
+import { Team } from '../../lib/Team';
 
 export default function Matchday() {
   const { id } = useParams();
@@ -21,15 +22,15 @@ export default function Matchday() {
     await updateMatchday(newMatchday);
   };
 
-  const onNameHomeChange = async (newValue: string) => {
+  const onNameHomeChange = async (newValue: Team) => {
     if (!matchday) return;
-    const newMatchday = { ...matchday, names: { ...matchday.names, home: newValue } };
+    const newMatchday = { ...matchday, teams: { ...matchday.teams, home: newValue } };
     await updateMatchday(newMatchday);
   };
 
-  const onNameGuestChange = async (newValue: string) => {
+  const onNameGuestChange = async (newValue: Team) => {
     if (!matchday) return;
-    const newMatchday = { ...matchday, names: { ...matchday.names, guest: newValue } };
+    const newMatchday = { ...matchday, teams: { ...matchday.teams, guest: newValue } };
     await updateMatchday(newMatchday);
   };
 
@@ -39,8 +40,8 @@ export default function Matchday() {
       <Divider sx={{ color: 'text.secondary' }}>Allgemein</Divider>
       <LeagueCard label="Liga" value={matchday.league} />
       <DateCard label="Datum" value={matchday.date} onChange={onDateChange} />
-      <NameCard label="Heimmannschaft" value={matchday.names.home} onChange={onNameHomeChange} />
-      <NameCard label="Gastmannschaft" value={matchday.names.guest} onChange={onNameGuestChange} />
+      <TeamCard label="Heimmannschaft" value={matchday.teams.home} onChange={onNameHomeChange} />
+      <TeamCard label="Gastmannschaft" value={matchday.teams.guest} onChange={onNameGuestChange} />
       <Divider sx={{ color: 'text.secondary' }}>1. Runde</Divider>
       {[matchday.games.slice(0, 4).map((game) => (
         <GameCard key={game.id} game={game} onEdit={updateGame} />

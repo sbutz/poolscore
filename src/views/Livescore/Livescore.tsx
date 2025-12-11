@@ -9,8 +9,6 @@ import { useMatchday } from '../../store/Matchday';
 import { Game } from '../../lib/Game';
 import { Mode } from '../../lib/GameModes';
 import { Matchday } from '../../lib/Matchday';
-import BC73PfeffenhausenLogo from '../../assets/club_logos/BC 73 Pfeffenhausen.png';
-import BC97HerzogenaurachLogo from '../../assets/club_logos/BC 97 Herzogenaurach.png';
 
 interface TeamCardProps {
   matchday: Matchday;
@@ -21,18 +19,22 @@ function TeamCard({ matchday }: TeamCardProps) {
       <Grid container spacing={1} padding={2} alignItems="center">
         <Grid size={{ xs: 3, sm: 4, md: 5 }}>
           <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-            <Box
-              component="img"
-              src={BC73PfeffenhausenLogo}
-              alt="BC 73 Pfeffenhausen logo"
-              sx={{ width: 64, height: 64, objectFit: 'contain' }}
-            />
+            { matchday.teams.home.iconUrl
+              ? (
+                <Box
+                  component="img"
+                  src={matchday.teams.home.iconUrl}
+                  alt={`${matchday.teams.home.name} icon`}
+                  sx={{ width: 64, height: 64, objectFit: 'contain' }}
+                />
+              )
+              : null }
             <Typography
               variant="h5"
               textAlign="center"
               sx={{ display: { xs: 'none', md: 'block' } }}
             >
-              {matchday.names.home}
+              {matchday.teams.home.name}
             </Typography>
           </Stack>
         </Grid>
@@ -50,14 +52,18 @@ function TeamCard({ matchday }: TeamCardProps) {
               textAlign="center"
               sx={{ display: { xs: 'none', md: 'block' } }}
             >
-              {matchday.names.guest}
+              {matchday.teams.guest.name}
             </Typography>
-            <Box
-              component="img"
-              src={BC97HerzogenaurachLogo}
-              alt="BC 97 Herzogenaurach logo"
-              sx={{ width: 64, height: 64, objectFit: 'contain' }}
-            />
+            { matchday.teams.guest.iconUrl
+              ? (
+                <Box
+                  component="img"
+                  src={matchday.teams.guest.iconUrl}
+                  alt={`${matchday.teams.guest.name} icon`}
+                  sx={{ width: 64, height: 64, objectFit: 'contain' }}
+                />
+              )
+              : null }
           </Stack>
         </Grid>
       </Grid>
