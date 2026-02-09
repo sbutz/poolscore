@@ -10,7 +10,7 @@ interface MatchScoreProps {
 }
 
 export default function MatchScore({ matchday } : MatchScoreProps) {
-  const { games, names } = matchday;
+  const { games, teams } = matchday;
   const firstTo = Math.floor(games.length / 2) + 1;
 
   return (
@@ -28,7 +28,7 @@ export default function MatchScore({ matchday } : MatchScoreProps) {
           width="6rem"
           textAlign="center"
         >
-          {names.home}
+          {teams.home.name}
         </Typography>
         <Typography
           fontSize={fontSize}
@@ -53,7 +53,7 @@ export default function MatchScore({ matchday } : MatchScoreProps) {
           width="6rem"
           textAlign="center"
         >
-          {names.guest}
+          {teams.guest.name}
         </Typography>
       </Stack>
       <Typography

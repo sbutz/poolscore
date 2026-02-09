@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { SportsSoccer } from '@mui/icons-material';
 import { Game } from '../../lib/Game';
 import { Mode } from '../../lib/GameModes';
 import AlertDialog from '../../components/AlertDialog';
 import FormCard from './FormCard';
 import GameDialog from './GameDialog';
+import EightBallIcon from '../../assets/EightBall';
+import NineBallIcon from '../../assets/NineBall';
+import TenBallIcon from '../../assets/TenBall';
+import PoolRackIcon from '../../assets/StraightPool';
 
 function gameToLabel(game: Game) {
   const target = game.mode === Mode.Straight ? 'Punkte' : 'Gewinnspiele';
@@ -14,6 +17,19 @@ function gameToLabel(game: Game) {
 function gameToValue(game: Game) {
   const { names, state } = game;
   return `${names.home} ${state.home.score} : ${state.guest.score} ${names.guest}`;
+}
+
+function gameToIcon(game: Game) {
+  if (game.mode === Mode.Straight) {
+    return PoolRackIcon;
+  }
+  if (game.mode === Mode.Ball9) {
+    return NineBallIcon;
+  }
+  if (game.mode === Mode.Ball10) {
+    return TenBallIcon;
+  }
+  return EightBallIcon;
 }
 
 interface GameCardProps {
@@ -32,7 +48,7 @@ export default function GameCard({ game, onEdit }: GameCardProps) {
   return (
     <>
       <FormCard
-        Icon={SportsSoccer}
+        Icon={gameToIcon(game)}
         label={gameToLabel(game)}
         value={gameToValue(game)}
         onEdit={() => setOpenEdit(true)}

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "poolscore-1973"
-  }
+    "default": "poolscore-1973",
+    "staging": "poolscore-staging"
+  },
+  "targets": {},
+  "etags": {}
 }

@@ -2,7 +2,9 @@ import {
   Button, Card, CardActions, CardContent, Stack, Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { Delete, Edit, PictureInPicture } from '@mui/icons-material';
+import {
+  Delete, Edit, Tv,
+} from '@mui/icons-material';
 import { Link } from 'react-router';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -12,7 +14,7 @@ import AlertDialog from '../../components/AlertDialog';
 
 export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
   const {
-    id, names, date, league,
+    id, teams, date, league,
   } = matchday;
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -34,7 +36,7 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
               justifyContent="center"
               textAlign="center"
             >
-              <Typography variant="overline" fontSize="0.85rem">{names.home}</Typography>
+              <Typography variant="overline" fontSize="0.85rem">{teams.home.name}</Typography>
               <Typography variant="h4">{Matchday.getScore(matchday, 'home')}</Typography>
             </Stack>
           </Grid>
@@ -49,7 +51,7 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
               textAlign="center"
             >
               <Typography variant="h4">{Matchday.getScore(matchday, 'guest')}</Typography>
-              <Typography variant="overline" fontSize="0.85rem">{names.guest}</Typography>
+              <Typography variant="overline" fontSize="0.85rem">{teams.guest.name}</Typography>
             </Stack>
           </Grid>
         </Grid>
@@ -63,12 +65,23 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
           Bearbeiten
         </Button>
         <Button
+          hidden
+          startIcon={<Tv />}
+          component={Link}
+          target="_blank"
+          rel="noopener noreferrer"
+          to={`/matchdays/${id}/livescore`}
+        >
+          Live Score
+        </Button>
+        {/* <Button
+          hidden
           startIcon={<PictureInPicture />}
           component={Link}
           to={`/matchdays/${id}/overlay`}
         >
           Stream Overlay
-        </Button>
+        </Button> */}
         <Button
           startIcon={<Delete />}
           onClick={() => setOpenDeleteDialog(true)}
