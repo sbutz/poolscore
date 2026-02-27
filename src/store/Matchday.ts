@@ -208,7 +208,7 @@ export function useUpdateGame() {
     if (!converter) throw new Error('No converter');
     const gameRef = doc(db, 'games', game.id).withConverter(converter);
 
-    await setDoc(gameRef, game, { merge: true });
+    await setDoc(gameRef, game);
   }, [converter]);
 
   return fn;
