@@ -8,6 +8,7 @@ import EightBallIcon from '../../assets/EightBall';
 import NineBallIcon from '../../assets/NineBall';
 import TenBallIcon from '../../assets/TenBall';
 import PoolRackIcon from '../../assets/StraightPool';
+import { State as State14 } from '../../lib/GameState14';
 
 function gameToLabel(game: Game) {
   const target = game.mode === Mode.Straight ? 'Punkte' : 'Gewinnspiele';
@@ -16,7 +17,18 @@ function gameToLabel(game: Game) {
 
 function gameToValue(game: Game) {
   const { names, state } = game;
-  return `${names.home} ${state.home.score} : ${state.guest.score} ${names.guest}`;
+  return `${names.home} ${state.home.score}:${state.guest.score} ${names.guest}`;
+}
+
+function gameToDetails(game: Game) {
+  if (game.mode === Mode.Straight) {
+    const state = game.state as State14;
+    const runsHome = state.home.runs.length;
+    const runsGuest = state.guest.runs.length;
+    const highestHome = state.home.highestScore;
+    const highestGuest = state.guest.highestScore;
+    return `AN: ${runsHome}:${runsGuest} HS: ${highestHome}:${highestGuest}`;
+  }
 }
 
 function gameToIcon(game: Game) {
@@ -51,6 +63,7 @@ export default function GameCard({ game, onEdit }: GameCardProps) {
         Icon={gameToIcon(game)}
         label={gameToLabel(game)}
         value={gameToValue(game)}
+        details={gameToDetails(game)}
         onEdit={() => setOpenEdit(true)}
         onDelete={() => setOpenDelete(true)}
       />
