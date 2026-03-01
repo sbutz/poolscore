@@ -31,7 +31,7 @@ function DateFormCard(props: DateFormCardProps) {
       <Stack direction="row" alignItems="center" justifyContent="space-between" p={2} spacing={2}>
         <Stack direction="row" spacing={2} alignItems="center">
           <Event color="disabled" />
-          <Typography color="text.disabled">{label}</Typography>
+          <Typography display={{ xs: 'none', sm: 'block' }} color="text.disabled">{label}</Typography>
         </Stack>
         <Typography component="div" sx={{ flexGrow: 1 }}>{dayjs(value).format('DD.MM.YYYY')}</Typography>
         <IconButton ref={ref} aria-label={ariaLabel} onClick={onEdit}><Edit /></IconButton>
