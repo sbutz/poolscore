@@ -30,7 +30,7 @@ function TeamCard({ matchday }: TeamCardProps) {
               )
               : null }
             <Typography
-              variant="h5"
+              variant="h4"
               textAlign="center"
               sx={{ display: { xs: 'none', md: 'block' } }}
             >
@@ -39,7 +39,7 @@ function TeamCard({ matchday }: TeamCardProps) {
           </Stack>
         </Grid>
         <Grid size={{ xs: 6, sm: 4, md: 2 }} textAlign="center">
-          <Typography variant="h2" fontWeight="bold">
+          <Typography variant="h2" fontWeight="600">
             {Matchday.getScore(matchday, 'home')}
             {' - '}
             {Matchday.getScore(matchday, 'guest')}
@@ -48,7 +48,7 @@ function TeamCard({ matchday }: TeamCardProps) {
         <Grid size={{ xs: 3, sm: 4, md: 5 }}>
           <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
             <Typography
-              variant="h5"
+              variant="h4"
               textAlign="center"
               sx={{ display: { xs: 'none', md: 'block' } }}
             >
@@ -71,30 +71,36 @@ function TeamCard({ matchday }: TeamCardProps) {
   );
 }
 
+const PlayerNameText = styled(Typography)(({ theme }) => ({
+  fontSize: theme.typography.h4.fontSize,
+  fontWeight: 300,
+  // textTransform: 'uppercase',
+}));
 const ScoreText = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.h6.fontSize,
-  fontWeight: theme.typography.h5.fontWeight,
+  fontSize: theme.typography.h4.fontSize,
+  fontWeight: 600,
   textTransform: 'uppercase',
 }));
 const ExplainText = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.body1.fontSize,
-  color: theme.palette.text.disabled,
+  fontSize: theme.typography.h6.fontSize,
+  fontWeight: 600,
+  // color: theme.palette.text.disabled,
 }));
 
 interface GameCardProps {
   game: Game;
 }
 function GameCard({ game } : GameCardProps) {
-  const label = `${Mode.toString(game.mode)} (Race to ${game.raceTo})`;
   const color = Game.isFinished(game) ? 'text.secondary' : 'text.primary';
   return (
     <Card>
       <Grid container spacing={1} padding={2} alignItems="center">
         <Grid size={{ xs: 12, md: 2 }} textAlign="center">
-          <ExplainText>{label}</ExplainText>
+          <ExplainText>{Mode.toString(game.mode)}</ExplainText>
+          <ExplainText>{`(Race to ${game.raceTo})`}</ExplainText>
         </Grid>
         <Grid size={{ xs: 5, md: 3 }} textAlign={{ xs: 'center', md: 'end' }}>
-          <ScoreText color={color}>{game.names.home}</ScoreText>
+          <PlayerNameText color={color}>{game.names.home}</PlayerNameText>
         </Grid>
         <Grid size={{ xs: 2, md: 2 }} textAlign="center">
           <ScoreText color={color}>
@@ -104,7 +110,7 @@ function GameCard({ game } : GameCardProps) {
           </ScoreText>
         </Grid>
         <Grid size={{ xs: 5, md: 3 }} textAlign={{ xs: 'center', md: 'start' }}>
-          <ScoreText color={color}>{game.names.guest}</ScoreText>
+          <PlayerNameText color={color}>{game.names.guest}</PlayerNameText>
         </Grid>
       </Grid>
     </Card>
