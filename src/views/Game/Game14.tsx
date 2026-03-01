@@ -189,9 +189,12 @@ function PlayerStatistics({ state }: PlayerStatisticsProps) {
 interface Game14Props {
   names: PlayerNames,
   state: State,
+  raceTo: number,
   dispatch: (action: Action) => void,
 }
-export default function Game14({ names, state, dispatch }:Game14Props) {
+export default function Game14({
+  names, state, raceTo, dispatch,
+}:Game14Props) {
   const startingPlayerSelect = (
     <Grid container>
       <Grid item xs={5} textAlign="center">
@@ -288,7 +291,10 @@ export default function Game14({ names, state, dispatch }:Game14Props) {
       <Grid container justifyContent="center">
         <BorderBox label="Anzahl verbleibender Kugeln">
           {BALLS.map((i) => {
-            const enabled = i <= state.remainingBalls;
+            const enabled = i <= state.remainingBalls && (
+              state.activePlayer === undefined
+              || state[state.activePlayer].score + state.remainingBalls - i <= raceTo
+            );
             const Image = Balls[i];
             return (
               <div

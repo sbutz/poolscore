@@ -36,7 +36,7 @@ export default function MatchdayGame() {
       return <GameFinished game={g} />;
     }
     return mode === Mode.Straight
-      ? <Game14 names={names} state={state as State14} dispatch={updateState} />
+      ? <Game14 names={names} state={state as State14} raceTo={g.raceTo} dispatch={updateState} />
       : <Game8 names={names} state={state as State8} dispatch={updateState} />;
   };
 

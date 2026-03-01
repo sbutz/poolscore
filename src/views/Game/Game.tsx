@@ -61,7 +61,7 @@ export default function Game() {
   const game = mode === Mode.Ball8
     ? (
       <Game8 names={initialPlayerNames} state={state as State8} dispatch={updateState} />
-    ) : <Game14 names={initialPlayerNames} state={state as State14} dispatch={updateState} />;
+    ) : <Game14 names={initialPlayerNames} state={state as State14} raceTo={Infinity} dispatch={updateState} />;
 
   return (
     <Layout requireDesktop fullwidth toolbar={toolbar}>
