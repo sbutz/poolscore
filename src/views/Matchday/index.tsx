@@ -9,6 +9,7 @@ import ScoreCard from './ScoreCard';
 import DateCard from './DateCard';
 import LeagueCard from './LeagueCard';
 import { Team } from '../../lib/Team';
+import { League } from '../../lib/Matchday';
 
 export default function Matchday() {
   const { id } = useParams();
@@ -35,6 +36,36 @@ export default function Matchday() {
   };
 
   if (!matchday) { return <p>Lade Spieltag ...</p>; }
+
+  let matches;
+  if (matchday.league !== League.CHEF_CUP) {
+    matches = (
+      <>
+        <Divider sx={{ color: 'text.secondary' }}>1. Runde</Divider>
+        {[matchday.games.slice(0, 4).map((game) => (
+          <GameCard key={game.id} game={game} onEdit={updateGame} />
+        ))]}
+        <Divider sx={{ color: 'text.secondary' }}>2. Runde</Divider>
+        {[matchday.games.slice(4, 6).map((game) => (
+          <GameCard key={game.id} game={game} onEdit={updateGame} />
+        ))]}
+        <Divider sx={{ color: 'text.secondary' }}>3. Runde</Divider>
+        {[matchday.games.slice(6, 10).map((game) => (
+          <GameCard key={game.id} game={game} onEdit={updateGame} />
+        ))]}
+      </>
+    );
+  } else {
+    matches = (
+      <>
+        <Divider sx={{ color: 'text.secondary' }}>Spiele</Divider>
+        {[matchday.games.map((game) => (
+          <GameCard key={game.id} game={game} onEdit={updateGame} />
+        ))]}
+      </>
+    );
+  }
+
   return (
     <Stack spacing={2}>
       <Divider sx={{ color: 'text.secondary' }}>Allgemein</Divider>
@@ -42,18 +73,7 @@ export default function Matchday() {
       <DateCard label="Datum" value={matchday.date} onChange={onDateChange} />
       <TeamCard label="Heimmannschaft" value={matchday.teams.home} onChange={onNameHomeChange} />
       <TeamCard label="Gastmannschaft" value={matchday.teams.guest} onChange={onNameGuestChange} />
-      <Divider sx={{ color: 'text.secondary' }}>1. Runde</Divider>
-      {[matchday.games.slice(0, 4).map((game) => (
-        <GameCard key={game.id} game={game} onEdit={updateGame} />
-      ))]}
-      <Divider sx={{ color: 'text.secondary' }}>2. Runde</Divider>
-      {[matchday.games.slice(4, 6).map((game) => (
-        <GameCard key={game.id} game={game} onEdit={updateGame} />
-      ))]}
-      <Divider sx={{ color: 'text.secondary' }}>3. Runde</Divider>
-      {[matchday.games.slice(6, 10).map((game) => (
-        <GameCard key={game.id} game={game} onEdit={updateGame} />
-      ))]}
+      {matches}
       <Divider sx={{ color: 'text.secondary' }}>Spielstand</Divider>
       <ScoreCard matchday={matchday} />
     </Stack>

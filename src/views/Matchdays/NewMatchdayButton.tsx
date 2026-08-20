@@ -36,7 +36,7 @@ export default function NewMatchdayButton() {
         open={open}
         title="Liga auswählen"
         value={League.OBERLIGA}
-        items={[League.OBERLIGA, League.LANDESLIGA]}
+        items={[League.OBERLIGA, League.LANDESLIGA, League.CHEF_CUP]}
         onCancel={onCancel}
         onAccept={onAccept}
       />

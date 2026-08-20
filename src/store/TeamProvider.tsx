@@ -94,6 +94,8 @@ const teams : Team[] = [
   { name: 'TSV Ingolstadt', iconUrl: '/club_icons/TSV Ingolstadt.png' },
   { name: 'TV Schweinheim', iconUrl: '/club_icons/TV Schweinheim.png' },
   { name: 'United Snooker Club Ingolstadt', iconUrl: '/club_icons/United Snooker Club Ingolstadt.png' },
+  { name: 'NBY', iconUrl: '/club_icons/Bayern.png' },
+  { name: 'Tirol', iconUrl: '/club_icons/Tirol.png' },
 ];
 
 export default function useTeams() {
