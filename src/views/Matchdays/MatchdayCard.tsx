@@ -3,12 +3,12 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import {
-  Delete, Edit, Tv,
+  Delete, Edit, PictureInPicture, Tv,
 } from '@mui/icons-material';
 import { Link } from 'react-router';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { Matchday } from '../../lib/Matchday';
+import { League, Matchday } from '../../lib/Matchday';
 import { useDeleteMatchday } from '../../store/Matchday';
 import AlertDialog from '../../components/AlertDialog';
 
@@ -64,24 +64,29 @@ export default function MatchdayCard({ matchday }: { matchday: Matchday }) {
         >
           Bearbeiten
         </Button>
-        <Button
-          hidden
-          startIcon={<Tv />}
-          component={Link}
-          target="_blank"
-          rel="noopener noreferrer"
-          to={`/matchdays/${id}/livescore`}
-        >
-          Live Score
-        </Button>
-        {/* <Button
-          hidden
-          startIcon={<PictureInPicture />}
-          component={Link}
-          to={`/matchdays/${id}/overlay`}
-        >
-          Stream Overlay
-        </Button> */}
+        {matchday.league === League.CHEF_CUP
+          ? (
+            <Button
+              hidden
+              startIcon={<PictureInPicture />}
+              component={Link}
+              to={`/matchdays/${id}/overlay`}
+            >
+              Stream Overlay
+            </Button>
+          )
+          : (
+            <Button
+              hidden
+              startIcon={<Tv />}
+              component={Link}
+              target="_blank"
+              rel="noopener noreferrer"
+              to={`/matchdays/${id}/livescore`}
+            >
+              Live Score
+            </Button>
+          )}
         <Button
           startIcon={<Delete />}
           onClick={() => setOpenDeleteDialog(true)}

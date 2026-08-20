@@ -6,6 +6,7 @@ import { dummyGuestTeam, dummyHomeTeam, Team } from './Team';
 export enum League {
   OBERLIGA = 'Oberliga',
   LANDESLIGA = 'Landesliga',
+  CHEF_CUP = 'Chef-Cup',
 }
 
 export interface Matchday {
@@ -23,36 +24,62 @@ export namespace Matchday {
   export function create(league: League): Matchday {
     const today = new Date(new Date().setHours(0, 0, 0, 0));
 
-    const raceTo = {
-      [League.OBERLIGA]: {
-        [Mode.Ball8]: 6,
-        [Mode.Ball9]: 8,
-        [Mode.Ball10]: 7,
-        [Mode.Straight]: 90,
-      },
-      [League.LANDESLIGA]: {
-        [Mode.Ball8]: 5,
-        [Mode.Ball9]: 7,
-        [Mode.Ball10]: 6,
-        [Mode.Straight]: 70,
-      },
+    const games : { [key in League]: Game[] } = {
+      [League.OBERLIGA]: [
+        // first round
+        Game.create(Mode.Straight, 90),
+        Game.create(Mode.Ball8, 6),
+        Game.create(Mode.Ball9, 8),
+        Game.create(Mode.Ball10, 7),
+        // second round
+        Game.create(Mode.Ball9, 7),
+        Game.create(Mode.Ball10, 6),
+        // third round
+        Game.create(Mode.Straight, 90),
+        Game.create(Mode.Ball8, 6),
+        Game.create(Mode.Ball9, 8),
+        Game.create(Mode.Ball10, 7),
+      ],
+      [League.LANDESLIGA]: [
+        // first round
+        Game.create(Mode.Straight, 70),
+        Game.create(Mode.Ball8, 5),
+        Game.create(Mode.Ball9, 7),
+        Game.create(Mode.Ball10, 6),
+        // second round
+        Game.create(Mode.Ball9, 6),
+        Game.create(Mode.Ball10, 5),
+        // third round
+        Game.create(Mode.Straight, 70),
+        Game.create(Mode.Ball8, 5),
+        Game.create(Mode.Ball9, 7),
+        Game.create(Mode.Ball10, 6),
+      ],
+      [League.CHEF_CUP]: [
+        // 1 - Team
+        Game.create(Mode.Ball9, 3),
+        // 2 - Individual
+        Game.create(Mode.Ball9, 3),
+        // 3 - Double
+        Game.create(Mode.Ball9, 3),
+        // 4 - Individual
+        Game.create(Mode.Ball9, 3),
+        // 5 - Individual
+        Game.create(Mode.Ball9, 3),
+        // 6 - Double
+        Game.create(Mode.Ball9, 3),
+        // 7 - Individual
+        Game.create(Mode.Ball9, 3),
+        // 8 - Individual
+        Game.create(Mode.Ball9, 3),
+        // 9 - Double
+        Game.create(Mode.Ball9, 3),
+        // 10 - Individual
+        Game.create(Mode.Ball9, 3),
+        // 11 - Individual (Captain's Pick)
+        Game.create(Mode.Ball9, 3),
+      ],
     };
-
-    const games : Game[] = [
-      // first round
-      Game.create(Mode.Straight, raceTo[league][Mode.Straight]),
-      Game.create(Mode.Ball8, raceTo[league][Mode.Ball8]),
-      Game.create(Mode.Ball9, raceTo[league][Mode.Ball9]),
-      Game.create(Mode.Ball10, raceTo[league][Mode.Ball10]),
-      // second round
-      Game.create(Mode.Ball9, raceTo[league][Mode.Ball9] - 1),
-      Game.create(Mode.Ball10, raceTo[league][Mode.Ball10] - 1),
-      // third round
-      Game.create(Mode.Straight, raceTo[league][Mode.Straight]),
-      Game.create(Mode.Ball8, raceTo[league][Mode.Ball8]),
-      Game.create(Mode.Ball9, raceTo[league][Mode.Ball9]),
-      Game.create(Mode.Ball10, raceTo[league][Mode.Ball10]),
-    ];
 
     return {
       id: '',
@@ -62,7 +89,7 @@ export namespace Matchday {
         home: dummyHomeTeam,
         guest: dummyGuestTeam,
       },
-      games,
+      games: games[league],
     };
   }
 
