@@ -38,7 +38,20 @@ export default function Matchday() {
   if (!matchday) { return <p>Lade Spieltag ...</p>; }
 
   let matches;
-  if (matchday.league !== League.CHEF_CUP) {
+  if (matchday.league === League.REGIONALLIGA) {
+    matches = (
+      <>
+        <Divider sx={{ color: 'text.secondary' }}>1. Runde</Divider>
+        {[matchday.games.slice(0, 4).map((game) => (
+          <GameCard key={game.id} game={game} onEdit={updateGame} />
+        ))]}
+        <Divider sx={{ color: 'text.secondary' }}>2. Runde</Divider>
+        {[matchday.games.slice(4, 9).map((game) => (
+          <GameCard key={game.id} game={game} onEdit={updateGame} />
+        ))]}
+      </>
+    );
+  } else if ([League.OBERLIGA, League.VERBANDSLIGA, League.LANDESLIGA].includes(matchday.league)) {
     matches = (
       <>
         <Divider sx={{ color: 'text.secondary' }}>1. Runde</Divider>

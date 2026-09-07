@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles';
 import { useMatchday } from '../../store/Matchday';
 import { Game } from '../../lib/Game';
 import { Mode } from '../../lib/GameModes';
-import { Matchday } from '../../lib/Matchday';
+import { League, Matchday } from '../../lib/Matchday';
 
 interface TeamCardProps {
   matchday: Matchday;
@@ -123,12 +123,20 @@ export default function Livescore() {
 
   if (!matchday) { return <p>Lade Spieltag ...</p>; }
 
-  const finishedGames = matchday.games.filter((g) => Game.isFinished(g));
   let slice : [number, number] = [0, 4];
-  if (finishedGames.length >= 4 && finishedGames.length < 6) {
-    slice = [4, 6];
-  } else if (finishedGames.length >= 6) {
-    slice = [6, 10];
+  const finishedGames = matchday.games.filter((g) => Game.isFinished(g));
+  if (matchday.league === League.REGIONALLIGA) {
+    if (finishedGames.length >= 4) {
+      slice = [4, 8];
+    }
+  } else if ([League.OBERLIGA, League.VERBANDSLIGA, League.LANDESLIGA].includes(matchday.league)) {
+    if (finishedGames.length >= 4 && finishedGames.length < 6) {
+      slice = [4, 6];
+    } else if (finishedGames.length >= 6) {
+      slice = [6, 10];
+    }
+  } else {
+    slice = [0, matchday.games.length];
   }
   const games = matchday.games.slice(...slice);
 

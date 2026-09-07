@@ -35,8 +35,8 @@ export default function NewMatchdayButton() {
       <SelectDialog
         open={open}
         title="Liga auswählen"
-        value={League.OBERLIGA}
-        items={[League.OBERLIGA, League.LANDESLIGA, League.CHEF_CUP]}
+        value={League.REGIONALLIGA}
+        items={[League.REGIONALLIGA, League.OBERLIGA, League.VERBANDSLIGA, League.LANDESLIGA, League.CHEF_CUP]}
         onCancel={onCancel}
         onAccept={onAccept}
       />
